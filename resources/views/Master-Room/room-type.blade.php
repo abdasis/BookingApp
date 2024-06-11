@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="page-wrapper mb-3">
         <div class="page-header d-print-none">
@@ -10,7 +11,7 @@
                             Master
                         </div>
                         <h2 class="page-title">
-                            Room / Kamar
+                            Jenis Room / Kamar
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -25,7 +26,7 @@
                                     <line x1="12" y1="5" x2="12" y2="19"></line>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                 </svg>
-                                Tambah Room
+                                Tambah Jenis Room / Kamar
                             </a>
                             <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
                                 data-bs-target="#modal-room" aria-label="Create new report">
@@ -49,17 +50,15 @@
 
                 <div class="card">
                     <div class="card-header bg-azure">
-                        <h3 class="card-title">Daftar Room / Kamar</h3>
+                        <h3 class="card-title">Daftar Jenis Room / Kamar</h3>
                     </div>
                     <div class="card-body">
                         <table class="table" data-export-title="Export" id="table1" width="100%">
-                            <thead class="text-center">
+                            <thead class="">
                                 <tr>
                                     <th width="3%">No</th>
                                     <th width="auto">Nama</th>
-                                    <th width="10%">Jumlah Kamar</th>
-                                    <th width="10%">Max Checkout</th>
-                                    <th width="115">Aksi</th>
+                                    <th width="115" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,17 +70,14 @@
         </div>
 
     </div>
-    @include('Master-Room.modal-add-room')
-    @include('Master-Room.modal-edit-room')
+    @include('Master-Room.modal-add-type')
+    @include('Master-Room.modal-edit-type')
     <script>
         $(document).ready(function() {
-
-    $('.select2').select2();
-
             $('#btn-save').click(function() {
-                var formData = $('#form-room').serialize();
+                var formData = $('#form-type').serialize();
                 $.ajax({
-                    url: '{{ route('room.store') }}',
+                    url: '{{ route('room.addType') }}',
                     type: 'POST',
                     data: formData,
                     headers: {
@@ -95,9 +91,9 @@
                             showConfirmButton: false,
                             timer: 900
                         }).then(function() {
-                        $('#editModal').modal('hide');
+ $('#form-type').modal('hide');
                         $('#table1').DataTable().ajax.reload();
-                        location.refresh();
+                        location.reload();
                         });
 
                     },
@@ -119,7 +115,7 @@
                 var id = $(this).data('id');
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('room.show', ':id') }}".replace(':id', id),
+                    url: "{{ route('room.showType', ':id') }}".replace(':id', id),
                     success: function(response) {
                         $('#editModal #id').val(response.id);
                         $('#editModal #EditNama').val(response.nama);
@@ -136,17 +132,13 @@
             $('#btn-update').click(function() {
                 var id = $('#editModal #id').val();
                 var nama = $('#editModal #EditNama').val();
-                var qty = $('#editModal #EditQty').val();
-                var checkout = $('#editModal #EditCheckout').val();
                 $.ajax({
                     type: "PUT",
-                    url: "{{ route('room.update', ['id' => ':id']) }}".replace(':id', id),
+                    url: "{{ route('room.updateType', ['id' => ':id']) }}".replace(':id', id),
                     data: {
                         _token: "{{ csrf_token() }}",
                         id: id,
-                        nama: nama,
-                        qty: qty,
-                        checkout: checkout
+                        nama: nama
                     },
                     success: function(response) {
                         console.log('Data berhasil diperbarui:', response);
@@ -183,7 +175,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route('room.destroy', ':id') }}'.replace(':id',
+                            url: '{{ route('room.destroyType', ':id') }}'.replace(':id',
                                 id),
                             type: 'DELETE',
                             data: {
@@ -222,7 +214,7 @@
                         processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
                     },
                     serverSide: true,
-                    ajax: "{{ route('room.index') }}",
+                    ajax: "{{ route('room.roomtype') }}",
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
@@ -230,14 +222,6 @@
                         {
                             data: 'nama',
                             name: 'nama'
-                        },
-                        {
-                            data: 'qty',
-                            name: 'qty'
-                        },
-                        {
-                            data: 'checkout',
-                            name: 'checkout'
                         },
                         {
                             data: 'action',

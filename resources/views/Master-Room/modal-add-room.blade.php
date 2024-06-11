@@ -8,6 +8,16 @@
         <div class="modal-body">
             <form method="POST" enctype="multipart/form-data" id="form-room">
             @csrf
+             <div class="mb-3">
+              <label class="form-label">Jenis Room / Kamar</label>
+              <select name="roomtype" class="form-control">
+                <option value="">--Pilih Salah Satu--</option>
+                @foreach ($type as $item)
+                <option value="{{$item->id}}">{{$item->nama}}</option>
+                @endforeach
+            </select>
+
+            </div>
             <div class="mb-3">
               <label class="form-label">Nama Room</label>
               <input type="text" class="form-control" name="nama" placeholder="Masukan Nama Room" required>
@@ -22,7 +32,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Max Checkout</label>
-              <input type="text" class="form-control" name="checkout" placeholder="Max Checkout" required>
+              <input type="time" class="form-control" name="checkout" placeholder="Max Checkout" required>
             </div>
             <div class="mb-3">
               <label class="form-label">Tarif WeekDays</label>
@@ -34,7 +44,11 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Fasilitas</label>
-              <input type="text" class="form-control" name="Fasilitas" placeholder="Tarif Sabtu - Minggu" required>
+              <select class="form-control select2 asd" name="Fasilitas[]" multiple="multiple" required>
+                <option value="wifi">WiFi</option>
+                <option value="ac">AC</option>
+                <option value="sarapan">Sarapan</option>
+              </select>
             </div>
             <div class="modal-footer">
             </form>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,12 +36,18 @@ Route::group(['middleware' => ['auth']], function() {
 });
 Route::prefix('master-room')->group(function () {
     Route::GET('/', [RoomController::class, 'index'])->name('room.index');
+    Route::GET('/jenis-kamar', [RoomController::class, 'roomtype'])->name('room.roomtype');
     Route::GET('create', [RoomController::class, 'create'])->name('room.create');
     Route::POST('store', [RoomController::class, 'store'])->name('room.store');
+    Route::POST('addType', [RoomController::class, 'addType'])->name('room.addType');
     Route::GET('show/{id}', [RoomController::class, 'show'])->name('room.show');
+    Route::GET('show-jenis-kamar/{id}', [RoomController::class, 'showType'])->name('room.showType');
     Route::get('edit/{id}', [RoomController::class, 'edit'])->name('room.edit');
+    Route::get('edit-jenis-kamar/{id}', [RoomController::class, 'editType'])->name('room.editType');
     Route::delete('destroy/{id}', [RoomController::class, 'destroy'])->name('room.destroy');
+    Route::delete('destroy-jenis-kamar/{id}', [RoomController::class, 'destroyType'])->name('room.destroyType');
     Route::put('update/{id}', [RoomController::class, 'update'])->name('room.update');
+    Route::put('update-jenis-kamar/{id}', [RoomController::class, 'updateType'])->name('room.updateType');
 });
 Route::prefix('booking')->group(function () {
     Route::GET('/', [BookingController::class, 'index'])->name('booking.index');
@@ -50,4 +57,13 @@ Route::prefix('booking')->group(function () {
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+});
+Route::prefix('fasilitas')->group(function () {
+    Route::GET('/', [FasilitasController::class, 'index'])->name('fasilitas.index');
+    Route::GET('create', [FasilitasController::class, 'create'])->name('fasilitas.create');
+    Route::POST('store', [FasilitasController::class, 'store'])->name('fasilitas.store');
+    Route::GET('show/{id}', [FasilitasController::class, 'show'])->name('fasilitas.show');
+    Route::get('edit/{id}', [FasilitasController::class, 'edit'])->name('fasilitas.edit');
+    Route::delete('destroy/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
+    Route::put('update/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
 });

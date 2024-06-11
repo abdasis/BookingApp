@@ -24,14 +24,41 @@
         </div>
         <!-- Page body -->
         <div class="page-body">
-
-            <div class="container-xl">
-
+        <div class="container-xl">
                 <div class="card">
                     <div class="card-header bg-azure">
                         <h3 class="card-title">Daftar Room / Kamar</h3>
                     </div>
                     <div class="card-body">
+        <div class="row mb-3">
+                <div class="col-md-3">
+                    <small>Filter By Jenis:</small>
+                    <div class="form-group">
+                    <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                    <select class="form-control " name="filter_jenis" id="filter_pengguna">
+                        <option value="">Semua</option>
+                        <option value="umum">Umum</option>
+                        <option value="Medis">Medis</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <small>Filter By Departmen:</small>
+                    <div class="form-group">
+                    <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-users"></i></span></div>
+                    <select name="filter_departemen" class="custom-select form-control" id="filter_departemen">
+                                <option value="" selected>--Pilih Departemen--</option>
+
+                            </select>
+                </div>
+                </div>
+                </div>
+            </div>
                         <table class="table" data-export-title="Export" id="table1" width="100%">
                             <thead class="text-center">
                                 <tr>
@@ -51,9 +78,6 @@
         </div>
 
     </div>
-
-    @include('Master-Room.modal-add-room')
-    @include('Master-Room.modal-edit-room')
     <script>
         $(document).ready(function() {
             $('#btn-save').click(function() {
