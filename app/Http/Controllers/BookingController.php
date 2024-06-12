@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Roomtype;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -10,9 +11,10 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-Return view("Booking.index");
+        $type = Roomtype::all();
+        Return view("Booking.index",compact('type'));
     }
 
     /**

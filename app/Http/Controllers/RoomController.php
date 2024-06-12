@@ -54,6 +54,17 @@ class RoomController extends Controller
     {
         //
     }
+    public function getroom(Request $request)
+    {
+        $query = Room::query();
+
+        if ($request->has('type')) {
+            $query->where('roomtype', $request->input('type'));
+        }
+
+        $room = $query->get();
+        return response()->json($room);
+    }
 
     /**
      * Store a newly created resource in storage.

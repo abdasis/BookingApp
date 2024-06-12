@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header bg-azure-lt">
-          <h5 class="modal-title">Tambah Room</h5>
+          <h5 class="modal-title">Tambah List Fasilitas</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -10,7 +10,7 @@
             @csrf
             <div class="mb-3">
               <label class="form-label">Jenis Room / Type</label>
-              <input type="text" class="form-control" name="nama" placeholder="Masukan Jenis Room" required>
+              <input type="text" class="form-control" name="nama" placeholder="Masukan Fasilitas Room" required>
             </div>
             <div class="modal-footer">
             </form>

@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
 });
 Route::prefix('master-room')->group(function () {
     Route::GET('/', [RoomController::class, 'index'])->name('room.index');
+    Route::GET('get-room', [RoomController::class, 'getroom'])->name('room.getroom');
     Route::GET('/jenis-kamar', [RoomController::class, 'roomtype'])->name('room.roomtype');
     Route::GET('create', [RoomController::class, 'create'])->name('room.create');
     Route::POST('store', [RoomController::class, 'store'])->name('room.store');
