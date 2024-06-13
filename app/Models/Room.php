@@ -19,4 +19,8 @@ class Room extends Model
     protected $casts = [
         'Fasilitas' => 'json'
     ];
+    public function roomtype()
+    {
+        return $this->hasOne(Roomtype::class, 'id','roomtype');
+    }
 }

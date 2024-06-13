@@ -152,7 +152,7 @@
                                                         </div>
                                                          <div class="mt-3 badges">
 
-                                                            <a href="{{ route('booking.create',$index) }}" class="btn btn-primary"> Book Now</a>
+                                                            <button type="button" id="booknow" data-id="${room.id}" class="btn btn-primary">Book Now</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -176,42 +176,12 @@
             });
 
             loadRooms();
-
-            $('#btn-save').click(function() {
-                var formData = $('#form-room').serialize();
-                $.ajax({
-                    url: '{{ route('room.store') }}',
-                    type: 'POST',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('input[name="_token"]').val()
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Data Berhasil Disimpan!",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 900
-                        }).then(function() {
- $('#editModal').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                        location.refresh();
-                        });
-
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "Gagal",
-                            icon: "error",
-                            showConfirmButton: false,
-                            timer: 900
-                        });
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
+            $(document).on('click', '#booknow', function() {
+    var roomId = $(this).data('id');
+    var url = "{{ route('booking.create', ':id') }}";
+    url = url.replace(':id', roomId);
+    window.location.href = url;
+});
 
             //edit btn
             $('body').on('click', '.btn-edit', function() {

@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Room;
 use App\Models\Roomtype;
+use Carbon\Carbon;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $type = Roomtype::all();
@@ -22,7 +23,12 @@ class BookingController extends Controller
      */
     public function create($id)
     {
-        dd($id);
+        $getData = Room::with('roomtype')->where('id', $id)->first();
+        // dd($getData);
+        $today = Carbon::today();
+        $isWeekend = $today->isSaturday() || $today->isSunday();
+        // dd($isWeekend);
+        return view('Booking.create',compact('getData','isWeekend'));
     }
 
     /**
@@ -30,7 +36,8 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $data = Booking::create($request->all());
+       return response()->json($data);
     }
 
     /**
