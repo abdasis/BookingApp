@@ -100,7 +100,7 @@
                                                                     <line x1="17" y1="11" x2="17" y2="11.01"></line>
                                                                     <line x1="17" y1="15" x2="17" y2="15.01"></line>
                                                                 </svg>
-                                                                ${room.type}
+                                                                ${room.roomtype}
                                                             </div>
                                                             <div class="list-inline-item">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -111,14 +111,7 @@
                                                                 </svg>
                                                                 ${room.status}
                                                             </div>
-                                                            <div class="list-inline-item">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <circle cx="12" cy="11" r="3"></circle>
-                                                                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-                                                                </svg>
-                                                                ${room.location}
-                                                            </div>
+
                                                         </div>
                                                         <div class="mt-3 list mb-0 text-muted d-block d-sm-none">
                                                             <div class="list-item">
@@ -147,7 +140,7 @@
                                                                     <circle cx="12" cy="11" r="3"></circle>
                                                                     <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
                                                                 </svg>
-                                                                ${room.location}
+                                                                ${room.id}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,7 +151,8 @@
                                                             <a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">Fasilitas 3</a>
                                                         </div>
                                                          <div class="mt-3 badges">
-                                                            <input type="button" class="btn btn-primary" value="Book Now"></button>
+
+                                                            <a href="{{ route('booking.create',$index) }}" class="btn btn-primary"> Book Now</a>
                                                         </div>
                                                     </div>
                                                 </div>

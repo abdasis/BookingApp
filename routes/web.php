@@ -52,7 +52,7 @@ Route::prefix('master-room')->group(function () {
 });
 Route::prefix('booking')->group(function () {
     Route::GET('/', [BookingController::class, 'index'])->name('booking.index');
-    Route::GET('create', [BookingController::class, 'create'])->name('booking.create');
+    Route::GET('create/{id}', [BookingController::class, 'create'])->name('booking.create');
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
     Route::GET('show/{id}', [BookingController::class, 'show'])->name('booking.show');
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
