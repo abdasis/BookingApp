@@ -23,7 +23,7 @@ class BookingController extends Controller
      */
     public function create($id)
     {
-        $getData = Room::with('roomtype')->where('id', $id)->first();
+        $getData = Room::with('roomtypes')->where('id', $id)->first();
         // dd($getData);
         $today = Carbon::today();
         $isWeekend = $today->isSaturday() || $today->isSunday();
@@ -36,7 +36,14 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-       $data = Booking::create($request->all());
+        $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
+        $tarifTotal = str_replace('.', '', $tarifTotal);
+
+        $data = $request->all();
+        dd($data);
+        $data['Total'] = $tarifTotal;
+        $data['Status'] = "Booked";
+        $data = Booking::create($data);
        return response()->json($data);
     }
 

@@ -48,11 +48,11 @@
                             </div>
                             <div class="card-body">
                                 <dl class="row">
-                                    <dt class="col-5">Tipe Room / Kamar</dt>
+                                    <dt class="col-5">Tipe Room</dt>
                                     <dd class="col-7">: <badge class="badge bg-warning text-white xl">
-                                            {{ $getData->roomtype }}</badge>
+                                            {{ $getData->roomtypes->nama }}</badge>
                                     </dd>
-                                    <dt class="col-5">Nama Room / Kamar</dt>
+                                    <dt class="col-5">Nama Room</dt>
                                     <dd class="col-7">: {{ $getData->nama }}</dd>
                                     <dt class="col-5">Deskripsi:</dt>
                                     <dd class="col-7">: {{ $getData->deskripsi }}</dd>
@@ -170,7 +170,8 @@
                                             <div class="col-sm-6 col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Jumlah Tamu</label>
-                                                    <input type="number" class="form-control" name="jumlahTamu">
+                                                    <input type="number" class="form-control" name="jumlahTamu" placeholder="Jumlah Tamu">
+                                                    <input type="hidden" class="form-control" name="roomId" value="{{$getData->id}}">
                                                 </div>
                                             </div>
 
@@ -193,9 +194,9 @@
                             </div>
                             <div class="card-body">
                                 <dl class="row">
-                                    <dt class="col-5">Tipe Kamar</dt>
-                                    <dd class="col-7">: <badge class="badge bg-warning text-white xl">
-                                            {{ $getData->roomtype }}</badge>
+                                    <dt class="col-5">Tipe Room</dt>
+                                    <dd class="col-7">: <span class="badge bg-warning text-white xl">
+                                            {{ $getData->roomtypes->nama }}</span>
                                     </dd>
                                     <dt class="col-5">Total Hari</dt>
                                     <dd class="col-7">: <span id="TotalHari"></span> Hari</dd>
@@ -215,9 +216,9 @@
         $(document).ready(function() {
             $('#btnBayarSekarang').click(function(e) {
             e.preventDefault();
-            var token = $('meta[name="csrf-token"]').attr('content'); // Mengambil token CSRF
+            var token = $('meta[name="csrf-token"]').attr('content');
             var data = {
-                _token: token, // Menambahkan token CSRF ke dalam data
+                _token: token,
                 NoIdentitas: $('input[name="NoIdentitas"]').val(),
                 NamaBooking: $('input[name="NamaBooking"]').val(),
                 EMail: $('input[name="E-Mail"]').val(),
@@ -226,7 +227,8 @@
                 checkIn: $('input[name="checkIn"]').val(),
                 checkOut: $('input[name="checkOut"]').val(),
                 jumlahTamu: $('input[name="jumlahTamu"]').val(),
-                tarifTotal: $('#Tarif').data('tarif')
+                tarifTotal: document.getElementById("Tarif").innerText,
+                roomId: document.getElementById("roomId").innerText,
             };
             $.ajax({
                 type: 'POST',
