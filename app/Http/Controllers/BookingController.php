@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Yajra\DataTables\DataTables;
 
 class BookingController extends Controller
 {
@@ -18,6 +19,23 @@ class BookingController extends Controller
     {
         $type = Roomtype::all();
         Return view("Booking.index",compact('type'));
+    }
+
+    public function listBooking(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Booking::orderBy('id', 'desc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btnEdit = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-edit" title="Edit"><i class="fas fa-edit"></i></a>';
+                    $btnDelete = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-delete" title="Hapus"><i class="fas fa-trash-alt"></i></a>';
+                    return $btnEdit . ' ' . $btnDelete;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('Booking.list-booking');
     }
 
     /**

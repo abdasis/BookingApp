@@ -49,17 +49,20 @@
 
                 <div class="card">
                     <div class="card-header bg-azure">
-                        <h3 class="card-title">Daftar Room / Kamar</h3>
+                        <h3 class="card-title">Daftar List Booking </h3>
                     </div>
                     <div class="card-body">
                         <table class="table" data-export-title="Export" id="table1" width="100%">
                             <thead class="text-center">
                                 <tr>
                                     <th width="3%">No</th>
-                                    <th width="auto">Nama</th>
-                                    <th width="10%">Jumlah Kamar</th>
-                                    <th width="10%">Max Checkout</th>
-                                    <th width="115">Aksi</th>
+                                    <th width="10%">Nama</th>
+                                    <th width="10%">Email / Wa</th>
+                                    <th width="10%">Jenis Kelamin</th>
+                                    <th width="10%">Check In</th>
+                                    <th width="10%">Check Out</th>
+                                    <th width="10%">Status</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
