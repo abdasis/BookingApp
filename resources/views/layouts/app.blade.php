@@ -354,10 +354,10 @@
                                         Master Room
                                     </a>
 
-                                    <a class="dropdown-item" href="./changelog.html">
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">
                                         Master User
                                     </a>
-                                    <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank"
+                                    <a class="dropdown-item" href="{{ route('roles.index') }}" target="_blank"
                                         rel="noopener">
                                         Master Role
                                     </a>

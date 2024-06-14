@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingStatusMail;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -27,7 +29,6 @@ class BookingController extends Controller
         // dd($getData);
         $today = Carbon::today();
         $isWeekend = $today->isSaturday() || $today->isSunday();
-        // dd($isWeekend);
         return view('Booking.create',compact('getData','isWeekend'));
     }
 
@@ -36,15 +37,21 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->Email);
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
-
         $data = $request->all();
-        dd($data);
         $data['Total'] = $tarifTotal;
-        $data['Status'] = "Booked";
+        $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Pending, 3=cancer Order
         $data = Booking::create($data);
-       return response()->json($data);
+
+        //update status room
+        $query = Room::find($request->roomId);
+        $data1['status'] = "1"; //0 = Available, 1=Booked
+        $query->update($data1);
+
+        Mail::to($request->Email)->send(new BookingStatusMail($data));
+        return response()->json($data);
     }
 
     /**

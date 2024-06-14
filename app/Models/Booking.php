@@ -22,7 +22,9 @@ protected $fillable = [
     'hp',
     'checkIn',
     'checkOut',
-    'jumlahTamu'
+    'jumlahTamu',
+    'Total',
+    'Status',
 ];
 
 protected $dates = [

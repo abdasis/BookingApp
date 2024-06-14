@@ -101,7 +101,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Email</label>
                                                     <input type="email" class="form-control" placeholder="Email"
-                                                        name="E-Mail">
+                                                        name="Email">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-md-4">
@@ -150,7 +150,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">No HP / Whatsapp</label>
                                                     <input type="number" class="form-control" maxlength="13"
-                                                        placeholder="Nomor Whatsapp" value="Faker">
+                                                        placeholder="Nomor Whatsapp" name="hp" value="Faker">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -216,31 +216,51 @@
         $(document).ready(function() {
             $('#btnBayarSekarang').click(function(e) {
             e.preventDefault();
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: "Apakah Anda yakin ingin melakukan booking?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, booking sekarang!'
+            }).then((result) => {
+                if (result.isConfirmed) {
             var token = $('meta[name="csrf-token"]').attr('content');
             var data = {
                 _token: token,
                 NoIdentitas: $('input[name="NoIdentitas"]').val(),
                 NamaBooking: $('input[name="NamaBooking"]').val(),
-                EMail: $('input[name="E-Mail"]').val(),
+                Email: $('input[name="Email"]').val(),
                 Gender: $('input[name="Gender"]:checked').val(),
-                NoHP: $('input[name="NoHP"]').val(),
+                hp: $('input[name="hp"]').val(),
                 checkIn: $('input[name="checkIn"]').val(),
                 checkOut: $('input[name="checkOut"]').val(),
                 jumlahTamu: $('input[name="jumlahTamu"]').val(),
+                roomId: $('input[name="roomId"]').val(),
                 tarifTotal: document.getElementById("Tarif").innerText,
-                roomId: document.getElementById("roomId").innerText,
             };
             $.ajax({
                 type: 'POST',
                 url: '{{ route('booking.store') }}',
                 data: data,
                 success: function(response) {
-                    console.log(response);
-                    alert('Booking berhasil dilakukan!');
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    alert('Terjadi kesalahan saat melakukan booking. Silakan coba lagi.');
+                            console.log(response);
+                            Swal.fire(
+                                'Berhasil!',
+                                'Booking berhasil dilakukan!',
+                                'success'
+                            );
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            Swal.fire(
+                                'Gagal!',
+                                'Terjadi kesalahan saat melakukan booking. Silakan coba lagi.',
+                                'error'
+                            );
+                        }
+                    });
                 }
             });
         });

@@ -13,7 +13,7 @@ class Room extends Model
     use HasFactory;
     protected $table = 'rooms';
     protected $fillable = [
-        'roomtype','nama','deskripsi','qty','checkout','tarifWd','tarifWe','Fasilitas'
+        'roomtype','nama','deskripsi','qty','checkout','tarifWd','tarifWe','Fasilitas','status'
     ];
     protected $dates = ['deleted_at'];
     protected $casts = [
