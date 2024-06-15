@@ -8,7 +8,7 @@
             <h2>Create New Role</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
+            <a class="btn btn-primary" style="background-color:#6b6ef5;" href="{{ route('roles.index') }}"> Back</a>
         </div>
     </div>
 </div>
@@ -46,11 +46,11 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="background-color:#6b6ef5;">Submit</button>
     </div>
 </div>
 {!! Form::close() !!}
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
+<p class="text-center text-primary"><small>..</small></p>
 @endsection

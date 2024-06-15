@@ -6,9 +6,11 @@ use App\Mail\BookingStatusMail;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
+use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
@@ -32,7 +34,15 @@ class BookingController extends Controller
                     $btnDelete = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-delete" title="Hapus"><i class="fas fa-trash-alt"></i></a>';
                     return $btnEdit . ' ' . $btnDelete;
                 })
-                ->rawColumns(['action'])
+                ->addColumn('Kontak', function ($row) {
+                    $Kontak ='<span>'. $row->Email .'</span>'. $row->hp ;
+                    return $Kontak;
+                })
+                ->addColumn('StatusBooking', function ($row) {
+                    $Kontak = $row->Email . '<br>' . $row->hp;
+                    return $Kontak;
+                })
+                ->rawColumns(['action', 'Kontak'])
                 ->make(true);
         }
         return view('Booking.list-booking');
@@ -55,9 +65,10 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->Email);
+        // dd($generatePassword);
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
+
         $data = $request->all();
         $data['Total'] = $tarifTotal;
         $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Pending, 3=cancer Order
@@ -68,7 +79,19 @@ class BookingController extends Controller
         $data1['status'] = "1"; //0 = Available, 1=Booked
         $query->update($data1);
 
+        //create user
+
+        $generatePassword = now()->format('dmY');
+        $input['name'] = $request->NamaBooking;
+        $input['email'] = $request->Email;
+        $input['password'] = Hash::make($generatePassword);
+        $input['role'] = 'Pengujung';
+
+        $user = User::create($input);
+        $user->assignRole('2');
+
         Mail::to($request->Email)->send(new BookingStatusMail($data));
+
         return response()->json($data);
     }
 

@@ -275,7 +275,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown {{ request()->segment(1) == 'booking' ? 'active' : '' }}">
+                            <li class="nav-item dropdown {{ request()->segment(2) == 'daftar-kamar' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('booking.index') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
@@ -301,8 +301,8 @@
                             </li>
 
                             <li
-                                class="nav-item dropdown {{ request()->segment(1) == 'list-booking' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('booking.index') }}">
+                                class="nav-item dropdown {{ request()->segment(2) == 'list' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('booking.listBooking') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -345,7 +345,7 @@
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('fasilitas.index') }}" rel="noopener">
-                                        Master Fasilitas / Benefit
+                                        List Booking
                                     </a>
                                     <a class="dropdown-item" href="{{ route('room.roomtype') }}" rel="noopener">
                                         Master Room Type

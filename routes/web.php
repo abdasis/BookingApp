@@ -51,7 +51,8 @@ Route::prefix('master-room')->group(function () {
     Route::put('update-jenis-kamar/{id}', [RoomController::class, 'updateType'])->name('room.updateType');
 });
 Route::prefix('booking')->group(function () {
-    Route::GET('/', [BookingController::class, 'index'])->name('booking.index');
+    Route::GET('/daftar-kamar', [BookingController::class, 'index'])->name('booking.index');
+    Route::GET('list', [BookingController::class, 'listBooking'])->name('booking.listBooking');
     Route::GET('create/{id}', [BookingController::class, 'create'])->name('booking.create');
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
     Route::GET('show/{id}', [BookingController::class, 'show'])->name('booking.show');

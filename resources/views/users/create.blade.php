@@ -8,7 +8,7 @@
             <h2>Create New User</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
+            <a class="btn btn-primary" style="background-color:#6b6ef5;" href="{{ route('users.index') }}"> Back</a>
         </div>
     </div>
 </div>
@@ -41,6 +41,12 @@
             {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
         </div>
     </div>
+     <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>NIP:</strong>
+            {!! Form::text('nip', null, array('placeholder' => 'nip','class' => 'form-control')) !!}
+        </div>
+    </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Password:</strong>
@@ -60,11 +66,11 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="background-color:#6b6ef5;">Submit</button>
     </div>
 </div>
 {!! Form::close() !!}
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
+<p class="text-center text-primary"><small>..</small></p>
 @endsection
