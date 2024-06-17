@@ -41,6 +41,7 @@
                                     <th width="20%">Check In</th>
                                     <th width="20%">Check Out</th>
                                     <th width="10%">Status</th>
+                                    <th width="10%">Online</th>
                                     <th width="15%" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -209,8 +210,8 @@
                             name: 'Kontak'
                         },
                         {
-                            data: 'Gender',
-                            name: 'Gender'
+                            data: 'Jk',
+                            name: 'Jk'
                         },
                         {
                             data: 'checkIn',
@@ -221,8 +222,12 @@
                             name: 'checkOut'
                         },
                         {
-                            data: 'Status',
-                            name: 'Status'
+                            data: 'StatusBooking',
+                            name: 'StatusBooking'
+                        },
+                        {
+                            data: 'Online',
+                            name: 'Online'
                         },
                         {
                             data: 'action',

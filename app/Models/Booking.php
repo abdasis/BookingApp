@@ -25,6 +25,7 @@ protected $fillable = [
     'jumlahTamu',
     'Total',
     'Status',
+    'isOnline',
 ];
 
 protected $dates = [

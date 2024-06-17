@@ -30,19 +30,44 @@ class BookingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btnEdit = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-edit" title="Edit"><i class="fas fa-edit"></i></a>';
-                    $btnDelete = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-delete" title="Hapus"><i class="fas fa-trash-alt"></i></a>';
-                    return $btnEdit . ' ' . $btnDelete;
+                    $gambar = '<a href="#" class="btn btn-primary btn-sm" title="Edit">Bukti Bayar</a>';
+                    return $gambar;
                 })
                 ->addColumn('Kontak', function ($row) {
-                    $Kontak ='<span>'. $row->Email .'</span>'. $row->hp ;
-                    return $Kontak;
-                })
-                ->addColumn('StatusBooking', function ($row) {
                     $Kontak = $row->Email . '<br>' . $row->hp;
                     return $Kontak;
                 })
-                ->rawColumns(['action', 'Kontak'])
+                ->addColumn('StatusBooking', function ($row) {
+                    if($row->Status == 0){
+                        $StatusBooking = '<span class="badge bg-success text-white">Menunggu Pembayaran</span>';
+                    }elseif($row->Status == 1){
+                        $StatusBooking = '<span class="badge bg-success text-white">Dibayar</span>';
+                    }else if($row->Status == 2){
+                        $StatusBooking = '<a href="#" class="btn btn-warning btn-sm" title="Edit">Konfirmasi Sekanag</a>';
+                    }else{
+                        $StatusBooking = '<span class="badge bg-danger text-white">Cancel Order</span>';
+                    }
+
+                    return $StatusBooking;
+
+                })
+                ->addColumn('Online', function ($row) {
+                    if($row->isOnline == 0){
+                        $Online = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#ff000d"  class="icon icon-tabler icons-tabler-filled icon-tabler-square-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 2h-14a3 3 0 0 0 -3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3 -3v-14a3 3 0 0 0 -3 -3zm-9.387 6.21l.094 .083l2.293 2.292l2.293 -2.292a1 1 0 0 1 1.497 1.32l-.083 .094l-2.292 2.293l2.292 2.293a1 1 0 0 1 -1.32 1.497l-.094 -.083l-2.293 -2.292l-2.293 2.292a1 1 0 0 1 -1.497 -1.32l.083 -.094l2.292 -2.293l-2.292 -2.293a1 1 0 0 1 1.32 -1.497z" /></svg>';
+                    }else{
+                        $Online = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#009e12"  class="icon icon-tabler icons-tabler-filled icon-tabler-square-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>';
+                    }
+                    return $Online;
+                })
+                ->addColumn('Jk', function ($row) {
+                    if($row->Gender == "P"){
+                        $Jk = 'Pria';
+                    }else{
+                        $Jk = 'Wanita';
+                    }
+                    return $Jk;
+                })
+                ->rawColumns(['action', 'Kontak','StatusBooking','Online','Jk'])
                 ->make(true);
         }
         return view('Booking.list-booking');
@@ -71,7 +96,8 @@ class BookingController extends Controller
 
         $data = $request->all();
         $data['Total'] = $tarifTotal;
-        $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Pending, 3=cancer Order
+        $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
+        $data['isOnline'] = "1"; //0 = Offline Booking, 1 = Online Booking
         $data = Booking::create($data);
 
         //update status room
