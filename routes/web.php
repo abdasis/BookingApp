@@ -69,3 +69,11 @@ Route::prefix('fasilitas')->group(function () {
     Route::delete('destroy/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
     Route::put('update/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
 });
+Route::prefix('client')->group(function () {
+    Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
+    Route::POST('onlinestore', [BookingController::class, 'onlinestore'])->name('booking.onlinestore');
+    Route::GET('show/{id}', [BookingController::class, 'show'])->name('booking.show');
+    Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
+    Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
+    Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+});

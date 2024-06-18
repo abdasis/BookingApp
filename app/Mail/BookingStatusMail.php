@@ -11,16 +11,20 @@ class BookingStatusMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $user;
+    public $password;
+    public $booking;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($dataEmail)
     {
-        $this->data = $data;
+        $this->user = $dataEmail['user'];
+        $this->password = $dataEmail['password'];
+        $this->booking = $dataEmail['booking'];
     }
 
     /**
@@ -31,8 +35,12 @@ class BookingStatusMail extends Mailable
     public function build()
     {
         return $this->subject('Status Booking Anda')
-                    ->view('Email.bookingStatus');
-                    // ->with('data', $this->data);
+                    ->view('Email.bookingStatus')
+                    ->with([
+                        'user' => $this->user,
+                        'password' => $this->password,
+                        'booking' => $this->booking,
+                    ]);
     }
 }
 

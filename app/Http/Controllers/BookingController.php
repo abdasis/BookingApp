@@ -84,6 +84,14 @@ class BookingController extends Controller
         $isWeekend = $today->isSaturday() || $today->isSunday();
         return view('Booking.create',compact('getData','isWeekend'));
     }
+    public function BookingOnline($id)
+    {
+        $getData = Room::with('roomtypes')->where('id', $id)->first();
+        // dd($getData);
+        $today = Carbon::today();
+        $isWeekend = $today->isSaturday() || $today->isSunday();
+        return view('Client.create',compact('getData','isWeekend'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -97,7 +105,7 @@ class BookingController extends Controller
         $data = $request->all();
         $data['Total'] = $tarifTotal;
         $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
-        $data['isOnline'] = "1"; //0 = Offline Booking, 1 = Online Booking
+        $data['isOnline'] = "0"; //0 = Offline Booking, 1 = Online Booking
         $data = Booking::create($data);
 
         //update status room
@@ -117,6 +125,44 @@ class BookingController extends Controller
         $user->assignRole('2');
 
         Mail::to($request->Email)->send(new BookingStatusMail($data));
+
+        return response()->json($data);
+    }
+    public function onlinestore(Request $request)
+    {
+        // dd($generatePassword);
+        $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
+        $tarifTotal = str_replace('.', '', $tarifTotal);
+
+        $data2 = $request->all();
+        $data2['Total'] = $tarifTotal;
+        $data2['Status'] = "0"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
+        $data2['isOnline'] = "1"; //0 = Offline Booking, 1 = Online Booking
+        $data = Booking::create($data2);
+
+        //update status room
+        $query = Room::find($request->roomId);
+        $data1['status'] = "1"; //0 = Available, 1=Booked
+        $query->update($data1);
+
+        //create user
+
+        $generatePassword = now()->format('dmY');
+        $input['name'] = $request->NamaBooking;
+        $input['email'] = $request->Email;
+        $input['password'] = Hash::make($generatePassword);
+        $input['role'] = 'Pengujung';
+
+        $user = User::create($input);
+        $user->assignRole('2');
+
+        $dataEmail = [
+            'user' => $input,
+            'password' => $generatePassword,
+            'booking' => $data2
+        ];
+        // dd($dataEmail);
+        Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
 
         return response()->json($data);
     }
