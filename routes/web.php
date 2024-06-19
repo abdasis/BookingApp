@@ -55,7 +55,6 @@ Route::prefix('booking')->group(function () {
     Route::GET('list', [BookingController::class, 'listBooking'])->name('booking.listBooking');
     Route::GET('create/{id}', [BookingController::class, 'create'])->name('booking.create');
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
-    Route::GET('show/{id}', [BookingController::class, 'show'])->name('booking.show');
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
@@ -72,8 +71,7 @@ Route::prefix('fasilitas')->group(function () {
 Route::prefix('client')->group(function () {
     Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
     Route::POST('onlinestore', [BookingController::class, 'onlinestore'])->name('booking.onlinestore');
-    Route::GET('show/{id}', [BookingController::class, 'show'])->name('booking.show');
-    Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
+    Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
 });

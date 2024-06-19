@@ -170,9 +170,12 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Booking $booking)
+    public function show()
     {
-        //
+        $data = Booking::with('roomtypes')->where('userId',auth()->user()->id)->where('Status','0')->first();
+        $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
+        // dd($data);
+        return view('client.payment',compact('data','history'));
     }
 
     /**

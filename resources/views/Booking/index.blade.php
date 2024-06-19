@@ -39,7 +39,7 @@
                   <div class="form-selectgroup">
                     <div id="filters">
                         @foreach($type as $type)
-                            <label class="form-selectgroup-item bg-dark">
+                            <label class="bg-dark">
                                 <input type="checkbox" name="type" value="{{$type->id}}" class="form-selectgroup-input">
                                 <span class="form-selectgroup-label">{{$type->nama}}</span>
                             </label>

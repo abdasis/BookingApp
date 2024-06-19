@@ -37,4 +37,8 @@ protected $dates = [
 protected $casts = [
     'Gender' => 'string'
 ];
+    public function roomtypes()
+    {
+        return $this->hasOne(room::class, 'id', 'roomId');
+    }
 }

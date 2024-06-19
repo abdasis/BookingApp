@@ -244,7 +244,7 @@
                                         d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" />
                                 </svg></span>
                             <div class="d-none d-xl-block ps-2">
-                                <div>{{ auth()->user()->name }}</div>
+                                <div>{{ auth()->user()->name ?? 'guest' }}</div>
                             </div>
                         </a>
                     </div>
@@ -275,13 +275,14 @@
                                     </span>
                                 </a>
                             </li>
+                            @can('booking')
                             <li class="nav-item dropdown {{ request()->segment(2) == 'daftar-kamar' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('booking.index') }}">
                                     <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                             class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M3 21l18 0" />
@@ -299,7 +300,34 @@
                                 </a>
 
                             </li>
+                            @endcan
+                                @can('my-booking')
+                            <li class="nav-item dropdown {{ request()->segment(2) == 'client' ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('booking.show') }}">
+                                    <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M3 21l18 0" />
+                                            <path d="M5 21v-14l8 -4v18" />
+                                            <path d="M19 21v-10l-6 -4" />
+                                            <path d="M9 9l0 .01" />
+                                            <path d="M9 12l0 .01" />
+                                            <path d="M9 15l0 .01" />
+                                            <path d="M9 18l0 .01" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        My Booking
+                                    </span>
+                                </a>
 
+                            </li>
+                            @endcan
+@can('list-booking')
                             <li
                                 class="nav-item dropdown {{ request()->segment(2) == 'list' ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('booking.listBooking') }}">
@@ -321,6 +349,8 @@
                                     </span>
                                 </a>
                             </li>
+                            @endcan
+                            @can('master-data')
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -368,8 +398,9 @@
 
                                 </div>
                             </li>
+    @endcan
                         </ul>
-                        <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                        {{-- <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                             <form action="./" method="get" autocomplete="off" novalidate>
                                 <div class="input-icon">
                                     <span class="input-icon-addon">
@@ -387,7 +418,7 @@
                                         aria-label="Search in website">
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
