@@ -57,7 +57,7 @@ Route::prefix('booking')->group(function () {
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
-    Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+    //
 });
 Route::prefix('fasilitas')->group(function () {
     Route::GET('/', [FasilitasController::class, 'index'])->name('fasilitas.index');
@@ -70,8 +70,8 @@ Route::prefix('fasilitas')->group(function () {
 });
 Route::prefix('client')->group(function () {
     Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
-    Route::POST('onlinestore', [BookingController::class, 'onlinestore'])->name('booking.onlinestore');
+    Route::POST('payment', [BookingController::class, 'payment'])->name('booking.payment');
     Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
-    Route::put('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+    Route::PUT('update/{id}', [BookingController::class, 'update'])->name('booking.update');
 });

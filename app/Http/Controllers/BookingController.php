@@ -189,9 +189,18 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Booking $booking)
+    public function update(Request $request, $id)
     {
-        //
+        $booking = Booking::find($id);
+        dd($booking);
+        if (!$booking) {
+            return response()->json(['message' => 'Kode booking tidak ditemukan'], 404);
+        }
+        $booking->nama = $request->nama;
+        $booking->save();
+
+
+        return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
     }
 
     /**

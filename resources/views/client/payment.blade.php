@@ -118,10 +118,13 @@
                                </div>
                            </div>
 
-                           <form id="formbayar">
-                               <input type="file" class="form-control mb-2">
-                               <button type="button" class="custom-button">Upload</button>
+                           <form id="formbayar" enctype="multipart/form-data" method="POST">
+                            @csrf
+                               <input type="text" name="idbooking" id="idbooking" value="{{ $data->id }}">
+                               <input type="file" name="file" id="file" class="form-control mb-2">
                             </form>
+                           <button type="button" class="btn btn-primary" id="btn-update">Simpan Perubahan</button>
+
                        </div>
                    </div>
 
@@ -159,9 +162,41 @@
 
            </div>
        </div>
-       <script>
-           $(document).ready(function() {
+<script>
+     $(document).ready(function() {
+                                   $('#btn-update').click(function() {
+                                       updateData();
+                                   });
+                               });
 
-           });
-       </script>
+                               function updateData() {
+
+                                   var formData = new FormData($('#formbayar')[0]);
+                                   $.ajax({
+                                       type: "PUT",
+                                       url: "{{ route('booking.update', ['id' => ':id']) }}".replace(':id', $('#idbooking').val()),
+                                       data: formData,
+                                       contentType: false,
+                                       processData: false,
+                                       success: function(response) {
+                                           console.log('Data berhasil diperbarui:', response);
+                                           Swal.fire({
+                                               icon: 'success',
+                                               title: 'Sukses!',
+                                               text: 'Data berhasil diperbarui.',
+                                               showConfirmButton: false,
+                                               timer: 2000
+                                           });
+                                       },
+                                       error: function(xhr, status, error) {
+                                           console.error('Gagal memperbarui data:', error);
+                                           Swal.fire({
+                                               icon: 'error',
+                                               title: 'Oops...',
+                                               text: 'Gagal memperbarui data. Silakan coba lagi.'
+                                           });
+                                       }
+                                   });
+                               }
+</script>
    @endsection
