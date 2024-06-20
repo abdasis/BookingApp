@@ -8,6 +8,7 @@ use App\Models\Room;
 use App\Models\Roomtype;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -192,13 +193,16 @@ class BookingController extends Controller
     public function update(Request $request, $id)
     {
         $booking = Booking::find($id);
-        dd($booking);
         if (!$booking) {
-            return response()->json(['message' => 'Kode booking tidak ditemukan'], 404);
+            return response()->json(['message' => 'booking tidak ditemukan'], 404);
         }
-        $booking->nama = $request->nama;
-        $booking->save();
+        $gambar = $request->file('file');
+        $gambar->storeAs('public/booking', $gambar->getClientOriginalName());
 
+
+        $booking->Status = '2';
+        $booking->buktiBayar = $request->$gambar->getClientOriginalName();
+        $booking->save();
 
         return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
     }

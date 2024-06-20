@@ -73,5 +73,5 @@ Route::prefix('client')->group(function () {
     Route::POST('payment', [BookingController::class, 'payment'])->name('booking.payment');
     Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
-    Route::PUT('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+    Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
 });
