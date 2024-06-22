@@ -56,7 +56,75 @@
     </div>
     @include('fasilitas.modal-add-fasilitas')
     @include('fasilitas.modal-edit-fasilitas')
+    <div class="modal modal-blur fade" id="modal-large" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Large modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<form id="formkonfirmasi" enctype="multipart/form-data" method="POST">
+                            <input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="idbooking" id="idbooking">
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-konfirmasi" data-bs-dismiss="modal">Konfirmasi Pembayaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+         $('body').on('click', '.btn-bukti', function() {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('booking.getBukti', ':id') }}".replace(':id', id),
+                    success: function(response) {
+                        $('#modal-large #idbooking').val(response.id);
+                        $('#modal-large #imagepreview').attr('src', $('#imageresource').val(response.id));
+                        $('#modal-large').modal('show');
+                        console.log('Data berhasil Ditampilkan');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Gagal Load data untuk diedit:', error);
+                    }
+                });
+            });
+
+        $('#btn-konfirmasi').click(function(e){
+        e.preventDefault();
+         var formData = new FormData();
+        formData.append('idbooking', $('#idbooking').val());
+         formData.append('_token', $('#csrf-token').val());
+        $.ajax({
+            url: "{{ route('booking.konfirmasi', ['id' => ':id']) }}".replace(':id', $('#idbooking').val()),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Berhasil di Konfirmasi',
+                    confirmButtonText: 'Oke'
+                }).then(function() {
+    $('#table1').DataTable().ajax.reload();
+});
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: 'Pembayaran gagal diupdate. Silakan coba lagi.',
+                confirmButtonText: 'Oke'
+            });
+            }
+        });
+    });
         $(document).ready(function() {
             $('#btn-save').click(function() {
                 var formData = $('#form-fasilitas').serialize();
@@ -75,9 +143,9 @@
                             showConfirmButton: false,
                             timer: 900
                         }).then(function() {
- $('#form-fasilitas').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                        location.reload();
+                            $('#form-fasilitas').modal('hide');
+                            $('#table1').DataTable().ajax.reload();
+                            location.reload();
                         });
 
                     },
@@ -111,79 +179,7 @@
                     }
                 });
             });
-            $('#btn-update').click(function() {
-                var id = $('#editModal #id').val();
-                var nama = $('#editModal #EditNama').val();
-                $.ajax({
-                    type: "PUT",
-                    url: "{{ route('fasilitas.update', ['id' => ':id']) }}".replace(':id', id),
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        nama: nama
-                    },
-                    success: function(response) {
-                        console.log('Data berhasil diperbarui:', response);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sukses!',
-                            text: 'Data berhasil diperbarui.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        $('#editModal').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Gagal memperbarui data kategori:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Gagal memperbarui data. Silakan coba lagi.',
-                        });
-                    }
-                });
-            });
 
-            $('body').on('click', '.btn-delete', function() {
-                var id = $(this).data('id');
-
-                Swal.fire({
-                    title: 'Hapus Data',
-                    text: "Anda Ingin Menghapus Data?",
-                    icon: 'Peringatan',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Hapus'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '{{ route('fasilitas.destroy', ':id') }}'.replace(':id',
-                                id),
-                            type: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                Swal.fire(
-                                    'Dihapus',
-                                    'Data Berhasil Dihapus',
-                                    'success'
-                                );
-
-                                $('#table1').DataTable().ajax.reload();
-                            },
-                            error: function(xhr) {
-                                Swal.fire(
-                                    'Failed!',
-                                    'Error',
-                                    'error'
-                                );
-                                console.log(xhr.responseText);
-                            }
-                        });
-                    }
-                });
-            });
 
             var dataTable = function() {
                 var table = $('#table1');
@@ -239,6 +235,7 @@
                 });
             };
             dataTable();
+
         });
     </script>
 @endsection

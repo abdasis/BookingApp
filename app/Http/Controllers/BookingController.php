@@ -31,7 +31,7 @@ class BookingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $gambar = '<a href="#" class="btn btn-primary btn-sm" title="Edit">Bukti Bayar</a>';
+                    $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-sm btn-bukti" >Bukti TF</a>';
                     return $gambar;
                 })
                 ->addColumn('Kontak', function ($row) {
@@ -44,7 +44,7 @@ class BookingController extends Controller
                     }elseif($row->Status == 1){
                         $StatusBooking = '<span class="badge bg-success text-white">Dibayar</span>';
                     }else if($row->Status == 2){
-                        $StatusBooking = '<a href="#" class="btn btn-warning btn-sm" title="Edit">Konfirmasi Sekanag</a>';
+                        $StatusBooking = '<span class="badge bg-warning text-white">Belum Dikonfirmasi</span>';
                     }else{
                         $StatusBooking = '<span class="badge bg-danger text-white">Cancel Order</span>';
                     }
@@ -173,12 +173,18 @@ class BookingController extends Controller
      */
     public function show()
     {
-        $data = Booking::with('roomtypes')->where('userId',auth()->user()->id)->where('Status','0')->first();
+        $data = Booking::with('roomtypes')->where('userId',auth()->user()->id)->latest()->first();
         $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
         // dd($data);
-        return view('client.payment',compact('data','history'));
+        return view('client.pa  yment',compact('data','history'));
     }
-
+public function getBukti($id){
+        $buktitf = Booking::find($id);
+        if (!$buktitf) {
+            return response()->json(['message' => 'Lencana tidak ditemukan'], 404);
+        }
+        return response()->json($buktitf);
+}
     /**
      * Show the form for editing the specified resource.
      */
@@ -199,9 +205,19 @@ class BookingController extends Controller
         $gambar = $request->file('file');
         $gambar->storeAs('public/booking', $gambar->getClientOriginalName());
 
-
         $booking->Status = '2';
-        $booking->buktiBayar = $request->$gambar->getClientOriginalName();
+        $booking->buktiBayar = $gambar->getClientOriginalName();
+        $booking->save();
+
+        return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
+    }
+    public function konfirmasi(Request $request, $id)
+    {
+        $booking = Booking::find($id);
+        if (!$booking) {
+            return response()->json(['message' => 'booking tidak ditemukan'], 404);
+        }
+        $booking->Status = '1';
         $booking->save();
 
         return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);

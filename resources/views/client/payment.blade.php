@@ -120,9 +120,13 @@
 
                            <form id="formbayar" enctype="multipart/form-data" method="POST">
                             <input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}">
-                            <input type="text" name="idbooking" id="idbooking" value="{{ $data->id }}">
+                            <input type="hidden" name="idbooking" id="idbooking" value="{{ $data->id }}">
                             <input type="file" name="file" id="file" class="form-control mb-2">
-                            <button type="button" id="submitPayment">Submit Payment</button>
+                            <button type="button" id="submitPayment" class="custom-button">Submit Payment</button>
+                            <a href="https://wa.me/085830223422?text=Halo%20konfirmasi%20pemesanan%20kamar%20id%20booking%20{{ $data->id }}" target="blank" class="btn w-100">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#00ff1e"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>                  Hubungi Kami
+                </a>
                         </form>
 
 
@@ -163,6 +167,8 @@
 
            </div>
        </div>
+
+
 <script>
 $(document).ready(function(){
     $('#submitPayment').click(function(e){
@@ -171,7 +177,7 @@ $(document).ready(function(){
         var formData = new FormData();
         formData.append('idbooking', $('#idbooking').val());
         formData.append('file', $('#file')[0].files[0]);
-        formData.append('_token', $('#csrf-token').val()); // Tambahkan token CSRF
+        formData.append('_token', $('#csrf-token').val());
 
         $.ajax({
             url: "{{ route('booking.update', ['id' => ':id']) }}".replace(':id', $('#idbooking').val()),
@@ -180,13 +186,26 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response) {
-                alert('Pembayaran berhasil diperbarui!');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Pembayaran berhasil.',
+                    confirmButtonText: 'Oke'
+                }).then(function() {
+    location.reload();
+});
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                alert('Gagal memperbarui pembayaran: ' + errorThrown);
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: 'Pembayaran gagal diupdate. Silakan coba lagi.',
+                confirmButtonText: 'Oke'
+            });
             }
         });
     });
+
 });
 </script>
    @endsection

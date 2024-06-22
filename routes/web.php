@@ -56,7 +56,9 @@ Route::prefix('booking')->group(function () {
     Route::GET('create/{id}', [BookingController::class, 'create'])->name('booking.create');
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
+    Route::get('getBukti/{id}', [BookingController::class, 'getBukti'])->name('booking.getBukti');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
+    Route::post('konfirmasi/{id}', [BookingController::class, 'konfirmasi'])->name('booking.konfirmasi');
     //
 });
 Route::prefix('fasilitas')->group(function () {
