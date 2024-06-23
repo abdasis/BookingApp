@@ -25,48 +25,66 @@
         </div>
         <!-- Page body -->
         <div class="page-body">
-        <div class="container-xl">
-            <div class="card bg-primary text-primary-fg mb-4">
-                <div class="card-stamp">
-                  <div class="card-stamp-icon bg-white text-primary">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <h3 class="card-title">Pilih Room Kamar Yang Tersedia</h3>
-                  <p>Booking Kamar Sekarang Juga</p>
-                  <div class="form-selectgroup">
-                    <div id="filters">
-                        @foreach($type as $type)
-                            <label class="bg-dark">
-                                <input type="checkbox" name="type" value="{{$type->id}}" class="form-selectgroup-input">
-                                <span class="form-selectgroup-label">{{$type->nama}}</span>
-                            </label>
-                        @endforeach
+            <div class="container-xl">
+                <div class="card bg-primary text-primary-fg mb-4">
+                    <div class="card-stamp">
+                        <div class="card-stamp-icon bg-white text-primary">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                            </svg>
+                        </div>
                     </div>
-                    <button id="apply-filters" class="btn btn-primary mb-3">Apply Filters</button>
-                  </div>
-                </div>
-              </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Pilih Room Kamar Yang Tersedia</h3>
+                        <p>Booking Kamar Sekarang Juga</p>
+                        <div class="form-selectgroup">
+                            <div id="filters">
+                                @foreach($type as $type)
+                                <label class="bg-dark">
+                                    <input type="checkbox" name="type" value="{{$type->id}}" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">{{$type->nama}}</span>
+                                </label>
+                                <label class="bg-dark">
+                                    <input type="date" name="checkIn" id="checkIn" class="form-control">
+                                </label>
+                                <div id="filters">
 
-            <div id="rooms-list">
+                                </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-selectgroup">
+
+
+                            <button id="apply-filters" class="btn btn-primary mb-3">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rooms-list">
+                    <!-- List kamar akan ditampilkan di sini -->
+                </div>
             </div>
-        </div>
+
 
     </div>
     <script>
-        $(document).ready(function() {
-            function loadRooms(types = []) {
-                $.ajax({
-                    url: "{{ route('room.getroom') }}",
-                    method: "GET",
-                    data: { type: types },
-                    success: function(data) {
-                        var roomsHtml = '';
-                        $.each(data, function(index, room) {
-                            roomsHtml += `
-                                <div class="card mb-3">
+        $(document).ready(function () {
+
+          function loadRooms(types = [], checkIn = '') {
+        $.ajax({
+            url: "{{ route('room.getroom') }}",
+            method: "GET",
+            data: { type: types, checkIn: checkIn },
+            success: function(data) {
+                var roomsHtml = '';
+                $.each(data, function(index, room) {
+                    roomsHtml += `
+                        <div class="card mb-3">
     ${room.status == "1" ? `
     <div class="ribbon ribbon-top ribbon-bookmark bg-red sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" class="icon icon-tabler icons-tabler-filled icon-tabler-lock-square-rounded">
@@ -129,15 +147,6 @@
                             <div class="list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M15 21h-9a3 3 0 0 1 -3 -3v-1h10v2a2 2 0 0 0 4 0v-14a2 2 0 1 1 2 2h-2m2 -4h-11a3 3 0 0 0 -3 3v11"></path>
-                                    <line x1="9" y1="7" x2="13" y2="7"></line>
-                                    <line x1="9" y1="11" x2="13" y2="11"></line>
-                                </svg>
-                                ${room.status}
-                            </div>
-                            <div class="list-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <circle cx="12" cy="11" r="3"></circle>
                                     <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
                                 </svg>
@@ -169,22 +178,24 @@
 </div>
 
 
-                            `;
-                        });
-                        $('#rooms-list').html(roomsHtml);
-                    }
+                    `;
                 });
+                $('#rooms-list').html(roomsHtml);
             }
+        });
+    }
 
-            $('#apply-filters').on('click', function() {
-                var tiperoom = [];
-                $('input[name="type"]:checked').each(function() {
-                    tiperoom.push($(this).val());
-                });
-                loadRooms(tiperoom);
-            });
+    $('#apply-filters').on('click', function() {
+        var tiperoom = [];
+        $('input[name="type"]:checked').each(function() {
+            tiperoom.push($(this).val());
+        });
 
-            loadRooms();
+        var checkIn = $('#checkIn').val();
+        loadRooms(tiperoom, checkIn);
+    });
+
+    loadRooms();
             $(document).on('click', '#booknow', function() {
     var roomId = $(this).data('id');
     var url = "{{ route('booking.create', ':id') }}";
@@ -192,141 +203,9 @@
     window.location.href = url;
 });
 
-            //edit btn
-            $('body').on('click', '.btn-edit', function() {
-                var id = $(this).data('id');
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('room.show', ':id') }}".replace(':id', id),
-                    success: function(response) {
-                        $('#editModal #id').val(response.id);
-                        $('#editModal #EditNama').val(response.nama);
-                        $('#editModal #EditQty').val(response.qty);
-                        $('#editModal #EditCheckout').val(response.checkout);
-                        $('#editModal').modal('show');
-                        console.log('Data berhasil Ditampilkan');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Gagal Load data untuk diedit:', error);
-                    }
-                });
-            });
-            $('#btn-update').click(function() {
-                var id = $('#editModal #id').val();
-                var nama = $('#editModal #EditNama').val();
-                var qty = $('#editModal #EditQty').val();
-                var checkout = $('#editModal #EditCheckout').val();
-                $.ajax({
-                    type: "PUT",
-                    url: "{{ route('room.update', ['id' => ':id']) }}".replace(':id', id),
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        nama: nama,
-                        qty: qty,
-                        checkout: checkout
-                    },
-                    success: function(response) {
-                        console.log('Data berhasil diperbarui:', response);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sukses!',
-                            text: 'Data berhasil diperbarui.',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        $('#editModal').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Gagal memperbarui data kategori:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Gagal memperbarui data. Silakan coba lagi.',
-                        });
-                    }
-                });
-            });
 
-            $('body').on('click', '.btn-delete', function() {
-                var id = $(this).data('id');
-
-                Swal.fire({
-                    title: 'Hapus Data',
-                    text: "Anda Ingin Menghapus Data?",
-                    icon: 'Peringatan',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Hapus'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '{{ route('room.destroy', ':id') }}'.replace(':id',
-                                id),
-                            type: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                Swal.fire(
-                                    'Dihapus',
-                                    'Data Berhasil Dihapus',
-                                    'success'
-                                );
-
-                                $('#table1').DataTable().ajax.reload();
-                            },
-                            error: function(xhr) {
-                                Swal.fire(
-                                    'Failed!',
-                                    'Error',
-                                    'error'
-                                );
-                                console.log(xhr.responseText);
-                            }
-                        });
-                    }
-                });
-            });
-
-            var dataTable = function() {
-                var table = $('#table1');
-                table.DataTable({
-                    responsive: true,
-                    serverSide: true,
-                    bDestroy: true,
-                    processing: true,
-                    language: {
-                        processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
-                    },
-                    serverSide: true,
-                    ajax: "{{ route('room.index') }}",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama'
-                        },
-                        {
-                            data: 'qty',
-                            name: 'qty'
-                        },
-                        {
-                            data: 'checkout',
-                            name: 'checkout'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        },
-                    ]
-                });
-            };
             dataTable();
+
         });
     </script>
 @endsection

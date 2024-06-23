@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
 use Illuminate\Http\Request;
@@ -57,12 +58,12 @@ class RoomController extends Controller
     public function getroom(Request $request)
     {
         $query = Room::query();
-
         if ($request->has('type')) {
             $query->where('roomtype', $request->input('type'));
         }
-
+        $query->with('bookings');
         $room = $query->get();
+        // dd($room);
         return response()->json($room);
     }
 

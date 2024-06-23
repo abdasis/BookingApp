@@ -366,8 +366,8 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('master-data')
-                            <li class="nav-item dropdown">
+                            @can('master')
+                            <li class="nav-item dropdown {{ request()->segment(1) == 'master-room' ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span

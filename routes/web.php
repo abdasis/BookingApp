@@ -59,6 +59,8 @@ Route::prefix('booking')->group(function () {
     Route::get('getBukti/{id}', [BookingController::class, 'getBukti'])->name('booking.getBukti');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::post('konfirmasi/{id}', [BookingController::class, 'konfirmasi'])->name('booking.konfirmasi');
+    Route::post('checkout', [BookingController::class, 'checkout'])->name('booking.checkout');
+
     //
 });
 Route::prefix('fasilitas')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\BookingStatusMail;
+use App\Mail\BookingSukses;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
@@ -31,8 +32,15 @@ class BookingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-sm btn-bukti" >Bukti TF</a>';
-                    return $gambar;
+                    if($row->Status == 1){
+                        $checkout = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-checkout"><i class="fa-solid fa-door-closed"></i></a>';
+                        $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-bukti"><i class="fas fa-receipt"></i></a>';
+                        return $gambar . '<br/><br/>' . $checkout;
+                    } else {
+                        $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-bukti"><i class="fas fa-receipt"></i></a>';
+                        return $gambar;
+                    }
+
                 })
                 ->addColumn('Kontak', function ($row) {
                     $Kontak = $row->Email . '<br>' . $row->hp;
@@ -40,11 +48,13 @@ class BookingController extends Controller
                 })
                 ->addColumn('StatusBooking', function ($row) {
                     if($row->Status == 0){
-                        $StatusBooking = '<span class="badge bg-success text-white">Menunggu Pembayaran</span>';
+                        $StatusBooking = '<span class="badge bg-info text-white">Menunggu Pembayaran</span>';
                     }elseif($row->Status == 1){
                         $StatusBooking = '<span class="badge bg-success text-white">Dibayar</span>';
                     }else if($row->Status == 2){
                         $StatusBooking = '<span class="badge bg-warning text-white">Belum Dikonfirmasi</span>';
+                    }else if($row->Status == 5){
+                        $StatusBooking = '<span class="badge bg-success text-white">Selesai</span>';
                     }else{
                         $StatusBooking = '<span class="badge bg-danger text-white">Cancel Order</span>';
                     }
@@ -176,15 +186,30 @@ class BookingController extends Controller
         $data = Booking::with('roomtypes')->where('userId',auth()->user()->id)->latest()->first();
         $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
         // dd($data);
-        return view('client.pa  yment',compact('data','history'));
+        return view('client.payment',compact('data','history'));
     }
-public function getBukti($id){
-        $buktitf = Booking::find($id);
-        if (!$buktitf) {
-            return response()->json(['message' => 'Lencana tidak ditemukan'], 404);
+    public function getBukti($id)
+    {
+        $booking = Booking::find($id);
+        if ($booking) {
+            $namafile = $booking->buktiBayar;
+            if ($namafile) {
+                $imageUrl = url('storage/booking/' . $namafile);
+                return response()->json([
+                    'id' => $booking->id,
+                    'imageUrl' => $imageUrl,
+                ]);
+            } else {
+                return response()->json([
+                    'id' => $booking->id,
+                    'message' => 'Belum ada bukti pembayaran yang diunggah.',
+                ]);
+            }
         }
-        return response()->json($buktitf);
-}
+
+        return response()->json(['error' => 'Booking tidak ditemukan'], 404);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -202,6 +227,7 @@ public function getBukti($id){
         if (!$booking) {
             return response()->json(['message' => 'booking tidak ditemukan'], 404);
         }
+
         $gambar = $request->file('file');
         $gambar->storeAs('public/booking', $gambar->getClientOriginalName());
 
@@ -213,15 +239,28 @@ public function getBukti($id){
     }
     public function konfirmasi(Request $request, $id)
     {
-        $booking = Booking::find($id);
+        $booking = Booking::with('roomtypes')->find($id);
         if (!$booking) {
             return response()->json(['message' => 'booking tidak ditemukan'], 404);
         }
         $booking->Status = '1';
         $booking->save();
 
+        Mail::to($booking->Email)->send(new BookingSukses($booking));
         return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
     }
+    public function checkout(Request $request)
+{
+    $booking = Booking::find($request->id);
+    if (!$booking) {
+        return response()->json(['message' => 'Booking tidak ditemukan', 'success' => false], 404);
+    }
+    $booking->status = '5'; //checkout
+    $booking->save();
+
+    return response()->json(['message' => 'Checkout berhasil', 'success' => true]);
+}
+
 
     /**
      * Remove the specified resource from storage.

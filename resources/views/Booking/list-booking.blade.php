@@ -36,7 +36,7 @@
                                 <tr>
                                     <th width="3%">No</th>
                                     <th width="20%">Nama</th>
-                                    <th width="5%">Email / Wa</th>
+                                    <th width="5%" class="text-center">Email / Wa</th>
                                     <th width="5%">Jenis Kelamiin</th>
                                     <th width="20%">Check In</th>
                                     <th width="20%">Check Out</th>
@@ -45,8 +45,8 @@
                                     <th width="15%" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
+                            <tbody class="align-middle">
+                            </tbody >
                         </table>
                     </div>
                 </div>
@@ -64,10 +64,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-<form id="formkonfirmasi" enctype="multipart/form-data" method="POST">
-                            <input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="idbooking" id="idbooking">
-                        </form>
+                    <form id="formkonfirmasi" enctype="multipart/form-data" method="POST">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="idbooking" id="idbooking">
+                    </form>
+                    <img id="imagepreview" src="" alt="Bukti Pembayaran" style="width:100%; height:auto; display: none;">
+                    <div id="pesan" style="display: none;">Belum ada bukti pembayaran yang diunggah.</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
@@ -76,23 +78,35 @@
             </div>
         </div>
     </div>
+
+
+
     <script>
-         $('body').on('click', '.btn-bukti', function() {
-                var id = $(this).data('id');
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('booking.getBukti', ':id') }}".replace(':id', id),
-                    success: function(response) {
-                        $('#modal-large #idbooking').val(response.id);
-                        $('#modal-large #imagepreview').attr('src', $('#imageresource').val(response.id));
-                        $('#modal-large').modal('show');
-                        console.log('Data berhasil Ditampilkan');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Gagal Load data untuk diedit:', error);
-                    }
-                });
-            });
+
+     $('body').on('click', '.btn-bukti', function() {
+    var id = $(this).data('id');
+    $.ajax({
+        type: "GET",
+        url: "{{ route('booking.getBukti', ':id') }}".replace(':id', id),
+        success: function(response) {
+            console.log(response.imageUrl);
+            $('#modal-large #idbooking').val(response.id);
+            if (response.imageUrl) {
+                $('#modal-large #imagepreview').attr('src', response.imageUrl).show();
+                $('#modal-large #pesan').hide();
+            } else {
+                $('#modal-large #imagepreview').hide();
+                $('#modal-large #pesan').show();
+            }
+            $('#modal-large').modal('show');
+            console.log('Data berhasil Ditampilkan');
+        },
+        error: function(xhr, status, error) {
+            console.error('Gagal Load data untuk diedit:', error);
+        }
+    });
+});
+
 
         $('#btn-konfirmasi').click(function(e){
         e.preventDefault();
@@ -126,6 +140,46 @@
         });
     });
         $(document).ready(function() {
+            $('body').on('click', '.btn-checkout', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Konfirmasi Checkout',
+                text: 'Apakah Anda yakin ingin melakukan checkout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Checkout',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('booking.checkout') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            id: id
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: response.message,
+                                icon: 'success'
+                            });
+                            if (response.success) {
+                                location.reload();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Checkout gagal:', error);
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'Checkout gagal. Silakan coba lagi.',
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+            });
+        });
             $('#btn-save').click(function() {
                 var formData = $('#form-fasilitas').serialize();
                 $.ajax({

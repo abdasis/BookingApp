@@ -41,4 +41,9 @@ protected $casts = [
     {
         return $this->hasOne(room::class, 'id', 'roomId');
     }
+    public function user()
+    {
+        return $this->hasOne(user::class, 'id', 'userId');
+    }
+
 }
