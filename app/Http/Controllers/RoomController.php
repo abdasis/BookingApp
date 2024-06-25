@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class RoomController extends Controller
@@ -57,14 +58,42 @@ class RoomController extends Controller
     }
     public function getroom(Request $request)
     {
-        $query = Room::query();
-        if ($request->has('type')) {
-            $query->where('roomtype', $request->input('type'));
-        }
-        $query->with('bookings');
-        $room = $query->get();
-        // dd($room);
-        return response()->json($room);
+        dd($request->input('checkIn'));
+        // $query = Room::query();
+        // if ($request->has('type')) {
+        //     $query->where('roomtype', $request->input('type'));
+        // }
+        // $query->with('bookings');
+        // $room = $query->get();
+        // // dd($room);
+        // return response()->json($room);
+
+
+         // Validasi input tanggal
+    // $request->validate([
+    //     'checkin_date' => 'required|date',
+    //     'checkout_date' => 'required|date|after:checkin_date',
+    // ]);
+
+    $checkinDate = $request->input('checkin_date');
+    $checkoutDate = $request->input('checkout_date');
+
+    // Query untuk mendapatkan kamar yang tidak ada dalam booking pada tanggal yang dipilih
+    $availableRooms = DB::table('rooms')
+        ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
+            $join->on('rooms.id', '=', 'bookings.roomId')
+                ->where(function ($query) use ($checkinDate, $checkoutDate) {
+                    $query->where(function ($query) use ($checkinDate, $checkoutDate) {
+                        $query->where('bookings.checkIn', '<', $checkoutDate)
+                            ->where('bookings.checkOut', '>', $checkinDate);
+                    });
+                });
+        })
+        ->whereNull('bookings.id') // Pastikan booking.id null untuk mendapatkan kamar yang belum dibooking
+        ->select('rooms.id', 'rooms.roomtype', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
+        ->get();
+
+    return response()->json($availableRooms);
     }
 
     /**

@@ -41,18 +41,18 @@
                         <p>Booking Kamar Sekarang Juga</p>
                         <div class="form-selectgroup">
                             <div id="filters">
-                                @foreach($type as $type)
-                                <label class="bg-dark">
-                                    <input type="checkbox" name="type" value="{{$type->id}}" class="form-selectgroup-input">
-                                    <span class="form-selectgroup-label">{{$type->nama}}</span>
+
                                 </label>
                                 <label class="bg-dark">
                                     <input type="date" name="checkIn" id="checkIn" class="form-control">
                                 </label>
+                                <label class="bg-dark">
+                                    <input type="date" name="checkOut" id="checkOut" class="form-control">
+                                </label>
                                 <div id="filters">
 
                                 </div>
-                                @endforeach
+
 
                             </div>
                         </div>
@@ -75,11 +75,14 @@
     <script>
         $(document).ready(function () {
 
-          function loadRooms(types = [], checkIn = '') {
+          function loadRooms(checkIn = '',checkOut = '') {
         $.ajax({
             url: "{{ route('room.getroom') }}",
             method: "GET",
-            data: { type: types, checkIn: checkIn },
+            data: {
+                    checkIn: checkIn,
+                    checkOut: checkOut
+                },
             success: function(data) {
                 var roomsHtml = '';
                 $.each(data, function(index, room) {
