@@ -58,42 +58,31 @@ class RoomController extends Controller
     }
     public function getroom(Request $request)
     {
-        dd($request->input('checkIn'));
-        // $query = Room::query();
-        // if ($request->has('type')) {
-        //     $query->where('roomtype', $request->input('type'));
-        // }
-        // $query->with('bookings');
-        // $room = $query->get();
-        // // dd($room);
-        // return response()->json($room);
+    $checkinDate = $request->checkIn;
+    $checkoutDate = $request->checkOut;
+        // $checkinDate ='2024-8-2';
+        // $checkoutDate = '2024-8-2';
 
-
-         // Validasi input tanggal
-    // $request->validate([
-    //     'checkin_date' => 'required|date',
-    //     'checkout_date' => 'required|date|after:checkin_date',
-    // ]);
-
-    $checkinDate = $request->input('checkin_date');
-    $checkoutDate = $request->input('checkout_date');
-
-    // Query untuk mendapatkan kamar yang tidak ada dalam booking pada tanggal yang dipilih
-    $availableRooms = DB::table('rooms')
+    $kamarkosong = DB::table('rooms')
         ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
             $join->on('rooms.id', '=', 'bookings.roomId')
                 ->where(function ($query) use ($checkinDate, $checkoutDate) {
                     $query->where(function ($query) use ($checkinDate, $checkoutDate) {
-                        $query->where('bookings.checkIn', '<', $checkoutDate)
-                            ->where('bookings.checkOut', '>', $checkinDate);
+                        $query->where('bookings.checkIn', '<=', $checkoutDate)
+                            ->where('bookings.checkOut', '>=', $checkinDate);
                     });
                 });
         })
-        ->whereNull('bookings.id') // Pastikan booking.id null untuk mendapatkan kamar yang belum dibooking
-        ->select('rooms.id', 'rooms.roomtype', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
+        ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
+        ->whereNull('bookings.id')
+        ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
         ->get();
 
-    return response()->json($availableRooms);
+    for ($i=0; $i < count($kamarkosong); $i++) {
+            $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
+    }
+
+    return response()->json($kamarkosong);
     }
 
     /**

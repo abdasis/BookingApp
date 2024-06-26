@@ -49,9 +49,6 @@
                                 <label class="bg-dark">
                                     <input type="date" name="checkOut" id="checkOut" class="form-control">
                                 </label>
-                                <div id="filters">
-
-                                </div>
 
 
                             </div>
@@ -73,7 +70,22 @@
 
     </div>
     <script>
-        $(document).ready(function () {
+       $(function(){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var minDate= year + '-' + month + '-' + day;
+
+     $('#checkOut').attr('min', maxDate);
+    // $('#checkOut').attr('min', maxDate);
+});
 
           function loadRooms(checkIn = '',checkOut = '') {
         $.ajax({
@@ -123,16 +135,7 @@
                                     <line x1="17" y1="11" x2="17" y2="11.01"></line>
                                     <line x1="17" y1="15" x2="17" y2="15.01"></line>
                                 </svg>
-                                ${room.roomtype}
-                            </div>
-                            <div class="list-inline-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M15 21h-9a3 3 0 0 1 -3 -3v-1h10v2a2 2 0 0 0 4 0v-14a2 2 0 1 1 2 2h-2m2 -4h-11a3 3 0 0 0 -3 3v11"></path>
-                                    <line x1="9" y1="7" x2="13" y2="7"></line>
-                                    <line x1="9" y1="11" x2="13" y2="11"></line>
-                                </svg>
-                                ${room.status}
+                                ${room.tiperoom}
                             </div>
                         </div>
                         <div class="mt-3 list mb-0 text-muted d-block d-sm-none">
@@ -162,16 +165,12 @@
                             <p>${room.deskripsi}</p>
                         </div>
                         <div class="mt-3 badges">
-                            <a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">Fasilitas 1</a>
-                            <a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">Fasilitas 2</a>
-                            <a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">Fasilitas 3</a>
+                                <span class="badge badge-outline border fw-normal badge-pill bg-info text-white">123213</span>
+
                         </div>
-                        <div class="mt-3 text-end align-middle">
-                             ${room.status == "1" ? `
-                            <button type="button" id="booknow" disabled data-id="${room.id}" class="btn btn-danger">Telah di Booking</button>
-                                ` : `
+
+                        <div class="mt-1 text-end align-middle">
  <button type="button" id="booknow" data-id="${room.id}" class="btn btn-primary">Book Now</button>
-    `}
                         </div>
                     </div>
                 </div>
@@ -189,13 +188,14 @@
     }
 
     $('#apply-filters').on('click', function() {
-        var tiperoom = [];
-        $('input[name="type"]:checked').each(function() {
-            tiperoom.push($(this).val());
-        });
-
+        // var tiperoom = [];
+        // $('input[name="type"]:checked').each(function() {
+        //     tiperoom.push($(this).val());
+        // });
         var checkIn = $('#checkIn').val();
-        loadRooms(tiperoom, checkIn);
+        var checkOut = $('#checkOut').val();
+        // console.log('12312');
+        loadRooms(checkIn,checkOut);
     });
 
     loadRooms();

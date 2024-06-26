@@ -190,6 +190,7 @@ class BookingController extends Controller
     }
     public function getBukti($id)
     {
+
         $booking = Booking::find($id);
         if ($booking) {
             $namafile = $booking->buktiBayar;
