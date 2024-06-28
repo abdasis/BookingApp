@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
+use function PHPUnit\Framework\isEmpty;
+
 class BookingController extends Controller
 {
 
@@ -109,15 +111,15 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($generatePassword);
+        // dd('123123');
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
-        $data = $request->all();
-        $data['Total'] = $tarifTotal;
-        $data['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
-        $data['isOnline'] = "0"; //0 = Offline Booking, 1 = Online Booking
-        $data = Booking::create($data);
+        $data2 = $request->all();
+        $data2['Total'] = $tarifTotal;
+        $data2['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
+        $data2['isOnline'] = "0"; //0 = Offline Booking, 1 = Online Booking
+        $data = Booking::create($data2);
 
         //update status room
         $query = Room::find($request->roomId);
@@ -125,19 +127,29 @@ class BookingController extends Controller
         $query->update($data1);
 
         //create user
+        $cekakun = User::where('email',$request->Email)->get();
+        if(isEmpty($cekakun)){
+            $generatePassword = now()->format('dmY');
+            $input['name'] = $request->NamaBooking;
+            $input['email'] = $request->Email;
+            $input['password'] = Hash::make($generatePassword);
+            $input['role'] = 'Pengujung';
 
-        $generatePassword = now()->format('dmY');
-        $input['name'] = $request->NamaBooking;
-        $input['email'] = $request->Email;
-        $input['password'] = Hash::make($generatePassword);
-        $input['role'] = 'Pengujung';
+            $user = User::create($input);
+            $user->assignRole('2');
+        }else{
+            $input = User::where('email', $request->Email)->first();
+        }
+        dd($input);
+        $dataEmail = [
+            'user' => $input,
+            'password' => $generatePassword,
+            'booking' => $data2
+        ];
 
-        $user = User::create($input);
-        $user->assignRole('2');
+        Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
 
-        Mail::to($request->Email)->send(new BookingStatusMail($data));
-
-        return response()->json($data);
+        return response()->json($data2);
     }
     public function onlinestore(Request $request)
     {
@@ -146,6 +158,7 @@ class BookingController extends Controller
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
         $data2 = $request->all();
+        $data2['userId'] = User::latest('id')->first()->id + 1;
         $data2['Total'] = $tarifTotal;
         $data2['Status'] = "0"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
         $data2['isOnline'] = "1"; //0 = Offline Booking, 1 = Online Booking
@@ -172,7 +185,6 @@ class BookingController extends Controller
             'password' => $generatePassword,
             'booking' => $data2
         ];
-        // dd($dataEmail);
         Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
 
         return response()->json($data);

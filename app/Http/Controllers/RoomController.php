@@ -58,11 +58,10 @@ class RoomController extends Controller
     }
     public function getroom(Request $request)
     {
-    $checkinDate = $request->checkIn;
-    $checkoutDate = $request->checkOut;
-        // $checkinDate ='2024-8-2';
-        // $checkoutDate = '2024-8-2';
-
+    // $checkinDate = $request->checkIn;
+    // $checkoutDate = $request->checkOut;
+        $checkinDate = $request->checkIn;
+        $checkoutDate = $request->checkOut;
     $kamarkosong = DB::table('rooms')
         ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
             $join->on('rooms.id', '=', 'bookings.roomId')
@@ -132,7 +131,6 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-dd("qweqwe");
         $room = Room::find($id);
         if (!$room) {
             return response()->json(['message' => 'room tidak ditemukan'], 404);
@@ -147,7 +145,6 @@ dd("qweqwe");
     }
     public function updateType(Request $request, $id)
     {
-        dd("qweqwe");
         $type = Room::find($id);
         if (!$type) {
             return response()->json(['message' => 'room tidak ditemukan'], 404);
