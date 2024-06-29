@@ -127,8 +127,8 @@ class BookingController extends Controller
         $query->update($data1);
 
         //create user
-        $cekakun = User::where('email',$request->Email)->get();
-        if(isEmpty($cekakun)){
+        $cek = User::where('email', $request->Email)->first();
+        if (!$cek) {
             $generatePassword = now()->format('dmY');
             $input['name'] = $request->NamaBooking;
             $input['email'] = $request->Email;
@@ -139,11 +139,13 @@ class BookingController extends Controller
             $user->assignRole('2');
         }else{
             $input = User::where('email', $request->Email)->first();
+            $input->password = Hash::make(now()->format('dmY'));
+            $input->save();
+
         }
-        dd($input);
         $dataEmail = [
             'user' => $input,
-            'password' => $generatePassword,
+            'password' => now()->format('dmY'),
             'booking' => $data2
         ];
 
