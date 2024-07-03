@@ -149,8 +149,7 @@
                             <p>${room.deskripsi}</p>
                         </div>
                         <div class="mt-3 badges">
-                                <span class="badge badge-outline border fw-normal badge-pill bg-info text-white">123213</span>
-
+                                <span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${room.Fasilitas}</span>
                         </div>
 
                         <div class="mt-1 text-end align-middle">
