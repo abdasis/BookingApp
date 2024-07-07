@@ -25,15 +25,14 @@
                         <div class="row align-items-center">
                           <div class="col-auto">
                             <span class="bg-primary text-white avatar"><!-- Download SVG icon from http://tabler-icons.io/i/currency-dollar -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
-                            </span>
+<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" /><path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" /></svg>                            </span>
                           </div>
                           <div class="col">
                             <div class="font-weight-medium">
-                              132 Sales
+                              Jumlah User
                             </div>
                             <div class="text-secondary">
-                              12 waiting payments
+                              Jumlah User : {{$user}}
                             </div>
                           </div>
                         </div>
@@ -51,10 +50,10 @@
                           </div>
                           <div class="col">
                             <div class="font-weight-medium">
-                              78 Orders
+                              Pemesanan Hari ini
                             </div>
                             <div class="text-secondary">
-                              32 shipped
+                              {{$todayOrder}}
                             </div>
                           </div>
                         </div>
@@ -72,10 +71,10 @@
                           </div>
                           <div class="col">
                             <div class="font-weight-medium">
-                              623 Shares
+                              Pemesanan Bulan ini
                             </div>
                             <div class="text-secondary">
-                              16 today
+                              {{$thisMonth}}
                             </div>
                           </div>
                         </div>
@@ -93,10 +92,10 @@
                           </div>
                           <div class="col">
                             <div class="font-weight-medium">
-                              132 Likes
+                              Terbooking Sebanyak
                             </div>
                             <div class="text-secondary">
-                              21 today
+                              {{$allTime}}
                             </div>
                           </div>
                         </div>
