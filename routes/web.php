@@ -2,24 +2,24 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ * |
+ * | Here is where you can register web routes for your application. These
+ * | routes are loaded by the RouteServiceProvider and all of them will
+ * | be assigned to the "web" middleware group. Make something great!
+ * |
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,7 +29,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
@@ -78,4 +78,9 @@ Route::prefix('client')->group(function () {
     Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+});
+Route::prefix('laporan')->group(function () {
+    Route::GET('/', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::POST('cetak-laporan', [LaporanController::class, 'cetakLaporan'])->name('laporan.cetak');
+    Route::get('/filter-laporan', [LaporanController::class, 'filter'])->name('laporan.filter');
 });

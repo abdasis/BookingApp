@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_welcome')
 
 @section('content')
 
@@ -71,6 +71,10 @@
     </div>
     <script>
     $(document).ready(function () {
+        const today = new Date().toISOString().split('T')[0];
+
+        document.getElementById('checkIn').setAttribute('min', today);
+        document.getElementById('checkOut').setAttribute('min', today);
           function loadRooms(checkIn = '',checkOut = '') {
         $.ajax({
             url: "{{ route('room.getroom') }}",
