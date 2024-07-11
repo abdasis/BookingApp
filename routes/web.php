@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,4 +84,9 @@ Route::prefix('laporan')->group(function () {
     Route::GET('/', [LaporanController::class, 'index'])->name('laporan.index');
     Route::POST('cetak-laporan', [LaporanController::class, 'cetakLaporan'])->name('laporan.cetak');
     Route::get('/filter-laporan', [LaporanController::class, 'filter'])->name('laporan.filter');
+});
+Route::prefix('whatsapp')->group(function () {
+    Route::GET('/', [WhatsappController::class, 'index'])->name('whatsapp.index');
+    Route::POST('store', [WhatsappController::class, 'store'])->name('whatsapp.store');
+    Route::delete('destroy/{id}', [WhatsappController::class, 'destroy'])->name('whatsapp.destroy');
 });
