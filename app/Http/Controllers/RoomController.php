@@ -100,10 +100,13 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        $room = Room::create($request->all());
+        $data = $request->all();
+        $data['Fasilitas'] = json_encode($request->layanan);
+        $room = Room::create($data);
         $roomid = Room::latest()->pluck('id')->first();
-        $gambar = $request->file('gambar');
-        // dd($roomid);
+        if($request->hasFile('gambar')){
+            $gambar = $request->file('gambar');
+            // dd($roomid);
             for($i=0; $i < count($gambar); $i++){
                 $gambar[$i]->storeAs('public/gambar', $gambar[$i]->getClientOriginalName());
                 $gambar = $request->file('gambar');
@@ -112,6 +115,7 @@ class RoomController extends Controller
                     'gambar' => $gambar[$i]->getClientOriginalName()
                 ]);
             }
+        }
 
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
     }
