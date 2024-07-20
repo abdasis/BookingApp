@@ -56,12 +56,9 @@
                             <thead class="text-center">
                                 <tr>
                                     <th width="3%">No</th>
+                                    <th width="10%">Tipe Room</th>
                                     <th width="10%">Nama</th>
-                                    <th width="10%">Email / Wa</th>
-                                    <th width="10%">Jenis Kelamin</th>
-                                    <th width="10%">Check In</th>
-                                    <th width="10%">Check Out</th>
-                                    <th width="10%">Status</th>
+                                    <th width="10%">Deskripsi</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -78,15 +75,15 @@
     @include('Master-Room.modal-edit-room')
     <script>
         $(document).ready(function() {
-
-    $('.select2').select2();
-
             $('#btn-save').click(function() {
-                var formData = $('#form-room').serialize();
+            var form = $('#form-room')[0];
+            var formData = new FormData(form);
                 $.ajax({
                     url: '{{ route('room.store') }}',
                     type: 'POST',
                     data: formData,
+                    contentType: false,
+                processData: false,
                     headers: {
                         'X-CSRF-TOKEN': $('input[name="_token"]').val()
                     },
@@ -230,17 +227,17 @@
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
                         },
+                         {
+                            data: 'roomtypes.nama',
+                            name: 'roomtypes.nama'
+                        },
                         {
                             data: 'nama',
                             name: 'nama'
                         },
                         {
-                            data: 'qty',
-                            name: 'qty'
-                        },
-                        {
-                            data: 'checkout',
-                            name: 'checkout'
+                            data: 'deskripsi',
+                            name: 'deskripsi'
                         },
                         {
                             data: 'action',

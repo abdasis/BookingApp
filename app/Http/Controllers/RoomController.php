@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Room;
+use App\Models\roomDetail;
 use App\Models\Roomtype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+
+use function PHPUnit\Framework\isEmpty;
 
 class RoomController extends Controller
 {
@@ -17,7 +20,8 @@ class RoomController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Room::orderBy('id', 'desc')->get();
+            $data = Room::with('roomtypes')->orderBy('id', 'desc')->get();
+            // dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -28,8 +32,9 @@ class RoomController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         $type = Roomtype::orderBy('id','desc')->get();
-        return view('Master-Room.index',compact('type'));
+        return view('Master-Room.home',compact('type'));
 
     }
     public function roomtype(Request $request)
@@ -58,10 +63,16 @@ class RoomController extends Controller
     }
     public function getroom(Request $request)
     {
-    // $checkinDate = $request->checkIn;
-    // $checkoutDate = $request->checkOut;
+
         $checkinDate = $request->checkIn;
         $checkoutDate = $request->checkOut;
+        if (isEmpty($checkinDate)){
+            $checkinDate = now();
+            $checkoutDate = now();
+        }else{
+            $checkinDate = $request->checkIn;
+            $checkoutDate = $request->checkOut;
+        }
     $kamarkosong = DB::table('rooms')
         ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
             $join->on('rooms.id', '=', 'bookings.roomId')
@@ -90,6 +101,18 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $room = Room::create($request->all());
+        $roomid = Room::latest()->pluck('id')->first();
+        $gambar = $request->file('gambar');
+        // dd($roomid);
+            for($i=0; $i < count($gambar); $i++){
+                $gambar[$i]->storeAs('public/gambar', $gambar[$i]->getClientOriginalName());
+                $gambar = $request->file('gambar');
+                $detail = roomDetail::create([
+                    'idRoom' => $roomid,
+                    'gambar' => $gambar[$i]->getClientOriginalName()
+                ]);
+            }
+
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
     }
     public function addType(Request $request)

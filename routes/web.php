@@ -43,6 +43,7 @@ Route::prefix('master-room')->group(function () {
     Route::POST('store', [RoomController::class, 'store'])->name('room.store');
     Route::POST('addType', [RoomController::class, 'addType'])->name('room.addType');
     Route::GET('show/{id}', [RoomController::class, 'show'])->name('room.show');
+    Route::GET('detail/{id}', [RoomController::class, 'detail'])->name('room.detail');
     Route::GET('show-jenis-kamar/{id}', [RoomController::class, 'showType'])->name('room.showType');
     Route::get('edit/{id}', [RoomController::class, 'edit'])->name('room.edit');
     Route::get('edit-jenis-kamar/{id}', [RoomController::class, 'editType'])->name('room.editType');

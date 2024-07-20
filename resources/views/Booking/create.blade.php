@@ -18,32 +18,37 @@
                     <!-- Page title actions -->
                     <div class="card bg-primary text-primary-fg">
                         <div class="card-stamp">
-                          <div class="card-stamp-icon bg-white text-primary">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
-                          </div>
+                            <div class="card-stamp-icon bg-white text-primary">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                    </path>
+                                </svg>
+                            </div>
                         </div>
                         <div class="card-body">
-                          <h3 class="card-title">Selesaikan Pemesanan Kamar</h3>
-                          <p>Lengkapi Identitas Diri</p>
+                            <h3 class="card-title">Selesaikan Pemesanan Kamar</h3>
+                            <p>Lengkapi Identitas Diri</p>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         </div>
-
         <!-- Page body -->
         <div class="page-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-3">
+            <div class="container mb-3">
+                 <div class="row">
+                       <div class="col-sm-3">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     Detail Room / Kamar
                                 </h3>
                                 <div class="card-actions">
-
                                 </div>
                             </div>
                             <div class="card-body">
@@ -74,6 +79,70 @@
                                 </dl>
                             </div>
                         </div>
+                    </div>
+                        <div class="col-sm">
+                           <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Preview</h3>
+                  </div>
+                  {{dd($getData->gambar);}}
+                  <div class="card-body">
+                    <div id="carousel-indicators-thumb-vertical" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                      <div class="carousel-indicators carousel-indicators-vertical carousel-indicators-thumb">
+                        @foreach ($getData->gambar as $item1)
+                        <button type="button" data-bs-target="#carousel-indicators-thumb-vertical" data-bs-slide-to="0" class="ratio ratio-4x3" style="background-image: url('{{ url('storage/gambar/' . $item1->gambar) }}')"></button>
+                        @endforeach
+                      </div>
+                      <div class="carousel-inner">
+                        <div class="carousel-item">
+                          <img class="d-block w-100" alt="" src="./static/photos/tropical-palm-leaves-floral-pattern-background.jpg">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                        </div>
+            </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{-- <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    Detail Room / Kamar
+                                </h3>
+                                <div class="card-actions">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <dl class="row">
+                                    <dt class="col-5">Tipe Room</dt>
+                                    <dd class="col-7">: <badge class="badge bg-warning text-white xl">
+                                            {{ $getData->roomtypes->nama }}</badge>
+                                    </dd>
+                                    <dt class="col-5">Nama Room</dt>
+                                    <dd class="col-7">: {{ $getData->nama }}</dd>
+                                    <dt class="col-5">Deskripsi:</dt>
+                                    <dd class="col-7">: {{ $getData->deskripsi }}</dd>
+                                    @if ($isWeekend)
+                                        <dt class="col-5">Weekend</dt>
+                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWe, 0, ',', '.') }}</dd>
+                                    @else
+                                        <dt class="col-5">Weekdays</dt>
+                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWd, 0, ',', '.') }}</dd>
+                                    @endif
+                                    <dt class="col-5">Fasilitas</dt>
+                                    <dd class="col-7">:
+                                        @foreach ($getData->Fasilitas as $item)
+                                            <span class="badge bg-info text-white">{{ $item }}</span>
+                                        @endforeach
+                                    </dd>
+                                    <dt class="col-5">Max Checkout</dt>
+                                    <dd class="col-7">: {{ $getData->checkout }}</dd>
+                                </dl>
+                            </div>
+                        </div> --}}
                     </div>
                     <div class="col-sm-6">
                         <div class="row row-cards">
@@ -118,7 +187,8 @@
                                                                     stroke="currentColor" stroke-width="2"
                                                                     stroke-linecap="round" stroke-linejoin="round"
                                                                     class="icon icon-tabler icons-tabler-outline icon-tabler-gender-male">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path stroke="none" d="M0 0h24v24H0z"
+                                                                        fill="none" />
                                                                     <path d="M10 14m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
                                                                     <path d="M19 5l-5.4 5.4" />
                                                                     <path d="M19 5h-5" />
@@ -170,8 +240,10 @@
                                             <div class="col-sm-6 col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Jumlah Tamu</label>
-                                                    <input type="number" class="form-control" name="jumlahTamu" placeholder="Jumlah Tamu">
-                                                    <input type="hidden" class="form-control" name="roomId" value="{{$getData->id}}">
+                                                    <input type="number" class="form-control" name="jumlahTamu"
+                                                        placeholder="Jumlah Tamu">
+                                                    <input type="hidden" class="form-control" name="roomId"
+                                                        value="{{ $getData->id }}">
                                                 </div>
                                             </div>
 
@@ -215,55 +287,55 @@
     <script>
         $(document).ready(function() {
             $('#btnBayarSekarang').click(function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin melakukan booking?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, booking sekarang!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-            var token = $('meta[name="csrf-token"]').attr('content');
-            var data = {
-                _token: token,
-                NoIdentitas: $('input[name="NoIdentitas"]').val(),
-                NamaBooking: $('input[name="NamaBooking"]').val(),
-                Email: $('input[name="Email"]').val(),
-                Gender: $('input[name="Gender"]:checked').val(),
-                hp: $('input[name="hp"]').val(),
-                checkIn: $('input[name="checkIn"]').val(),
-                checkOut: $('input[name="checkOut"]').val(),
-                jumlahTamu: $('input[name="jumlahTamu"]').val(),
-                roomId: $('input[name="roomId"]').val(),
-                tarifTotal: document.getElementById("Tarif").innerText,
-            };
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('booking.store') }}',
-                data: data,
-                success: function(response) {
-                            console.log(response);
-                            Swal.fire(
-                                'Berhasil!',
-                                'Booking berhasil dilakukan!',
-                                'success'
-                            );
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                            Swal.fire(
-                                'Gagal!',
-                                'Terjadi kesalahan saat melakukan booking. Silakan coba lagi.',
-                                'error'
-                            );
-                        }
-                    });
-                }
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: "Apakah Anda yakin ingin melakukan booking?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, booking sekarang!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var token = $('meta[name="csrf-token"]').attr('content');
+                        var data = {
+                            _token: token,
+                            NoIdentitas: $('input[name="NoIdentitas"]').val(),
+                            NamaBooking: $('input[name="NamaBooking"]').val(),
+                            Email: $('input[name="Email"]').val(),
+                            Gender: $('input[name="Gender"]:checked').val(),
+                            hp: $('input[name="hp"]').val(),
+                            checkIn: $('input[name="checkIn"]').val(),
+                            checkOut: $('input[name="checkOut"]').val(),
+                            jumlahTamu: $('input[name="jumlahTamu"]').val(),
+                            roomId: $('input[name="roomId"]').val(),
+                            tarifTotal: document.getElementById("Tarif").innerText,
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('booking.store') }}',
+                            data: data,
+                            success: function(response) {
+                                console.log(response);
+                                Swal.fire(
+                                    'Berhasil!',
+                                    'Booking berhasil dilakukan!',
+                                    'success'
+                                );
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                                Swal.fire(
+                                    'Gagal!',
+                                    'Terjadi kesalahan saat melakukan booking. Silakan coba lagi.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
-        });
 
             $(document).on('click', '#booknow', function() {
                 var roomId = $(this).data('id');

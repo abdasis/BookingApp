@@ -91,8 +91,7 @@ class BookingController extends Controller
      */
     public function create($id)
     {
-        $getData = Room::with('roomtypes')->where('id', $id)->first();
-        // dd($getData);
+        $getData = Room::with('roomtypes','gambar')->where('id', $id)->first();
         $today = Carbon::today();
         $isWeekend = $today->isSaturday() || $today->isSunday();
         return view('Booking.create',compact('getData','isWeekend'));

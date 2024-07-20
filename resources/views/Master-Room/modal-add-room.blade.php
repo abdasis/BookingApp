@@ -40,15 +40,72 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Tarif WeekEnd</label>
-              <input type="text" class="form-control" name="tarifWd" placeholder="Tarif Sabtu - Minggu" required>
+              <input type="text" class="form-control" name="tarifWe" placeholder="Tarif Sabtu - Minggu" required>
             </div>
             <div class="mb-3">
               <label class="form-label">Fasilitas</label>
-              <select class="form-control select2 asd" name="Fasilitas[]" multiple="multiple" required>
-                <option value="wifi">WiFi</option>
-                <option value="ac">AC</option>
-                <option value="sarapan">Sarapan</option>
-              </select>
+                <div class="form-selectgroup">
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="AC" class="form-selectgroup-input" checked="">
+                                <span class="form-selectgroup-label">AC</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="TV" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">TV</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Kulkas" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Kulkas</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Air Panas" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Air Panas</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Air Dingin" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Air Dingin</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Free Wi-Fi" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Free Wi-Fi</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Sarapan" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Sarapan</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Makan Siang" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Makan Siang</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Makan Malam" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Makan Malam</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Kamar Mandi" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Kamar Mandi</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Shower" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Shower</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Towels" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Towels</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Bedding" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Bedding</span>
+                              </label>
+                              <label class="form-selectgroup-item">
+                                <input type="checkbox" name="layanan[]" value="Lainnya" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label">Lainnya</span>
+                              </label>
+                            </div>
+            </div>
+                        <div class="mb-3">
+              <label class="form-label">Gambar</label>
+              <input type="file" class="form-control" name="gambar[]" multiple>
             </div>
             <div class="modal-footer">
             </form>
@@ -60,3 +117,4 @@
       </div>
     </div>
   </div>
+
