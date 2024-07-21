@@ -33,10 +33,10 @@ class RoomController extends Controller
                 ->make(true);
         }
 
-        $type = Roomtype::orderBy('id','desc')->get();
-        return view('Master-Room.home',compact('type'));
-
+        $type = Roomtype::orderBy('id', 'desc')->get();
+        return view('Master-Room.home', compact('type'));
     }
+
     public function roomtype(Request $request)
     {
         if ($request->ajax()) {
@@ -61,38 +61,40 @@ class RoomController extends Controller
     {
         //
     }
+
     public function getroom(Request $request)
     {
-
         $checkinDate = $request->checkIn;
         $checkoutDate = $request->checkOut;
-        if (isEmpty($checkinDate)){
+        if (isEmpty($checkinDate)) {
             $checkinDate = now();
             $checkoutDate = now();
-        }else{
+        } else {
             $checkinDate = $request->checkIn;
             $checkoutDate = $request->checkOut;
         }
-    $kamarkosong = DB::table('rooms')
-        ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
-            $join->on('rooms.id', '=', 'bookings.roomId')
-                ->where(function ($query) use ($checkinDate, $checkoutDate) {
-                    $query->where(function ($query) use ($checkinDate, $checkoutDate) {
-                        $query->where('bookings.checkIn', '<=', $checkoutDate)
-                            ->where('bookings.checkOut', '>=', $checkinDate);
+        $kamarkosong = DB::table('rooms')
+            ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
+                $join
+                    ->on('rooms.id', '=', 'bookings.roomId')
+                    ->where(function ($query) use ($checkinDate, $checkoutDate) {
+                        $query->where(function ($query) use ($checkinDate, $checkoutDate) {
+                            $query
+                                ->where('bookings.checkIn', '<=', $checkoutDate)
+                                ->where('bookings.checkOut', '>=', $checkinDate);
+                        });
                     });
-                });
-        })
-        ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
-        ->whereNull('bookings.id')
-        ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
-        ->get();
+            })
+            ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
+            ->whereNull('bookings.id')
+            ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
+            ->get();
 
-    for ($i=0; $i < count($kamarkosong); $i++) {
+        for ($i = 0; $i < count($kamarkosong); $i++) {
             $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
-    }
+        }
 
-    return response()->json($kamarkosong);
+        return response()->json($kamarkosong);
     }
 
     /**
@@ -102,12 +104,13 @@ class RoomController extends Controller
     {
         $data = $request->all();
         $data['Fasilitas'] = json_encode($request->layanan);
+        // dd($data['Fasilitas']);
         $room = Room::create($data);
         $roomid = Room::latest()->pluck('id')->first();
-        if($request->hasFile('gambar')){
+        if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
             // dd($roomid);
-            for($i=0; $i < count($gambar); $i++){
+            for ($i = 0; $i < count($gambar); $i++) {
                 $gambar[$i]->storeAs('public/gambar', $gambar[$i]->getClientOriginalName());
                 $gambar = $request->file('gambar');
                 $detail = roomDetail::create([
@@ -119,11 +122,13 @@ class RoomController extends Controller
 
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
     }
+
     public function addType(Request $request)
     {
         $type = Roomtype::create($request->all());
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
     }
+
     /**
      * Display the specified resource.
      */
@@ -136,6 +141,7 @@ class RoomController extends Controller
         }
         return response()->json($room);
     }
+
     public function showType($id)
     {
         $type = Roomtype::find($id);
@@ -167,9 +173,9 @@ class RoomController extends Controller
         $room->checkout = $request->checkout;
         $room->save();
 
-
         return response()->json(['message' => 'Data room berhasil diperbarui', 'room' => $room]);
     }
+
     public function updateType(Request $request, $id)
     {
         $type = Room::find($id);
@@ -180,7 +186,6 @@ class RoomController extends Controller
         $type->qty = $request->qty;
         $type->checkout = $request->checkout;
         $type->save();
-
 
         return response()->json(['message' => 'Data room berhasil diperbarui', 'type' => $type]);
     }
@@ -198,6 +203,7 @@ class RoomController extends Controller
             return response()->json(['message' => 'room tidak ditemukan'], 404);
         }
     }
+
     public function destroyType($id)
     {
         $type = Roomtype::find($id);
@@ -209,4 +215,3 @@ class RoomController extends Controller
         }
     }
 }
-

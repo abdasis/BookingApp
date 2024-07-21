@@ -415,7 +415,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('fasilitas.index') }}" rel="noopener">
-                                            List Booking
+                                            Master Fasilitas
                                         </a>
                                         <a class="dropdown-item" href="{{ route('room.roomtype') }}" rel="noopener">
                                             Master Room Type

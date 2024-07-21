@@ -11,24 +11,31 @@ class Room extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
     protected $table = 'rooms';
+
     protected $fillable = [
-        'roomtype','nama','deskripsi','qty','checkout','tarifWd','tarifWe','Fasilitas','status'
+        'roomtype', 'nama', 'deskripsi', 'qty', 'checkout', 'tarifWd', 'tarifWe', 'Fasilitas', 'status'
     ];
+
     protected $dates = ['deleted_at'];
+
     protected $casts = [
         'Fasilitas' => 'json'
     ];
+
     public function roomtypes()
     {
-        return $this->hasOne(Roomtype::class, 'id','roomtype');
+        return $this->hasOne(Roomtype::class, 'id', 'roomtype');
     }
-    public function gambar()
+
+    public function fotoroom()
     {
         return $this->hasMany(roomDetail::class, 'idRoom', 'id');
     }
+
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'roomId','id');
+        return $this->hasMany(Booking::class, 'roomId', 'id');
     }
 }

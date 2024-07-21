@@ -41,8 +41,8 @@
         <!-- Page body -->
         <div class="page-body">
             <div class="container mb-3">
-                 <div class="row">
-                       <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-3">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
@@ -70,9 +70,11 @@
                                     @endif
                                     <dt class="col-5">Fasilitas</dt>
                                     <dd class="col-7">:
+
                                         @foreach ($getData->Fasilitas as $item)
-                                            <span class="badge bg-info text-white">{{ $item }}</span>
+                                            <li class="badge bg-info text-white mb-2">{{ $item }}</li>
                                         @endforeach
+
                                     </dd>
                                     <dt class="col-5">Max Checkout</dt>
                                     <dd class="col-7">: {{ $getData->checkout }}</dd>
@@ -80,29 +82,40 @@
                             </div>
                         </div>
                     </div>
-                        <div class="col-sm">
-                           <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Preview</h3>
-                  </div>
-                  {{dd($getData->gambar);}}
-                  <div class="card-body">
-                    <div id="carousel-indicators-thumb-vertical" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                      <div class="carousel-indicators carousel-indicators-vertical carousel-indicators-thumb">
-                        @foreach ($getData->gambar as $item1)
-                        <button type="button" data-bs-target="#carousel-indicators-thumb-vertical" data-bs-slide-to="0" class="ratio ratio-4x3" style="background-image: url('{{ url('storage/gambar/' . $item1->gambar) }}')"></button>
-                        @endforeach
-                      </div>
-                      <div class="carousel-inner">
-                        <div class="carousel-item">
-                          <img class="d-block w-100" alt="" src="./static/photos/tropical-palm-leaves-floral-pattern-background.jpg">
+                    <div class="col-sm">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div id="carousel-indicators-thumb" class="carousel slide carousel-fade"
+                                    data-bs-ride="carousel">
+                                    <div class="carousel-indicators carousel-indicators-thumb">
+                                        @foreach ($getData->fotoroom as $key => $detail)
+                                            <button type="button" data-bs-target="#carousel-indicators-thumb"
+                                                data-bs-slide-to="{{ $key }}"
+                                                class="ratio ratio-4x3 @if ($key == 1) active
+                                            @else @endif"
+                                                style="background-image: url({{ url('storage/gambar/' . $detail->gambar) }})"></button>
+                                        @endforeach
+
+                                    </div>
+                                    <div class="carousel-inner">
+                                        @foreach ($getData->fotoroom as $key => $detail2)
+                                            <div
+                                                class="carousel-item @if ($key == 1) active
+                                            @else @endif">
+
+                                                <img alt="" style="width: 100%; height: 500px; object-fit: cover;"
+                                                    src="{{ url('storage/gambar/' . $detail2->gambar) }}">
+
+                                            </div>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-                        </div>
-            </div>
             </div>
             <div class="container">
                 <div class="row">

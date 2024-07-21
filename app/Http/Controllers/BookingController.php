@@ -9,22 +9,21 @@ use App\Models\Room;
 use App\Models\Roomtype;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 use function PHPUnit\Framework\isEmpty;
 
 class BookingController extends Controller
 {
-
     public function index(Request $request)
     {
         $type = Roomtype::all();
-        Return view("Booking.index",compact('type'));
+        Return view('Booking.index', compact('type'));
     }
 
     public function listBooking(Request $request)
@@ -34,7 +33,7 @@ class BookingController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    if($row->Status == 1){
+                    if ($row->Status == 1) {
                         $checkout = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-checkout"><i class="fa-solid fa-door-closed"></i></a>';
                         $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-bukti"><i class="fas fa-receipt"></i></a>';
                         return $gambar . '<br/><br/>' . $checkout;
@@ -42,45 +41,43 @@ class BookingController extends Controller
                         $gambar = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-bukti"><i class="fas fa-receipt"></i></a>';
                         return $gambar;
                     }
-
                 })
                 ->addColumn('Kontak', function ($row) {
                     $Kontak = $row->Email . '<br>' . $row->hp;
                     return $Kontak;
                 })
                 ->addColumn('StatusBooking', function ($row) {
-                    if($row->Status == 0){
+                    if ($row->Status == 0) {
                         $StatusBooking = '<span class="badge bg-info text-white">Menunggu Pembayaran</span>';
-                    }elseif($row->Status == 1){
+                    } elseif ($row->Status == 1) {
                         $StatusBooking = '<span class="badge bg-success text-white">Dibayar</span>';
-                    }else if($row->Status == 2){
+                    } else if ($row->Status == 2) {
                         $StatusBooking = '<span class="badge bg-warning text-white">Belum Dikonfirmasi</span>';
-                    }else if($row->Status == 5){
+                    } else if ($row->Status == 5) {
                         $StatusBooking = '<span class="badge bg-success text-white">Selesai</span>';
-                    }else{
+                    } else {
                         $StatusBooking = '<span class="badge bg-danger text-white">Cancel Order</span>';
                     }
 
                     return $StatusBooking;
-
                 })
                 ->addColumn('Online', function ($row) {
-                    if($row->isOnline == 0){
+                    if ($row->isOnline == 0) {
                         $Online = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#ff000d"  class="icon icon-tabler icons-tabler-filled icon-tabler-square-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 2h-14a3 3 0 0 0 -3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3 -3v-14a3 3 0 0 0 -3 -3zm-9.387 6.21l.094 .083l2.293 2.292l2.293 -2.292a1 1 0 0 1 1.497 1.32l-.083 .094l-2.292 2.293l2.292 2.293a1 1 0 0 1 -1.32 1.497l-.094 -.083l-2.293 -2.292l-2.293 2.292a1 1 0 0 1 -1.497 -1.32l.083 -.094l2.292 -2.293l-2.292 -2.293a1 1 0 0 1 1.32 -1.497z" /></svg>';
-                    }else{
+                    } else {
                         $Online = '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#009e12"  class="icon icon-tabler icons-tabler-filled icon-tabler-square-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>';
                     }
                     return $Online;
                 })
                 ->addColumn('Jk', function ($row) {
-                    if($row->Gender == "P"){
+                    if ($row->Gender == 'P') {
                         $Jk = 'Pria';
-                    }else{
+                    } else {
                         $Jk = 'Wanita';
                     }
                     return $Jk;
                 })
-                ->rawColumns(['action', 'Kontak','StatusBooking','Online','Jk'])
+                ->rawColumns(['action', 'Kontak', 'StatusBooking', 'Online', 'Jk'])
                 ->make(true);
         }
         return view('Booking.list-booking');
@@ -91,18 +88,20 @@ class BookingController extends Controller
      */
     public function create($id)
     {
-        $getData = Room::with('roomtypes','gambar')->where('id', $id)->first();
+        $getData = Room::with('roomtypes', 'fotoroom')->where('id', $id)->first();
+        // dd($getData);
         $today = Carbon::today();
         $isWeekend = $today->isSaturday() || $today->isSunday();
-        return view('Booking.create',compact('getData','isWeekend'));
+        return view('Booking.create', compact('getData', 'isWeekend'));
     }
+
     public function BookingOnline($id)
     {
         $getData = Room::with('roomtypes')->where('id', $id)->first();
         // dd($getData);
         $today = Carbon::today();
         $isWeekend = $today->isSaturday() || $today->isSunday();
-        return view('Client.create',compact('getData','isWeekend'));
+        return view('Client.create', compact('getData', 'isWeekend'));
     }
 
     /**
@@ -116,16 +115,16 @@ class BookingController extends Controller
 
         $data2 = $request->all();
         $data2['Total'] = $tarifTotal;
-        $data2['Status'] = "1"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
-        $data2['isOnline'] = "0"; //0 = Offline Booking, 1 = Online Booking
+        $data2['Status'] = '1';  // 0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
+        $data2['isOnline'] = '0';  // 0 = Offline Booking, 1 = Online Booking
         $data = Booking::create($data2);
 
-        //update status room
+        // update status room
         $query = Room::find($request->roomId);
-        $data1['status'] = "1"; //0 = Available, 1=Booked
+        $data1['status'] = '1';  // 0 = Available, 1=Booked
         $query->update($data1);
 
-        //create user
+        // create user
         $cek = User::where('email', $request->Email)->first();
         if (!$cek) {
             $generatePassword = now()->format('dmY');
@@ -136,11 +135,10 @@ class BookingController extends Controller
 
             $user = User::create($input);
             $user->assignRole('2');
-        }else{
+        } else {
             $input = User::where('email', $request->Email)->first();
             $input->password = Hash::make(now()->format('dmY'));
             $input->save();
-
         }
         $dataEmail = [
             'user' => $input,
@@ -152,6 +150,7 @@ class BookingController extends Controller
 
         return response()->json($data2);
     }
+
     public function onlinestore(Request $request)
     {
         // dd($generatePassword);
@@ -161,16 +160,16 @@ class BookingController extends Controller
         $data2 = $request->all();
         $data2['userId'] = User::latest('id')->first()->id + 1;
         $data2['Total'] = $tarifTotal;
-        $data2['Status'] = "0"; //0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
-        $data2['isOnline'] = "1"; //0 = Offline Booking, 1 = Online Booking
+        $data2['Status'] = '0';  // 0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
+        $data2['isOnline'] = '1';  // 0 = Offline Booking, 1 = Online Booking
         $data = Booking::create($data2);
 
-        //update status room
+        // update status room
         $query = Room::find($request->roomId);
-        $data1['status'] = "1"; //0 = Available, 1=Booked
+        $data1['status'] = '1';  // 0 = Available, 1=Booked
         $query->update($data1);
 
-        //create user
+        // create user
 
         $generatePassword = now()->format('dmY');
         $input['name'] = $request->NamaBooking;
@@ -196,14 +195,14 @@ class BookingController extends Controller
      */
     public function show()
     {
-        $data = Booking::with('roomtypes')->where('userId',auth()->user()->id)->latest()->first();
+        $data = Booking::with('roomtypes')->where('userId', auth()->user()->id)->latest()->first();
         $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
         // dd($data);
-        return view('client.payment',compact('data','history'));
+        return view('client.payment', compact('data', 'history'));
     }
+
     public function getBukti($id)
     {
-
         $booking = Booking::find($id);
         if ($booking) {
             $namafile = $booking->buktiBayar;
@@ -251,6 +250,7 @@ class BookingController extends Controller
 
         return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
     }
+
     public function konfirmasi(Request $request, $id)
     {
         $booking = Booking::with('roomtypes')->find($id);
@@ -263,18 +263,18 @@ class BookingController extends Controller
         Mail::to($booking->Email)->send(new BookingSukses($booking));
         return response()->json(['message' => 'Data Booking berhasil diperbarui', 'room' => $booking]);
     }
+
     public function checkout(Request $request)
-{
-    $booking = Booking::find($request->id);
-    if (!$booking) {
-        return response()->json(['message' => 'Booking tidak ditemukan', 'success' => false], 404);
+    {
+        $booking = Booking::find($request->id);
+        if (!$booking) {
+            return response()->json(['message' => 'Booking tidak ditemukan', 'success' => false], 404);
+        }
+        $booking->status = '5';  // checkout
+        $booking->save();
+
+        return response()->json(['message' => 'Checkout berhasil', 'success' => true]);
     }
-    $booking->status = '5'; //checkout
-    $booking->save();
-
-    return response()->json(['message' => 'Checkout berhasil', 'success' => true]);
-}
-
 
     /**
      * Remove the specified resource from storage.
