@@ -103,8 +103,7 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['Fasilitas'] = json_encode($request->layanan);
-        // dd($data['Fasilitas']);
+        $data['Fasilitas'] = $request->layanan;
         $room = Room::create($data);
         $roomid = Room::latest()->pluck('id')->first();
         if ($request->hasFile('gambar')) {
