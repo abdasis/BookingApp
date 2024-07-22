@@ -146,13 +146,10 @@
                             title: 'Sukses!',
                             text: 'Data berhasil diperbarui.',
                             showConfirmButton: false,
-                            timer: 1000
-                        });
-                        .then((result) => {
-                            if (result.isConfirmed) {
-                                $('#editModal').modal('hide');
-                                $('#table1').DataTable().ajax.reload();
-                            }
+                            timer: 10000
+                        }).then(function() {
+                            $('#table1').DataTable().ajax.reload();
+                            $('#editModal').modal('hide');
                         });
                     },
                     error: function(xhr, status, error) {
