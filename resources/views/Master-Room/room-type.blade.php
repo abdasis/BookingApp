@@ -148,8 +148,12 @@
                             showConfirmButton: false,
                             timer: 1000
                         });
-                        $('#editModal').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                $('#editModal').modal('hide');
+                                $('#table1').DataTable().ajax.reload();
+                            }
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error('Gagal memperbarui data kategori:', error);
