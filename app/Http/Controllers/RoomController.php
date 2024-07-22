@@ -178,13 +178,11 @@ class RoomController extends Controller
 
     public function updateType(Request $request, $id)
     {
-        $type = Room::find($id);
+        $type = Roomtype::find($id);
         if (!$type) {
             return response()->json(['message' => 'room tidak ditemukan'], 404);
         }
         $type->nama = $request->nama;
-        $type->qty = $request->qty;
-        $type->checkout = $request->checkout;
         $type->save();
 
         return response()->json(['message' => 'Data room berhasil diperbarui', 'type' => $type]);

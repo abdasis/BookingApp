@@ -91,9 +91,9 @@
                             showConfirmButton: false,
                             timer: 900
                         }).then(function() {
- $('#form-type').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                        location.reload();
+                            $('#form-type').modal('hide');
+                            $('#table1').DataTable().ajax.reload();
+                            location.reload();
                         });
 
                     },
@@ -119,8 +119,6 @@
                     success: function(response) {
                         $('#editModal #id').val(response.id);
                         $('#editModal #EditNama').val(response.nama);
-                        $('#editModal #EditQty').val(response.qty);
-                        $('#editModal #EditCheckout').val(response.checkout);
                         $('#editModal').modal('show');
                         console.log('Data berhasil Ditampilkan');
                     },
@@ -132,6 +130,7 @@
             $('#btn-update').click(function() {
                 var id = $('#editModal #id').val();
                 var nama = $('#editModal #EditNama').val();
+                console.log(nama);
                 $.ajax({
                     type: "PUT",
                     url: "{{ route('room.updateType', ['id' => ':id']) }}".replace(':id', id),
@@ -147,7 +146,7 @@
                             title: 'Sukses!',
                             text: 'Data berhasil diperbarui.',
                             showConfirmButton: false,
-                            timer: 2000
+                            timer: 1000
                         });
                         $('#editModal').modal('hide');
                         $('#table1').DataTable().ajax.reload();
