@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Room;
 use App\Models\Roomtype;
 use App\Models\User;
+use App\Models\Whatsapp;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
@@ -20,6 +21,11 @@ use function PHPUnit\Framework\isEmpty;
 
 class BookingController extends Controller
 {
+    public function loginuser(Request $request)
+    {
+        $wa = Whatsapp::latest()->first();
+        return view('Auth.loginUser',compact('wa'));
+    }
     public function index(Request $request)
     {
         $type = Roomtype::all();
@@ -171,18 +177,25 @@ class BookingController extends Controller
 
         // create user
 
-        $generatePassword = now()->format('dmY');
-        $input['name'] = $request->NamaBooking;
-        $input['email'] = $request->Email;
-        $input['password'] = Hash::make($generatePassword);
-        $input['role'] = 'Pengujung';
+        $cek = User::where('email', $request->Email)->first();
+        if (!$cek) {
+            $generatePassword = now()->format('dmY');
+            $input['name'] = $request->NamaBooking;
+            $input['email'] = $request->Email;
+            $input['password'] = Hash::make($generatePassword);
+            $input['role'] = 'Pengujung';
 
-        $user = User::create($input);
-        $user->assignRole('2');
+            $user = User::create($input);
+            $user->assignRole('2');
+        } else {
+            $input = User::where('email', $request->Email)->first();
+            $input->password = Hash::make(now()->format('dmY'));
+            $input->save();
+        }
 
         $dataEmail = [
             'user' => $input,
-            'password' => $generatePassword,
+            'password' => now()->format('dmY'),
             'booking' => $data2
         ];
         Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));

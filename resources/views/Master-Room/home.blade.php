@@ -94,12 +94,9 @@
                             icon: "success",
                             showConfirmButton: false,
                             timer: 900
-                        }).then(function() {
-                        $('#editModal').modal('hide');
-                        $('#table1').DataTable().ajax.reload();
-                        location.refresh();
-                        });
-
+                        })
+                    location.reload();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
                     },
                     error: function(xhr) {
                         Swal.fire({
@@ -109,6 +106,7 @@
                             showConfirmButton: false,
                             timer: 900
                         });
+
                         console.log(xhr.responseText);
                     }
                 });

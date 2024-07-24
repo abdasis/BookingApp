@@ -57,11 +57,14 @@ Route::prefix('booking')->group(function () {
     Route::GET('list', [BookingController::class, 'listBooking'])->name('booking.listBooking');
     Route::GET('create/{id}', [BookingController::class, 'create'])->name('booking.create');
     Route::POST('store', [BookingController::class, 'store'])->name('booking.store');
+    Route::POST('onlinestore', [BookingController::class, 'onlinestore'])->name('booking.onlinestore');
     Route::get('edit/{id}', [BookingController::class, 'edit'])->name('booking.edit');
     Route::get('getBukti/{id}', [BookingController::class, 'getBukti'])->name('booking.getBukti');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::post('konfirmasi/{id}', [BookingController::class, 'konfirmasi'])->name('booking.konfirmasi');
     Route::post('checkout', [BookingController::class, 'checkout'])->name('booking.checkout');
+    Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
+    Route::GET('loginuser', [BookingController::class, 'loginuser'])->name('booking.loginuser');
 
     //
 });
@@ -74,12 +77,14 @@ Route::prefix('fasilitas')->group(function () {
     Route::delete('destroy/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
     Route::put('update/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
 });
+Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
+Route::group(['middleware' => ['auth']], function () {
 Route::prefix('client')->group(function () {
-    Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
     Route::POST('payment', [BookingController::class, 'payment'])->name('booking.payment');
     Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+});
 });
 Route::prefix('laporan')->group(function () {
     Route::GET('/', [LaporanController::class, 'index'])->name('laporan.index');
@@ -91,3 +96,4 @@ Route::prefix('whatsapp')->group(function () {
     Route::POST('store', [WhatsappController::class, 'store'])->name('whatsapp.store');
     Route::delete('destroy/{id}', [WhatsappController::class, 'destroy'])->name('whatsapp.destroy');
 });
+

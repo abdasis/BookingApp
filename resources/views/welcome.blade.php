@@ -12,9 +12,10 @@
                         <div class="page-pretitle">
                             Booking
                         </div>
-                        <h2 class="page-title">
+                        <h1 class="page-title">
                             Booking Room / Kamar
-                        </h2>
+                        </h1>
+                        <p>Jalan Puncak Gadog No. 22 KM 75, Cipayung Data, Kecamatan Megamendung, Kab. Bogor</p>
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
@@ -26,7 +27,7 @@
         <!-- Page body -->
         <div class="page-body">
             <div class="container-xl">
-                <div class="card bg-primary text-primary-fg mb-4">
+                <div class="card text-white-fg mb-4" style="background-color: #1F573A;">
                     <div class="card-stamp">
                         <div class="card-stamp-icon bg-white text-primary">
                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
@@ -36,7 +37,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-white">
                         <h3 class="card-title">Pilih Room Kamar Yang Tersedia</h3>
                         <p>Booking Kamar Sekarang Juga</p>
                         <div class="form-selectgroup">
@@ -89,7 +90,7 @@
                     roomsHtml += `
                         <div class="card mb-3">
 
-    <div class="card-status-top status-top bg-primary"></div>
+    <div class="card-status-top status-top" style="background-color: #1F573A;"></div>
     <div class="row g-0">
         <div class="col-auto">
             <div class="card-body">
@@ -149,7 +150,7 @@
                         </div>
 
                         <div class="mt-1 text-end align-middle">
- <button type="button" id="booknow" data-id="${room.id}" class="btn btn-primary">Book Now</button>
+ <button type="button" id="booknow" data-id="${room.id}" class="btn text-white" style="background-color: #1F573A;">Book Now</button>
                         </div>
                     </div>
                 </div>
@@ -180,7 +181,7 @@
     loadRooms();
             $(document).on('click', '#booknow', function() {
     var roomId = $(this).data('id');
-    var url = "{{ route('booking.create', ':id') }}";
+    var url = "{{ route('booking.online', ':id') }}";
     url = url.replace(':id', roomId);
     window.location.href = url;
 });

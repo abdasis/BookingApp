@@ -11,10 +11,16 @@
                         <div class="page-pretitle">
                             Booking
                         </div>
-                        <h2 class="page-title">
+                        <h1 class="page-title">
                             Booking Room / Kamar
-                        </h2>
+                        </h1>
+                        <p>Jalan Puncak Gadog No. 22 KM 75, Cipayung Data, Kecamatan Megamendung, Kab. Bogor</p>
                     </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+
+                    </div>
+                </div>
                     <!-- Page title actions -->
                     <div class="card bg-success text-primary-fg">
                         <div class="card-stamp">
@@ -23,7 +29,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
                           </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: #1F573A;">
                           <h3 class="card-title">Petunjuk Pemesanan Room / Kamar</h3>
                           <p></p>
 <ul>
@@ -39,19 +45,93 @@
         </div>
 
         <!-- Page body -->
-        <div class="page-body">
-            <div class="container">
+           <div class="page-body">
+            <div class="container mb-3">
                 <div class="row">
-
                     <div class="col-sm-3">
-
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     Detail Room / Kamar
                                 </h3>
                                 <div class="card-actions">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <dl class="row">
+                                    <dt class="col-5">Tipe Room</dt>
+                                    <dd class="col-7">: <badge class="badge bg-warning text-white xl">
+                                            {{ $getData->roomtypes->nama }}</badge>
+                                    </dd>
+                                    <dt class="col-5">Nama Room</dt>
+                                    <dd class="col-7">: {{ $getData->nama }}</dd>
+                                    <dt class="col-5">Deskripsi:</dt>
+                                    <dd class="col-7">: {{ $getData->deskripsi }}</dd>
+                                    @if ($isWeekend)
+                                        <dt class="col-5">Weekend</dt>
+                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWe, 0, ',', '.') }}</dd>
+                                    @else
+                                        <dt class="col-5">Weekdays</dt>
+                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWd, 0, ',', '.') }}</dd>
+                                    @endif
+                                    <dt class="col-5">Fasilitas</dt>
+                                    <dd class="col-7">:
 
+                                        @foreach ($getData->Fasilitas as $item)
+                                            <li class="badge bg-info text-white mb-2">{{ $item }}</li>
+                                        @endforeach
+
+                                    </dd>
+                                    <dt class="col-5">Max Checkout</dt>
+                                    <dd class="col-7">: {{ $getData->checkout }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div id="carousel-indicators-thumb" class="carousel slide carousel-fade"
+                                    data-bs-ride="carousel">
+                                    <div class="carousel-indicators carousel-indicators-thumb">
+                                        @foreach ($getData->fotoroom as $key => $detail)
+                                            <button type="button" data-bs-target="#carousel-indicators-thumb"
+                                                data-bs-slide-to="{{ $key }}"
+                                                class="ratio ratio-4x3 @if ($key == 1) active
+                                            @else @endif"
+                                                style="background-image: url({{ url('storage/gambar/' . $detail->gambar) }})"></button>
+                                        @endforeach
+
+                                    </div>
+                                    <div class="carousel-inner">
+                                        @foreach ($getData->fotoroom as $key => $detail2)
+                                            <div
+                                                class="carousel-item @if ($key == 1) active
+                                            @else @endif">
+
+                                                <img alt="" style="width: 100%; height: 500px; object-fit: cover;"
+                                                    src="{{ url('storage/gambar/' . $detail2->gambar) }}">
+
+                                            </div>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{-- <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    Detail Room / Kamar
+                                </h3>
+                                <div class="card-actions">
                                 </div>
                             </div>
                             <div class="card-body">
@@ -81,7 +161,7 @@
                                     <dd class="col-7">: {{ $getData->checkout }}</dd>
                                 </dl>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-sm-6">
                         <div class="row row-cards">
@@ -126,7 +206,8 @@
                                                                     stroke="currentColor" stroke-width="2"
                                                                     stroke-linecap="round" stroke-linejoin="round"
                                                                     class="icon icon-tabler icons-tabler-outline icon-tabler-gender-male">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path stroke="none" d="M0 0h24v24H0z"
+                                                                        fill="none" />
                                                                     <path d="M10 14m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
                                                                     <path d="M19 5l-5.4 5.4" />
                                                                     <path d="M19 5h-5" />
@@ -178,8 +259,10 @@
                                             <div class="col-sm-6 col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Jumlah Tamu</label>
-                                                    <input type="number" class="form-control" name="jumlahTamu" placeholder="Jumlah Tamu">
-                                                    <input type="hidden" class="form-control" name="roomId" value="{{$getData->id}}">
+                                                    <input type="number" class="form-control" name="jumlahTamu"
+                                                        placeholder="Jumlah Tamu">
+                                                    <input type="hidden" class="form-control" name="roomId"
+                                                        value="{{ $getData->id }}">
                                                 </div>
                                             </div>
 
@@ -211,7 +294,7 @@
                                     <dt class="col-5">Tarif:</dt>
                                     <dd class="col-7">: <span id="Tarif"></span></dd>
                                 </dl>
-                                <button id="btnBayarSekarang" class="custom-button">Booking Sekarang</button>
+                                <button id="btnBayarSekarang" class="custom-button">Pesan Sekarang</button>
                             </div>
                         </div>
                     </div>
@@ -256,9 +339,13 @@
                             console.log(response);
                             Swal.fire(
                                 'Berhasil!',
-                                'Booking berhasil dilakukan!',
+                                'Email dan Passwprd Anda Telah Dikirim, Periksa Email Anda Secara Berkala',
                                 'success'
-                            );
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '{{ route('booking.payment') }}';
+                                }
+                            });
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
