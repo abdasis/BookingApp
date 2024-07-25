@@ -119,7 +119,25 @@ class BookingController extends Controller
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
+        //cek user
+        $cek = User::where('email', $request->Email)->first();
+        if (!$cek) {
+            $generatePassword = now()->format('dmY');
+            $input['name'] = $request->NamaBooking;
+            $input['email'] = $request->Email;
+            $input['password'] = Hash::make($generatePassword);
+            $input['role'] = 'Pengujung';
+            $user = User::create($input);
+            $user->assignRole('2');
+        } else {
+            $input = User::where('email', $request->Email)->first();
+            $input->password = Hash::make(now()->format('dmY'));
+            $input->save();
+        }
+        $idVisitor = User::where('email', $request->Email)->first()->id;
+
         $data2 = $request->all();
+        $data2['userId'] = $idVisitor;
         $data2['Total'] = $tarifTotal;
         $data2['Status'] = '1';  // 0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
         $data2['isOnline'] = '0';  // 0 = Offline Booking, 1 = Online Booking
@@ -130,22 +148,6 @@ class BookingController extends Controller
         $data1['status'] = '1';  // 0 = Available, 1=Booked
         $query->update($data1);
 
-        // create user
-        $cek = User::where('email', $request->Email)->first();
-        if (!$cek) {
-            $generatePassword = now()->format('dmY');
-            $input['name'] = $request->NamaBooking;
-            $input['email'] = $request->Email;
-            $input['password'] = Hash::make($generatePassword);
-            $input['role'] = 'Pengujung';
-
-            $user = User::create($input);
-            $user->assignRole('2');
-        } else {
-            $input = User::where('email', $request->Email)->first();
-            $input->password = Hash::make(now()->format('dmY'));
-            $input->save();
-        }
         $dataEmail = [
             'user' => $input,
             'password' => now()->format('dmY'),
@@ -163,8 +165,25 @@ class BookingController extends Controller
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
+        //cek user
+        $cek = User::where('email', $request->Email)->first();
+        if (!$cek) {
+            $generatePassword = now()->format('dmY');
+            $input['name'] = $request->NamaBooking;
+            $input['email'] = $request->Email;
+            $input['password'] = Hash::make($generatePassword);
+            $input['role'] = 'Pengujung';
+            $user = User::create($input);
+            $user->assignRole('2');
+        } else {
+            $input = User::where('email', $request->Email)->first();
+            $input->password = Hash::make(now()->format('dmY'));
+            $input->save();
+        }
+
+        $idVisitor = User::where('email', $request->Email)->first()->id;
         $data2 = $request->all();
-        $data2['userId'] = User::latest('id')->first()->id + 1;
+        $data2['userId'] = $idVisitor;
         $data2['Total'] = $tarifTotal;
         $data2['Status'] = '0';  // 0 = Menggungu Pembayaran, 1=Dibayar, 2=Menunggu Konfirmasi, 3=cancer Order
         $data2['isOnline'] = '1';  // 0 = Offline Booking, 1 = Online Booking
@@ -174,24 +193,6 @@ class BookingController extends Controller
         $query = Room::find($request->roomId);
         $data1['status'] = '1';  // 0 = Available, 1=Booked
         $query->update($data1);
-
-        // create user
-
-        $cek = User::where('email', $request->Email)->first();
-        if (!$cek) {
-            $generatePassword = now()->format('dmY');
-            $input['name'] = $request->NamaBooking;
-            $input['email'] = $request->Email;
-            $input['password'] = Hash::make($generatePassword);
-            $input['role'] = 'Pengujung';
-
-            $user = User::create($input);
-            $user->assignRole('2');
-        } else {
-            $input = User::where('email', $request->Email)->first();
-            $input->password = Hash::make(now()->format('dmY'));
-            $input->save();
-        }
 
         $dataEmail = [
             'user' => $input,
@@ -208,7 +209,7 @@ class BookingController extends Controller
      */
     public function show()
     {
-        $data = Booking::with('roomtypes')->where('userId', auth()->user()->id)->latest()->first();
+        $data = Booking::with('roomtypes')->where('userId', auth()->id())->latest()->first();
         $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
         // dd($data);
         return view('client.payment', compact('data', 'history'));
@@ -225,6 +226,7 @@ class BookingController extends Controller
                     'id' => $booking->id,
                     'imageUrl' => $imageUrl,
                 ]);
+                dd($imageUrl);
             } else {
                 return response()->json([
                     'id' => $booking->id,

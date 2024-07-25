@@ -68,12 +68,14 @@
                     aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        <img src="{{ asset('assets/img/logo/logo.png') }}" width="110" height="32" alt="Tabler"
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
                             class="navbar-brand-image">
                     </a>
-                </h1>
+<span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                </h5>
+
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item d-none d-md-flex me-3">
                         <div class="btn-list">
@@ -426,10 +428,6 @@
 
                                         <a class="dropdown-item" href="{{ route('users.index') }}">
                                             Master User
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('roles.index') }}" target="_blank"
-                                            rel="noopener">
-                                            Master Role
                                         </a>
 
                                         <a class="dropdown-item" href="{{ route('whatsapp.index') }}" rel="noopener">

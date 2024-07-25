@@ -23,9 +23,9 @@
             </div>
         </div>
         <!-- Page body -->
-        <div class="page-body">
+        <div class="page-body" >
             <div class="container-xl">
-                <div class="card bg-primary text-primary-fg mb-4">
+                <div class="card text-primary-fg mb-4" style="background-color: #1F573A;">
                     <div class="card-stamp">
                         <div class="card-stamp-icon bg-white text-primary">
                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
@@ -39,7 +39,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" >
                         <h3 class="card-title">Pilih Room Kamar Yang Tersedia</h3>
                         <p>Booking Kamar Sekarang Juga</p>
                         <div class="form-selectgroup">

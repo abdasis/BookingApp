@@ -48,7 +48,7 @@
             <div class="container-xl">
 
                 <div class="card">
-                    <div class="card-header bg-azure">
+                    <div class="card-header text-white" style="background-color: #1F573A;">
                         <h3 class="card-title">Daftar List Booking </h3>
                     </div>
                     <div class="card-body">
@@ -96,7 +96,7 @@
                             timer: 900
                         })
                     location.reload();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
                     },
                     error: function(xhr) {
                         Swal.fire({

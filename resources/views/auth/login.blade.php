@@ -37,20 +37,22 @@
     <script src="./dist/js/demo-theme.min.js?1692870487"></script>
     <div class="page page-center">
         <div class="container container-tight py-4">
+            <center>
             <div class="text-center mb-4">
-                <a href="." class="navbar-brand navbar-brand-autodark">
-                    <img src="{{ asset('assets/img/logo/logoapp-big.png') }}" width="200" height="122"
-                        alt="Tabler" class="navbar-brand-image">
+                <a href="." class="">
+                    <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="30%" height="30%"
+                        alt="Tabler">
                 </a>
             </div>
+            </center>
             <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Login to your account</h2>
+                    <h2 class="h2 text-center mb-4">Login ke Akun Anda</h2>
                     <form method="POST" action="{{ route('login') }}" autocomplete="on" novalidate>
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
-                            <input id="email" type="email"
+                            <input id="email" type="email" placeholder="Email Anda"
                                 class="form-control @error('email') is-invalid @enderror" name="email"
                                 value="{{ old('email') }}" required autocomplete="email" autofocus>
                             @error('email')
@@ -64,7 +66,7 @@
                                 Password
                             </label>
                             <div class="input-group input-group-flat">
-                                <input id="password" type="password"
+                                <input id="password" type="password" placeholder="Password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
                                     required autocomplete="current-password">
 

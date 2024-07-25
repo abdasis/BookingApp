@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card bg-primary text-primary-fg">
+            <div class="card text-white" style="background-color: #1F573A;">
                   <div class="card-stamp">
                     <div class="card-stamp-icon bg-white text-primary">
                       <!-- Download SVG icon from http://tabler-icons.io/i/star -->

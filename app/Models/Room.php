@@ -15,7 +15,7 @@ class Room extends Model
     protected $table = 'rooms';
 
     protected $fillable = [
-        'roomtype', 'nama', 'deskripsi', 'qty', 'checkout', 'tarifWd', 'tarifWe', 'Fasilitas', 'status'
+        'roomtype', 'nama', 'deskripsi', 'qty', 'checkout', 'tarifWd', 'tarifWe', 'Fasilitas', 'status', 'imgPreview'
     ];
 
     protected $dates = ['deleted_at'];

@@ -77,10 +77,10 @@ Route::prefix('fasilitas')->group(function () {
     Route::delete('destroy/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
     Route::put('update/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
 });
-Route::GET('booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
+Route::GET('client/booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
 Route::group(['middleware' => ['auth']], function () {
 Route::prefix('client')->group(function () {
-    Route::POST('payment', [BookingController::class, 'payment'])->name('booking.payment');
+    Route::GET('payment', [BookingController::class, 'show'])->name('booking.payment');
     Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
     Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
     Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');

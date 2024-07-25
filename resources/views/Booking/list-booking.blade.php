@@ -27,7 +27,7 @@
             <div class="container-xl">
 
                 <div class="card">
-                    <div class="card-header bg-azure">
+                    <div class="card-header text-white" style="background-color: #1F573A;">
                         <h3 class="card-title">Daftar Pemesanan Room / Kamar</h3>
                     </div>
                     <div class="card-body">
@@ -54,13 +54,12 @@
         </div>
 
     </div>
-    @include('fasilitas.modal-add-fasilitas')
-    @include('fasilitas.modal-edit-fasilitas')
+
     <div class="modal modal-blur fade" id="modal-large" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Large modal</h5>
+                    <h5 class="modal-title">Bukti Bayar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

@@ -93,7 +93,7 @@ class RoomController extends Controller
         for ($i = 0; $i < count($kamarkosong); $i++) {
             $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
         }
-
+        // dd($kamarkosong);
         return response()->json($kamarkosong);
     }
 
