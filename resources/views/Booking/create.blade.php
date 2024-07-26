@@ -16,7 +16,7 @@
                         </h2>
                     </div>
                     <!-- Page title actions -->
-                    <div class="card bg-primary text-primary-fg">
+                    <div class="card text-white" style="background-color: #1F573A;">
                         <div class="card-stamp">
                             <div class="card-stamp-icon bg-white text-primary">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/star -->

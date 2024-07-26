@@ -14,6 +14,7 @@
                             Jenis Room / Kamar
                         </h2>
                     </div>
+
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
@@ -41,17 +42,40 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
+
         <!-- Page body -->
         <div class="page-body">
 
             <div class="container-xl">
 
+{{-- <div class="alert alert-info" role="alert">
+                    <div class="d-flex">
+                        <div>
+                            <!-- Download SVG icon from http://tabler-icons.io/i/info-circle -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                <path d="M12 9h.01"></path>
+                                <path d="M11 12h1v4h1"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Menghapus Jenis Room / da
+                        </div>
+                    </div>
+                </div> --}}
                 <div class="card">
+
                     <div class="card-header text-white" style="background-color: #1F573A;">
                         <h3 class="card-title">Daftar Jenis Room / Kamar</h3>
                     </div>
+
                     <div class="card-body">
                         <table class="table" data-export-title="Export" id="table1" width="100%">
                             <thead class="">

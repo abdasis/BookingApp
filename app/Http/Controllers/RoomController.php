@@ -46,7 +46,7 @@ class RoomController extends Controller
                 ->addColumn('action', function ($row) {
                     $btnEdit = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-primary btn-md btn-edit" title="Edit"><i class="fas fa-edit"></i></a>';
                     $btnDelete = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="btn btn-danger btn-md btn-delete" title="Hapus"><i class="fas fa-trash-alt"></i></a>';
-                    return $btnEdit . ' ' . $btnDelete;
+                    return $btnEdit;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -87,7 +87,8 @@ class RoomController extends Controller
             })
             ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
             ->whereNull('bookings.id')
-            ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status')
+            ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
+            ->orderBy('id','desc')
             ->get();
 
         for ($i = 0; $i < count($kamarkosong); $i++) {
@@ -103,7 +104,13 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        if ($request->hasFile('imgPreview')) {
+                $imgPreview = $request->file('imgPreview');
+                $imgPreview->storeAs('public/imgPreview', $imgPreview->getClientOriginalName());
+                $imgPreview = $request->file('imgPreview');
+            }
         $data['Fasilitas'] = $request->layanan;
+        $data['imgPreview'] = $imgPreview->getClientOriginalName();
         $room = Room::create($data);
         $roomid = Room::latest()->pluck('id')->first();
         if ($request->hasFile('gambar')) {

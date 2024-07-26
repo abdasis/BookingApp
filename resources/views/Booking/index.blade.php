@@ -93,11 +93,11 @@
                                 roomsHtml += `
                         <div class="card mb-3">
 
-    <div class="card-status-top status-top bg-primary"></div>
+    <div class="card-status-top status-top" style="background-color: #1F573A;"></div>
     <div class="row g-0">
         <div class="col-auto">
             <div class="card-body">
-                <div class="avatar avatar-2xl" style="background-image: url({{ asset('assets/img/icon/bedroom.png') }}); background-color:#fffff;"></div>
+                <div class="avatar avatar-2xl" style="background-image: url({{ url('storage/imgPreview/${room.imgPreview}') }}); background-color:#fffff;"></div>
             </div>
         </div>
         <div class="col">
@@ -122,37 +122,16 @@
                                 ${room.tiperoom}
                             </div>
                         </div>
-                        <div class="mt-3 list mb-0 text-muted d-block d-sm-none">
-                            <div class="list-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8"></path>
-                                    <line x1="13" y1="7" x2="13" y2="7.01"></line>
-                                    <line x1="17" y1="7" x2="17" y2="7.01"></line>
-                                    <line x1="17" y1="11" x2="17" y2="11.01"></line>
-                                    <line x1="17" y1="15" x2="17" y2="15.01"></line>
-                                </svg>
-                                ${room.type}
-                            </div>
-                            <div class="list-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <circle cx="12" cy="11" r="3"></circle>
-                                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-                                </svg>
-                                ${room.id}
-                            </div>
-                        </div>
                     </div>
                     <div class="col-md-12">
                         <div class="mt-3">
                             <p>${room.deskripsi}</p>
                         </div>
                         <div class="mt-3 badges">
-                                <span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${room.Fasilitas}</span>
+                                ${room.Fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${fasilitas1}</span>`).join(' ')}
                         </div>
-
                         <div class="mt-1 text-end align-middle">
+
  <button type="button" id="booknow" data-id="${room.id}" class="btn btn-primary">Book Now</button>
                         </div>
                     </div>
@@ -161,6 +140,7 @@
         </div>
     </div>
 </div>
+
 
 
                     `;

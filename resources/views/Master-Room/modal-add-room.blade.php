@@ -36,11 +36,11 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Tarif WeekDays</label>
-              <input type="text" class="form-control" name="tarifWd" placeholder="Tarif Senin - Jumat" required>
+              <input type="number" class="form-control" name="tarifWd" placeholder="Tarif Senin - Jumat" required>
             </div>
             <div class="mb-3">
               <label class="form-label">Tarif WeekEnd</label>
-              <input type="text" class="form-control" name="tarifWe" placeholder="Tarif Sabtu - Minggu" required>
+              <input type="number" class="form-control" name="tarifWe" placeholder="Tarif Sabtu - Minggu" required>
             </div>
             <div class="mb-3">
               <label class="form-label">Fasilitas</label>
@@ -106,6 +106,10 @@
                         <div class="mb-3">
               <label class="form-label">Gambar</label>
               <input type="file" class="form-control" name="gambar[]" multiple>
+            </div>
+              <div class="mb-3">
+              <label class="form-label">Thumbnail</label>
+              <input type="file" class="form-control" name="imgPreview">
             </div>
             <div class="modal-footer">
             </form>

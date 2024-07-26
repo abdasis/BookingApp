@@ -94,8 +94,9 @@
                             icon: "success",
                             showConfirmButton: false,
                             timer: 900
-                        })
-                    location.reload();
+                        }).then(function() {
+                            location.reload();
+                        });
 
                     },
                     error: function(xhr) {
