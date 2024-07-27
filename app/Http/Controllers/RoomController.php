@@ -66,34 +66,57 @@ class RoomController extends Controller
     {
         $checkinDate = $request->checkIn;
         $checkoutDate = $request->checkOut;
-        if (isEmpty($checkinDate)) {
-            $checkinDate = now();
-            $checkoutDate = now();
+        $today = now();
+        $today1 = $today->format('Y-m-d');
+        if ($today == null) {
+            $kamarkosong = DB::table('rooms')
+                ->leftJoin('bookings', function ($join) use ($today1) {
+                    $join
+                        ->on('rooms.id', '=', 'bookings.roomId')
+                        ->where(function ($query) use ($today1) {
+                            $query->where(function ($query) use ($today1) {
+                                $query
+                                    ->where('bookings.checkIn', '<=', $today1)
+                                    ->where('bookings.checkOut', '>=', $today1);
+                            });
+                        });
+                })
+                ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
+                ->whereNull('bookings.id')
+                ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            for ($i = 0; $i < count($kamarkosong); $i++) {
+                $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
+            }
         } else {
             $checkinDate = $request->checkIn;
             $checkoutDate = $request->checkOut;
-        }
-        $kamarkosong = DB::table('rooms')
-            ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
-                $join
-                    ->on('rooms.id', '=', 'bookings.roomId')
-                    ->where(function ($query) use ($checkinDate, $checkoutDate) {
-                        $query->where(function ($query) use ($checkinDate, $checkoutDate) {
-                            $query
-                                ->where('bookings.checkIn', '<=', $checkoutDate)
-                                ->where('bookings.checkOut', '>=', $checkinDate);
+            // dd($checkinDate);
+            $kamarkosong = DB::table('rooms')
+                ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
+                    $join
+                        ->on('rooms.id', '=', 'bookings.roomId')
+                        ->where(function ($query) use ($checkinDate, $checkoutDate) {
+                            $query->where(function ($query) use ($checkinDate, $checkoutDate) {
+                                $query
+                                    ->where('bookings.checkIn', '<=', $checkoutDate)
+                                    ->where('bookings.checkOut', '>=', $checkinDate);
+                            });
                         });
-                    });
-            })
-            ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
-            ->whereNull('bookings.id')
-            ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
-            ->orderBy('id','desc')
-            ->get();
+                })
+                ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
+                ->whereNull('bookings.id')
+                ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
+                ->orderBy('id', 'desc')
+                ->get();
 
-        for ($i = 0; $i < count($kamarkosong); $i++) {
-            $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
+            for ($i = 0; $i < count($kamarkosong); $i++) {
+                $kamarkosong[$i]->Fasilitas = json_decode($kamarkosong[$i]->Fasilitas);
+            }
         }
+
         // dd($kamarkosong);
         return response()->json($kamarkosong);
     }
