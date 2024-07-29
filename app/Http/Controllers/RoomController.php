@@ -68,7 +68,7 @@ class RoomController extends Controller
         $checkoutDate = $request->checkOut;
         $today = now();
         $today1 = $today->format('Y-m-d');
-        if ($today == null) {
+        if ($checkinDate == null) {
             $kamarkosong = DB::table('rooms')
                 ->leftJoin('bookings', function ($join) use ($today1) {
                     $join
@@ -128,10 +128,10 @@ class RoomController extends Controller
     {
         $data = $request->all();
         if ($request->hasFile('imgPreview')) {
-                $imgPreview = $request->file('imgPreview');
-                $imgPreview->storeAs('public/imgPreview', $imgPreview->getClientOriginalName());
-                $imgPreview = $request->file('imgPreview');
-            }
+            $imgPreview = $request->file('imgPreview');
+            $imgPreview->storeAs('public/imgPreview', $imgPreview->getClientOriginalName());
+            $imgPreview = $request->file('imgPreview');
+        }
         $data['Fasilitas'] = $request->layanan;
         $data['imgPreview'] = $imgPreview->getClientOriginalName();
         $room = Room::create($data);

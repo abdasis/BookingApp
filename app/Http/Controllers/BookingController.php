@@ -24,8 +24,9 @@ class BookingController extends Controller
     public function loginuser(Request $request)
     {
         $wa = Whatsapp::latest()->first();
-        return view('Auth.loginUser',compact('wa'));
+        return view('Auth.loginUser', compact('wa'));
     }
+
     public function index(Request $request)
     {
         $type = Roomtype::all();
@@ -84,7 +85,6 @@ class BookingController extends Controller
                     return $Jk;
                 })
                 ->filter(function ($instance) use ($request) {
-                    dd($request->get('filterStatus'));
                     if ($request->get('filterStatus') && $request->get('filterStatus') !== '') {
                         $instance->where('Status', $request->get('filterStatus'));
                     }
@@ -135,7 +135,7 @@ class BookingController extends Controller
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
-        //cek user
+        // cek user
         $cek = User::where('email', $request->Email)->first();
         if (!$cek) {
             $generatePassword = now()->format('dmY');
@@ -181,7 +181,7 @@ class BookingController extends Controller
         $tarifTotal = str_replace('Rp. ', '', $request->tarifTotal);
         $tarifTotal = str_replace('.', '', $tarifTotal);
 
-        //cek user
+        // cek user
         $cek = User::where('email', $request->Email)->first();
         if (!$cek) {
             $generatePassword = now()->format('dmY');

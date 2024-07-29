@@ -1,7 +1,6 @@
 @extends('layouts.app_welcome')
 
 @section('content')
-
     <div class="page-wrapper mb-3">
         <div class="page-header d-print-none">
             <div class="container-xl">
@@ -31,9 +30,13 @@
                     <div class="card-stamp">
                         <div class="card-stamp-icon bg-white text-primary">
                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                <path
+                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                </path>
                             </svg>
                         </div>
                     </div>
@@ -69,32 +72,33 @@
             </div>
 
 
-    </div>
-    <script>
-    $(document).ready(function () {
-        const today = new Date().toISOString().split('T')[0];
+        </div>
+        <script>
+            $(document).ready(function() {
+                const today = new Date().toISOString().split('T')[0];
 
-        document.getElementById('checkIn').setAttribute('min', today);
-        document.getElementById('checkOut').setAttribute('min', today);
-          function loadRooms(checkIn = '',checkOut = '') {
-        $.ajax({
-            url: "{{ route('room.getroom') }}",
-            method: "GET",
-            data: {
-                    checkIn: checkIn,
-                    checkOut: checkOut
-                },
-            success: function(data) {
-                var roomsHtml = '';
-                $.each(data, function(index, room) {
-                    roomsHtml += `
+                document.getElementById('checkIn').setAttribute('min', today);
+                document.getElementById('checkOut').setAttribute('min', today);
+
+                function loadRooms(checkIn = '', checkOut = '') {
+                    $.ajax({
+                        url: "{{ route('room.getroom') }}",
+                        method: "GET",
+                        data: {
+                            checkIn: checkIn,
+                            checkOut: checkOut
+                        },
+                        success: function(data) {
+                            var roomsHtml = '';
+                            $.each(data, function(index, room) {
+                                roomsHtml += `
                         <div class="card mb-3">
 
     <div class="card-status-top status-top" style="background-color: #1F573A;"></div>
     <div class="row g-0">
         <div class="col-auto">
             <div class="card-body">
-                <div class="avatar avatar-2xl" style="background-image: url({{asset('assets/img/icon/bedroom.png')}}); background-color:#fffff;"></div>
+                <div class="avatar avatar-2xl" style="background-image: url({{ asset('assets/img/icon/bedroom.png') }}); background-color:#fffff;"></div>
             </div>
         </div>
         <div class="col">
@@ -145,8 +149,8 @@
                         <div class="mt-3">
                             <p>${room.deskripsi}</p>
                         </div>
-                        <div class="mt-3 badges">
-                                <span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${room.Fasilitas}</span>
+                         <div class="mt-3 badges">
+                                ${room.Fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${fasilitas1}</span>`).join(' ')}
                         </div>
 
                         <div class="mt-1 text-end align-middle">
@@ -161,31 +165,31 @@
 
 
                     `;
+                            });
+                            $('#rooms-list').html(roomsHtml);
+                        }
+                    });
+                }
+
+                $('#apply-filters').on('click', function() {
+                    // var tiperoom = [];
+                    // $('input[name="type"]:checked').each(function() {
+                    //     tiperoom.push($(this).val());
+                    // });
+                    var checkIn = $('#checkIn').val();
+                    var checkOut = $('#checkOut').val();
+                    // console.log('12312');
+                    loadRooms(checkIn, checkOut);
                 });
-                $('#rooms-list').html(roomsHtml);
-            }
-        });
-    }
 
-    $('#apply-filters').on('click', function() {
-        // var tiperoom = [];
-        // $('input[name="type"]:checked').each(function() {
-        //     tiperoom.push($(this).val());
-        // });
-        var checkIn = $('#checkIn').val();
-        var checkOut = $('#checkOut').val();
-        // console.log('12312');
-        loadRooms(checkIn,checkOut);
-    });
+                loadRooms();
+                $(document).on('click', '#booknow', function() {
+                    var roomId = $(this).data('id');
+                    var url = "{{ route('booking.online', ':id') }}";
+                    url = url.replace(':id', roomId);
+                    window.location.href = url;
+                });
 
-    loadRooms();
-            $(document).on('click', '#booknow', function() {
-    var roomId = $(this).data('id');
-    var url = "{{ route('booking.online', ':id') }}";
-    url = url.replace(':id', roomId);
-    window.location.href = url;
-});
-
-        });
-    </script>
-@endsection
+            });
+        </script>
+    @endsection

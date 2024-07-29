@@ -13,9 +13,9 @@
     <link href="{{ asset('') }}assets/css/demo.min.css?1692870487" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -70,10 +70,10 @@
                 </button>
                 <h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
-                            class="navbar-brand-image">
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000"
+                            alt="Tabler" class="navbar-brand-image">
                     </a>
-<span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                    <span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
                 </h5>
 
                 <div class="navbar-nav flex-row order-md-last">
@@ -461,7 +461,7 @@
     <!-- Tabler Core -->
     <script src="{{ asset('') }}assets/js/tabler.min.js?1692870487" defer></script>
     <script src="{{ asset('') }}assets/js/demo.min.js?1692870487" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 </body>
 

@@ -79,12 +79,12 @@ Route::prefix('fasilitas')->group(function () {
 });
 Route::GET('client/booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
 Route::group(['middleware' => ['auth']], function () {
-Route::prefix('client')->group(function () {
-    Route::GET('payment', [BookingController::class, 'show'])->name('booking.payment');
-    Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
-    Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
-    Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
-});
+    Route::prefix('client')->group(function () {
+        Route::GET('payment', [BookingController::class, 'show'])->name('booking.payment');
+        Route::get('payment/list/', [BookingController::class, 'show'])->name('booking.show');
+        Route::delete('destroy/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
+        Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
+    });
 });
 Route::prefix('laporan')->group(function () {
     Route::GET('/', [LaporanController::class, 'index'])->name('laporan.index');
@@ -96,4 +96,3 @@ Route::prefix('whatsapp')->group(function () {
     Route::POST('store', [WhatsappController::class, 'store'])->name('whatsapp.store');
     Route::delete('destroy/{id}', [WhatsappController::class, 'destroy'])->name('whatsapp.destroy');
 });
-
