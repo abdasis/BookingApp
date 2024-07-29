@@ -35,7 +35,7 @@ class BookingController extends Controller
     public function listBooking(Request $request)
     {
         if ($request->ajax()) {
-            $data = Booking::orderBy('id', 'desc')->get();
+            $data = Booking::latest();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -82,6 +82,22 @@ class BookingController extends Controller
                         $Jk = 'Wanita';
                     }
                     return $Jk;
+                })
+                ->filter(function ($instance) use ($request) {
+                    dd($request->get('filterStatus'));
+                    if ($request->get('filterStatus') && $request->get('filterStatus') !== '') {
+                        $instance->where('Status', $request->get('filterStatus'));
+                    }
+                    if ($request->get('filterJenis') && $request->get('filterJenis') !== '') {
+                        $instance->where('isOnline', $request->get('filterJenis'));
+                    }
+                    // if (!empty($request->get('search'))) {
+                    //     $instance->where(function ($w) use ($request) {
+                    //         $search = $request->get('search');
+                    //         $w->orWhere('NamaBooking', 'LIKE', "%$search%")
+                    //             ->orWhere('Email', 'LIKE', "%$search%");
+                    //     });
+                    // }
                 })
                 ->rawColumns(['action', 'Kontak', 'StatusBooking', 'Online', 'Jk'])
                 ->make(true);
