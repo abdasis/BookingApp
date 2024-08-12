@@ -4,7 +4,7 @@
        <div class="container">
            <div class="row justify-content">
                <div class="col-md-12">
-                   @if ($data->Status == 0)
+                   @if ($data->Status == 1)
                        <div class="card bg-danger text-primary-fg">
                            <div class="card-stamp">
                                <div class="card-stamp-icon bg-white text-primary">
@@ -92,7 +92,7 @@
                                        data-bs-parent="#accordion-example" style="">
                                        <div class="accordion-body pt-0">
                                            <strong>
-                                               <p>12012983 a.n Alfin Aswr</p>
+                                               <p>1260010177334 Atas Nama Bukit Gading Mas</p>
                                            </strong>
                                        </div>
                                    </div>

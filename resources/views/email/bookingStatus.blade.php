@@ -57,17 +57,17 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Terima kasih telah melakukan booking di {{ config('app.name') }}</h2>
+            <h2>Terima kasih telah melakukan booking di Basecamp Military Lifestyle</h2>
         </div>
         <div class="content">
-            <p>Hai, {{ $user['name'] ?? 'Tamu' }}!</p>
+            <p>Hai, {{ $booking['NamaBooking'] ?? 'Tamu' }}!</p>
             <p>Terima kasih telah mempercayakan kami sebagai tempat menginap Anda. Berikut adalah detail booking Anda:</p>
 
             <h3>Detail Booking</h3>
             <table class="table">
                 <tr>
                     <th>Nama</th>
-                    <td>{{ $user['name'] ?? 'Tamu' }}</td>
+                    <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
                 </tr>
                 <tr>
                     <th>Email</th>
@@ -79,11 +79,11 @@
                 </tr>
                 <tr>
                     <th>Nama Kamar</th>
-                    <td>{{ $booking['roomId'] ?? 'Tidak Diketahui' }}</td>
+                    <td>{{ $booking['NamaRoom'] ?? 'Tidak Diketahui' }}</td>
                 </tr>
                 <tr>
                     <th>Jumlah Kamar</th>
-                    <td>{{ $booking['jumlahTamu'] ?? 'Tidak Diketahui' }}</td>
+                    <td>1</td>
                 </tr>
                 <tr>
                     <th>Tanggal Check-in</th>
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ $booking['Status'] == "0" ? "Menunggu Pembayaran" : ($booking['Status'] == "1" ? "Dibayar" : ($booking['Status'] == "2" ? "Menunggu Konfirmasi" : "Order Dibatalkan")) }}</td>
+                    <td>{{ $booking['Status'] == "1" ? "Menunggu Pembayaran" : ($booking['Status'] == "2" ? "Dibayar" : ($booking['Status'] == "3" ? "Menunggu Konfirmasi" : "Order Dibatalkan")) }}</td>
                 </tr>
             </table>
 
@@ -109,11 +109,11 @@
             <p><strong>Password:</strong> {{ $password }}</p>
             <p>Pastikan untuk mengubah password Anda setelah login pertama untuk keamanan akun Anda.</p>
 
-            <p>Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami di [Nomor Telepon atau Email Hotel].</p>
+            <p>Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami</p>
         </div>
         <div class="footer">
             <p>Salam Hangat,</p>
-            <p><strong>{{ config('app.name') }}</strong></p>
+            <p><strong>Basecamp Military Lifestyle</strong></p>
         </div>
     </div>
 </body>

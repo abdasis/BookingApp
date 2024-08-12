@@ -36,11 +36,11 @@
                             <div class="col-3">
                                 <div class="input-icon mb-3">
                                     <select name="filterStatus" class="form-control" id="filterStatus">
-                                        <option value="1">Pilih Status</option>
-                                        <option value="0">Menunggu Pembayaran</option>
-                                        <option value="1">Dibayar</option>
-                                        <option value="2">Menunggu Konfirmasi</option>
-                                        <option value="3">Cancel Order</option>
+                                        <option value="">Pilih Status</option>
+                                        <option value="1">Menunggu Pembayaran</option>
+                                        <option value="2">Dibayar</option>
+                                        <option value="3">Belum Dikonfirmasi</option>
+                                        <option value="4">Cancel Order</option>
                                         <option value="5">Sudah Checkout</option>
                                     </select>
                                     <span class="input-icon-addon">
@@ -58,8 +58,8 @@
                                 <div class="input-icon mb-3">
                                     <select name="filterJenis" class="form-control" id="filterJenis">
                                         <option value="">Pilih Jenis Booking</option>
-                                        <option value="0">Booking Ditempat</option>
-                                        <option value="1">Booking Online</option>
+                                        <option value="1">Booking Ditempat</option>
+                                        <option value="2">Booking Online</option>
                                     </select>
                                     <span class="input-icon-addon">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/search -->
@@ -342,12 +342,12 @@
 
             jQuery(document).ready(function() {
                 dataTable()
-            });
-            $('#filterStatus,#filterJenis').change(function() {
+                 $('#filterStatus,#filterJenis').change(function() {
                 var table1 = $('#table1').DataTable();
-                console.log(table1);
                 table1.draw();
             });
+            });
+           
         });
     </script>
 @endsection

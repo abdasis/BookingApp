@@ -5,11 +5,11 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BookingSukses extends Mailable
 {
-    use Queueable;
-    use SerializesModels;
+    use Queueable, SerializesModels;
     public $booking;
 
     /**
@@ -29,7 +29,7 @@ class BookingSukses extends Mailable
      */
     public function build()
     {
-        return $this->subject('Booking Berhasil')
+        return $this->subject('booking Berhasil')
                     ->view('Email.BookingSukses')
                     ->with([
                         'booking' => $this->booking,

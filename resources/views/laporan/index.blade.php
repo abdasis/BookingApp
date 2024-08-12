@@ -28,7 +28,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Filter Form -->
-                        <form id="filterForm" class="row g-3 mb-4" method="POST" action="{{ route('laporan.cetak') }}">
+                             <form id="filterForm" class="row g-3 mb-4" method="POST" action="{{ route('laporan.cetak') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-4">
                                 <label for="checkIn" class="form-label">Tanggal Awal</label>
@@ -37,6 +37,18 @@
                             <div class="col-md-4">
                                 <label for="checkOut" class="form-label">Tanggal Akhir</label>
                                 <input type="date" name="checkOut" id="checkOut" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="checkOut" class="form-label">Status</label>
+                                <select name="status" class="form-control" id="status">
+                
+                                        <option value="">Pilih Status</option>
+                                        <option value="1">Menunggu Pembayaran</option>
+                                        <option value="2">Dibayar</option>
+                                        <option value="3">Belum Dikonfirmasi</option>
+                                        <option value="4">Cancel Order</option>
+                                        <option value="5">Sudah Checkout</option>
+                                </select>
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
                                 <button type="button" class="btn btn-primary" onclick="filterData()">Filter</button> &nbsp;
@@ -52,6 +64,8 @@
                                     <th width="auto">Nama</th>
                                     <th width="auto">Email</th>
                                     <th width="auto">HP</th>
+
+<th width="auto">Status</th>
 
                                 </tr>
                             </thead>
@@ -71,33 +85,44 @@
     </div>
 
     <script>
-        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
-        // const today = new Date().toISOString().split('T')[0];
-        // document.getElementById('checkIn').setAttribute('min', today);
-        // document.getElementById('checkOut').setAttribute('min', today);
 
-        function filterData() {
-            const checkIn = document.getElementById('checkIn').value;
-            const checkOut = document.getElementById('checkOut').value;
-            const url = `{{ route('laporan.filter') }}?checkIn=${checkIn}&checkOut=${checkOut}`;
+function filterData() {
+    const checkIn = document.getElementById('checkIn').value;
+    const checkOut = document.getElementById('checkOut').value;
+    const status = document.getElementById('status').value;
+    const url = `{{ route('laporan.filter') }}?checkIn=${checkIn}&checkOut=${checkOut}&status=${status}`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.querySelector('#table1 tbody');
-                    tbody.innerHTML = '';
-                    data.forEach((item, index) => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${index + 1}</td>
-                            <td>${item.NamaBooking}</td>
-                             <td>${item.Email}</td>
-                              <td>${item.hp}</td>
+    const statusMapping = {
+        1: 'Menunggu Pembayaran',
+        2: 'Dibayar',
+        3: 'Belum Dikonfirmasi',
+        4: 'Cancel Order',
+        5: 'Sudah Checkout'
+    };
 
-                        `;
-                        tbody.appendChild(row);
-                    });
-                });
-        }
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#table1 tbody');
+            tbody.innerHTML = '';
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.NamaBooking}</td>
+                    <td>${item.Email}</td>
+                    <td>${item.hp}</td>
+                `;
+
+                if (item.Status !== undefined) {
+                    row.innerHTML += `<td>${statusMapping[item.Status] || 'Tidak diketahui'}</td>`;
+                }
+
+                tbody.appendChild(row);
+            });
+        });
+}
+
+
     </script>
 @endsection

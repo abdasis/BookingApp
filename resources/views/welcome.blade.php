@@ -1,6 +1,21 @@
 @extends('layouts.app_welcome')
 
 @section('content')
+    <style>
+        .disabled-card {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f5f5f5;
+        }
+
+        .text-danger {
+            color: #dc3545;
+        }
+
+        .fw-bold {
+            font-weight: bold;
+        }
+    </style>
     <div class="page-wrapper mb-3">
         <div class="page-header d-print-none">
             <div class="container-xl">
@@ -8,12 +23,13 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <!-- Page pre-title -->
-                        <div class="page-pretitle">
-                            Booking
-                        </div>
-                        <h1 class="page-title">
-                            Booking Room / Kamar
-                        </h1>
+<h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <a href=".">
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
+                            class="navbar-brand-image">
+                    </a>
+    <span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                </h5>
                         <p>Jalan Puncak Gadog No. 22 KM 75, Cipayung Data, Kecamatan Megamendung, Kab. Bogor</p>
                     </div>
                     <!-- Page title actions -->
@@ -92,13 +108,12 @@
                             var roomsHtml = '';
                             $.each(data, function(index, room) {
                                 roomsHtml += `
-                        <div class="card mb-3">
-
+  <div class="card mb-3 ${room.status.includes('Tidak Tersedia') ? 'disabled-card' : ''}">
     <div class="card-status-top status-top" style="background-color: #1F573A;"></div>
     <div class="row g-0">
         <div class="col-auto">
             <div class="card-body">
-                <div class="avatar avatar-2xl" style="background-image: url({{ asset('assets/img/icon/bedroom.png') }}); background-color:#fffff;"></div>
+                <div class="avatar avatar-2xl" style="background-image: url({{ asset('storage/imgPreview/${room.imgPreview}') }}); background-color:#fffff;"></div>
             </div>
         </div>
         <div class="col">
@@ -133,7 +148,7 @@
                                     <line x1="17" y1="11" x2="17" y2="11.01"></line>
                                     <line x1="17" y1="15" x2="17" y2="15.01"></line>
                                 </svg>
-                                ${room.type}
+                                ${room.tiperoom}
                             </div>
                             <div class="list-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -149,12 +164,12 @@
                         <div class="mt-3">
                             <p>${room.deskripsi}</p>
                         </div>
-                         <div class="mt-3 badges">
-                                ${room.Fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white">${fasilitas1}</span>`).join(' ')}
+                        <div class="mt-3 badges">
+                            ${room.Fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white mb-1">${fasilitas1}</span>`).join(' ')}
                         </div>
-
+                        ${room.status.includes('Tidak Tersedia') ? `<div class="mt-3 text-danger fw-bold">Room ini telah dipesan dari ${room.bookingCheckIn} hingga ${room.bookingCheckOut}</div>` : ''}
                         <div class="mt-1 text-end align-middle">
- <button type="button" id="booknow" data-id="${room.id}" class="btn text-white" style="background-color: #1F573A;">Book Now</button>
+                            <button type="button" id="booknow" data-id="${room.id}" class="btn text-white" style="background-color: #1F573A;" ${room.status.includes('Tidak Tersedia') ? 'disabled' : ''}>Book Now</button>
                         </div>
                     </div>
                 </div>
@@ -163,8 +178,7 @@
     </div>
 </div>
 
-
-                    `;
+`;
                             });
                             $('#rooms-list').html(roomsHtml);
                         }

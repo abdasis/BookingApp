@@ -13,7 +13,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign in - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>Basecamp Military Lifestyle Login</title>
     <!-- CSS files -->
     <link href="{{ asset('') }}assets/css/tabler.min.css?1692870487" rel="stylesheet" />
     <link href="{{ asset('') }}assets/css/tabler-flags.min.css?1692870487" rel="stylesheet" />
@@ -107,7 +107,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <a href="https://wa.me/{{ $wa->hp }}?text=Halo Admin, Saya Membutuhkan Bantuan Terkait.."
+                            <a href="#"
                                 class="btn w-100">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

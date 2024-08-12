@@ -84,7 +84,6 @@
                     </div>
                     <div class="col-sm">
                         <div class="card">
-
                             <div class="card-body">
                                 <div id="carousel-indicators-thumb" class="carousel slide carousel-fade"
                                     data-bs-ride="carousel">
@@ -94,7 +93,7 @@
                                                 data-bs-slide-to="{{ $key }}"
                                                 class="ratio ratio-4x3 @if ($key == 1) active
                                             @else @endif"
-                                                style="background-image: url({{ url('storage/gambar/' . $detail->gambar) }})"></button>
+                                                style="background-image: url({{ asset('storage/gambar/' . $detail->gambar) }})"></button>
                                         @endforeach
 
                                     </div>
@@ -104,8 +103,8 @@
                                                 class="carousel-item @if ($key == 1) active
                                             @else @endif">
 
-                                                <img alt="" style="width: 100%; height: 500px; object-fit: cover;"
-                                                    src="{{ url('storage/gambar/' . $detail2->gambar) }}">
+                                                <img alt="" style="width: 100%; height: 600px; object-fit: cover;"
+                                                    src="{{ asset('storage/gambar/' . $detail2->gambar) }}">
 
                                             </div>
                                         @endforeach
@@ -145,9 +144,9 @@
                                         <dt class="col-5">Weekdays</dt>
                                         <dd class="col-7">: Rp. {{ number_format($getData->tarifWd, 0, ',', '.') }}</dd>
                                     @endif
-                                    <dt class="col-5">Fasilitas</dt>
+                                    <dt class="col-5">facilities</dt>
                                     <dd class="col-7">:
-                                        @foreach ($getData->Fasilitas as $item)
+                                        @foreach ($getData->facilities as $item)
                                             <span class="badge bg-info text-white">{{ $item }}</span>
                                         @endforeach
                                     </dd>
@@ -257,6 +256,8 @@
                                                         placeholder="Jumlah Tamu">
                                                     <input type="hidden" class="form-control" name="roomId"
                                                         value="{{ $getData->id }}">
+                                                        <input type="hidden" class="form-control" name="NamaRoom"
+                                                        value="{{ $getData->nama }}">
                                                 </div>
                                             </div>
 
@@ -288,7 +289,7 @@
                                     <dt class="col-5">Tarif:</dt>
                                     <dd class="col-7">: <span id="Tarif"></span></dd>
                                 </dl>
-                                <button id="btnBayarSekarang" class="custom-button">Bayar Sekarang</button>
+                                <button id="btnBayarSekarang" class="custom-button">Booking Sekarang</button>
                             </div>
                         </div>
                     </div>
@@ -316,13 +317,14 @@
                             _token: token,
                             NoIdentitas: $('input[name="NoIdentitas"]').val(),
                             NamaBooking: $('input[name="NamaBooking"]').val(),
-                            Email: $('input[name="Email"]').val(),
+                            Email: $('input[name="email"]').val(),
                             Gender: $('input[name="Gender"]:checked').val(),
                             hp: $('input[name="hp"]').val(),
                             checkIn: $('input[name="checkIn"]').val(),
                             checkOut: $('input[name="checkOut"]').val(),
                             jumlahTamu: $('input[name="jumlahTamu"]').val(),
                             roomId: $('input[name="roomId"]').val(),
+                            NamaRoom: $('input[name="NamaRoom"]').val(),
                             tarifTotal: document.getElementById("Tarif").innerText,
                         };
                         $.ajax({
@@ -330,13 +332,17 @@
                             url: '{{ route('booking.store') }}',
                             data: data,
                             success: function(response) {
-                                console.log(response);
-                                Swal.fire(
-                                    'Berhasil!',
-                                    'Booking berhasil dilakukan!',
-                                    'success'
-                                );
-                            },
+                            console.log(response);
+                            Swal.fire(
+                                'Berhasil!',
+                                'Selamat!, Room / Kamar Telah Terbooking',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '{{ route('booking.listBooking') }}';
+                                }
+                            });
+                        },
                             error: function(xhr, status, error) {
                                 console.error(error);
                                 Swal.fire(

@@ -57,7 +57,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Terima kasih telah melakukan booking di {{ config('app.name') }}</h2>
+            <h2>Terima kasih telah melakukan booking di Basecamp Military Lifestyle</h2>
         </div>
         <div class="content">
             <p>Hai, {{ $booking['NamaBooking'] ?? 'Tamu' }}!</p>
@@ -70,8 +70,8 @@
                     <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
                 </tr>
                 <tr>
-                    <th>Email</th>
-                    <td>{{ $booking['Email'] }}</td>
+                    <th>Email / Password</th>
+                    <td>{{ $booking['email'] }} / <b>{{ \Carbon\Carbon::parse($booking['Created_at'])->format('dmY') }}</b></td>
                 </tr>
                 <tr>
                     <th>Nomor Telepon</th>
@@ -79,11 +79,11 @@
                 </tr>
                 <tr>
                     <th>Nama Kamar</th>
-                    <td>{{ $booking['roomId'] ?? 'Tidak Diketahui' }}</td>
+                    <td>{{ $booking->roomtypes['nama'] ?? 'Tidak Diketahui' }}</td>
                 </tr>
                 <tr>
                     <th>Jumlah Kamar</th>
-                    <td>{{ $booking['jumlahTamu'] ?? 'Tidak Diketahui' }}</td>
+                    <td>1</td>
                 </tr>
                 <tr>
                     <th>Tanggal Check-in</th>
@@ -99,13 +99,13 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ $booking['Status'] == "0" ? "Menunggu Pembayaran" : ($booking['Status'] == "1" ? "Dibayar" : ($booking['Status'] == "2" ? "Menunggu Konfirmasi" : "Order Dibatalkan")) }}</td>
+                    <td>{{ $booking['Status'] == "1" ? "Menunggu Pembayaran" : ($booking['Status'] == "2" ? "Dibayar" : ($booking['Status'] == "3" ? "Menunggu Konfirmasi" : "Order Dibatalkan")) }}</td>
                 </tr>
             </table>
         </div>
         <div class="footer">
             <p>Salam Hangat,</p>
-            <p><strong>{{ config('app.name') }}</strong></p>
+            <p><strong>Basecamp Military Lifestyle</strong></p>
         </div>
     </div>
 </body>

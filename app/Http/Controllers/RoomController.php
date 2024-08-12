@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Fasilitas;
+use App\Models\Booking;
 use App\Models\Room;
 use App\Models\roomDetail;
 use App\Models\Roomtype;
@@ -9,9 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
+use function PHPUnit\Framework\isEmpty;
+
 class RoomController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -29,7 +34,8 @@ class RoomController extends Controller
         }
 
         $type = Roomtype::orderBy('id', 'desc')->get();
-        return view('Master-Room.home', compact('type'));
+        $fasilitas = Fasilitas::get();
+        return view('master-room.home', compact('type','fasilitas'));
     }
 
     public function roomtype(Request $request)
@@ -46,94 +52,90 @@ class RoomController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('Master-Room.room-type');
+        return view('master-room.room-type');
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         //
     }
 
-    public function getroom(Request $request)
+ public function getroom(Request $request)
     {
-        $checkinDate = $request->checkIn;
-        $checkoutDate = $request->checkOut;
-        $today = now();
-        $today1 = $today->format('Y-m-d');
-        if ($checkinDate == null) {
-            $kamarkosong = DB::table('rooms')
-                ->leftJoin('bookings', function ($join) use ($today1) {
-                    $join
-                        ->on('rooms.id', '=', 'bookings.roomId')
-                        ->where(function ($query) use ($today1) {
-                            $query->where(function ($query) use ($today1) {
-                                $query
-                                    ->where('bookings.checkIn', '<=', $today1)
-                                    ->where('bookings.checkOut', '>=', $today1);
-                            });
-                        });
-                })
-                ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
-                ->whereNull('bookings.id')
-                ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
-                ->orderBy('id', 'desc')
-                ->get();
+       $today = now();
 
-	        foreach ($kamarkosong as $iValue) {
-	            $iValue->Fasilitas = json_decode($iValue->Fasilitas);
-	        }
+        if (empty($request->checkIn)) {
+            $checkinDate = $today;
+            $checkoutDate = $today;
         } else {
             $checkinDate = $request->checkIn;
             $checkoutDate = $request->checkOut;
-            // dd($checkinDate);
-            $kamarkosong = DB::table('rooms')
-                ->leftJoin('bookings', function ($join) use ($checkinDate, $checkoutDate) {
-                    $join
-                        ->on('rooms.id', '=', 'bookings.roomId')
-                        ->where(function ($query) use ($checkinDate, $checkoutDate) {
-                            $query->where(function ($query) use ($checkinDate, $checkoutDate) {
-                                $query
-                                    ->where('bookings.checkIn', '<=', $checkoutDate)
-                                    ->where('bookings.checkOut', '>=', $checkinDate);
-                            });
-                        });
-                })
-                ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
-                ->whereNull('bookings.id')
-                ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.Fasilitas', 'rooms.status', 'rooms.imgPreview')
-                ->orderBy('id', 'desc')
-                ->get();
-
-	        foreach ($kamarkosong as $iValue) {
-	            $iValue->Fasilitas = json_decode($iValue->Fasilitas);
-	        }
         }
-		return response()->json($kamarkosong);
+
+        $kamarkosong = DB::table('rooms')
+            ->leftJoin('bookings', 'rooms.id', '=', 'bookings.roomId')
+            // ->leftJoin('bookings', function ($join) {
+            //         $join
+            //             ->on('rooms.id', '=', 'bookings.roomId')
+            //             ->where('rooms.deleted_at',null);
+            // })
+            ->leftJoin('roomtypes', 'rooms.roomtype', '=', 'roomtypes.id')
+            ->select('rooms.id', 'roomtypes.nama as tiperoom', 'rooms.nama', 'rooms.deskripsi', 'rooms.qty', 'rooms.tarifWd', 'rooms.tarifWe', 'rooms.facilities', 'rooms.status', 'rooms.imgPreview', 'bookings.checkIn as bookingCheckIn', 'bookings.checkOut as bookingCheckOut')
+            ->orderBy('rooms.id', 'desc')
+            ->get();
+
+        $processedRooms = [];
+        $uniqueRooms = [];
+
+        foreach ($kamarkosong as $room) {
+            if (!in_array($room->id, $processedRooms)) {
+                $room->Fasilitas = json_decode($room->Fasilitas);
+                if (!empty($room->bookingCheckIn) && !empty($room->bookingCheckOut)) {
+                    if ($room->bookingCheckIn <= $checkoutDate && $room->bookingCheckOut >= $checkinDate) {
+                        $room->status = 'Tidak Tersedia dari ' . $room->bookingCheckIn . ' hingga ' . $room->bookingCheckOut;
+                    } else {
+                        $room->status = 'Tersedia';
+                    }
+                } else {
+                    $room->status = 'Tersedia';
+                }
+                $uniqueRooms[] = $room;
+                $processedRooms[] = $room->id;
+            }
+        }
+
+        return response()->json($uniqueRooms);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $data = $request->all();
         if ($request->hasFile('imgPreview')) {
-            $imgPreview = $request->file('imgPreview');
-            $imgPreview->storeAs('public/imgPreview', $imgPreview->getClientOriginalName());
-            $imgPreview = $request->file('imgPreview');
-        }
-        $data['Fasilitas'] = $request->layanan;
+                $imgPreview = $request->file('imgPreview');
+                $imgPreview->storeAs('public/imgPreview', $imgPreview->getClientOriginalName());
+                $imgPreview = $request->file('imgPreview');
+            }
+        $data['facilities'] = $request->layanan;
         $data['imgPreview'] = $imgPreview->getClientOriginalName();
         $room = Room::create($data);
         $roomid = Room::latest()->pluck('id')->first();
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
-	        foreach ($gambar as $iValue) {
-	            $iValue->storeAs('public/gambar', $iValue->getClientOriginalName());
-	            $gambar = $request->file('gambar');
-	            $detail = roomDetail::create([
-	                'idRoom' => $roomid,
-	                'gambar' => $iValue->getClientOriginalName()
-	            ]);
-	        }
+            // dd($roomid);
+            for ($i = 0; $i < count($gambar); $i++) {
+                $gambar[$i]->storeAs('public/gambar', $gambar[$i]->getClientOriginalName());
+                $gambar = $request->file('gambar');
+                $detail = roomDetail::create([
+                    'idRoom' => $roomid,
+                    'gambar' => $gambar[$i]->getClientOriginalName()
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
@@ -145,10 +147,13 @@ class RoomController extends Controller
         return response()->json(['message' => 'Data Behasil Disimpan'], 200);
     }
 
-
+    /**
+     * Display the specified resource.
+     */
     public function show($id)
     {
         $room = Room::find($id);
+        // dd($room);
         if (!$room) {
             return response()->json(['message' => 'Room tidak ditemukan'], 404);
         }
@@ -164,11 +169,17 @@ class RoomController extends Controller
         return response()->json($type);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(Room $room)
     {
         //
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
         $room = Room::find($id);
@@ -195,15 +206,18 @@ class RoomController extends Controller
         return response()->json(['message' => 'Data room berhasil diperbarui', 'type' => $type]);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
         $room = Room::find($id);
         if ($room) {
             $room->delete();
             return response()->json(['message' => 'room berhasil dihapus'], 200);
+        } else {
+            return response()->json(['message' => 'room tidak ditemukan'], 404);
         }
-
-	    return response()->json(['message' => 'room tidak ditemukan'], 404);
     }
 
     public function destroyType($id)
@@ -212,8 +226,8 @@ class RoomController extends Controller
         if ($type) {
             $type->delete();
             return response()->json(['message' => 'type berhasil dihapus'], 200);
+        } else {
+            return response()->json(['message' => 'type tidak ditemukan'], 404);
         }
-
-	    return response()->json(['message' => 'type tidak ditemukan'], 404);
     }
 }

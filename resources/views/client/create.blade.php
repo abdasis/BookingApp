@@ -8,12 +8,13 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <!-- Page pre-title -->
-                        <div class="page-pretitle">
-                            Booking
-                        </div>
-                        <h1 class="page-title">
-                            Booking Room / Kamar
-                        </h1>
+                                        <h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <a href=".">
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
+                            class="navbar-brand-image">
+                    </a>
+<span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                </h5>
                         <p>Jalan Puncak Gadog No. 22 KM 75, Cipayung Data, Kecamatan Megamendung, Kab. Bogor</p>
                     </div>
                     <!-- Page title actions -->
@@ -49,7 +50,7 @@
             <div class="container mb-3">
                 <div class="row">
                     <div class="col-sm-3">
-                        <div class="card">
+                        <div class="card" style="height: 100%;">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     Detail Room / Kamar
@@ -89,7 +90,7 @@
                         </div>
                     </div>
                     <div class="col-sm">
-                        <div class="card">
+                        <div class="card" style="height: 100%;">
 
                             <div class="card-body">
                                 <div id="carousel-indicators-thumb" class="carousel slide carousel-fade"
@@ -110,7 +111,7 @@
                                                 class="carousel-item @if ($key == 1) active
                                             @else @endif">
 
-                                                <img alt="" style="width: 100%; height: 500px; object-fit: cover;"
+                                                <img alt="" style="width: 100%; height: 100%; object-fit: cover;"
                                                     src="{{ url('storage/gambar/' . $detail2->gambar) }}">
 
                                             </div>
@@ -125,45 +126,8 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-3">
-                        {{-- <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    Detail Room / Kamar
-                                </h3>
-                                <div class="card-actions">
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <dl class="row">
-                                    <dt class="col-5">Tipe Room</dt>
-                                    <dd class="col-7">: <badge class="badge bg-warning text-white xl">
-                                            {{ $getData->roomtypes->nama }}</badge>
-                                    </dd>
-                                    <dt class="col-5">Nama Room</dt>
-                                    <dd class="col-7">: {{ $getData->nama }}</dd>
-                                    <dt class="col-5">Deskripsi:</dt>
-                                    <dd class="col-7">: {{ $getData->deskripsi }}</dd>
-                                    @if ($isWeekend)
-                                        <dt class="col-5">Weekend</dt>
-                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWe, 0, ',', '.') }}</dd>
-                                    @else
-                                        <dt class="col-5">Weekdays</dt>
-                                        <dd class="col-7">: Rp. {{ number_format($getData->tarifWd, 0, ',', '.') }}</dd>
-                                    @endif
-                                    <dt class="col-5">Fasilitas</dt>
-                                    <dd class="col-7">:
-                                        @foreach ($getData->Fasilitas as $item)
-                                            <span class="badge bg-info text-white">{{ $item }}</span>
-                                        @endforeach
-                                    </dd>
-                                    <dt class="col-5">Max Checkout</dt>
-                                    <dd class="col-7">: {{ $getData->checkout }}</dd>
-                                </dl>
-                            </div>
-                        </div> --}}
-                    </div>
-                    <div class="col-sm-6">
+
+                    <div class="col-sm-8">
                         <div class="row row-cards">
                             <div class="col-12">
                                 <div class="card">
@@ -245,15 +209,23 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Check in</label>
-                                                    <input type="date" class="form-control" placeholder="Check In"
-                                                        name="checkIn">
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" placeholder="Check In"
+                                                            name="checkIn">
+                                                        <input type="time" class="form-control" placeholder="Check In"
+                                                            name="checkInTime">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Check Out</label>
-                                                    <input type="date" class="form-control" placeholder="Check Out"
-                                                        name="checkOut">
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" placeholder="Check In"
+                                                            name="checkOut">
+                                                        <input type="time" class="form-control" placeholder="Check In"
+                                                            name="checkOutTime">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-md-12">
@@ -263,6 +235,8 @@
                                                         placeholder="Jumlah Tamu">
                                                     <input type="hidden" class="form-control" name="roomId"
                                                         value="{{ $getData->id }}">
+                                                        <input type="hidden" class="form-control" name="NamaRoom"
+                                                        value="{{ $getData->nama }}">
                                                 </div>
                                             </div>
 
@@ -273,7 +247,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
@@ -294,7 +268,7 @@
                                     <dt class="col-5">Tarif:</dt>
                                     <dd class="col-7">: <span id="Tarif"></span></dd>
                                 </dl>
-                                <button id="btnBayarSekarang" class="custom-button">Pesan Sekarang</button>
+                                <button id="btnBayarSekarang" class="custom-button">Booking Sekarang</button>
                             </div>
                         </div>
                     </div>
@@ -305,8 +279,31 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#btnBayarSekarang').click(function(e) {
+             $('#btnBayarSekarang').click(function(e) {
             e.preventDefault();
+            var NoIdentitas = $('input[name="NoIdentitas"]').val();
+            var NamaBooking = $('input[name="NamaBooking"]').val();
+            var Email = $('input[name="email"]').val();
+            var Gender = $('input[name="Gender"]:checked').val();
+            var hp = $('input[name="hp"]').val();
+            var checkIn = $('input[name="checkIn"]').val();
+            var checkInTime = $('input[name="checkInTime"]').val();
+            var checkOut = $('input[name="checkOut"]').val();
+            var checkOutTime = $('input[name="checkOutTime"]').val();
+            var jumlahTamu = $('input[name="jumlahTamu"]').val();
+            var roomId = $('input[name="roomId"]').val();
+            var NamaRoom = $('input[name="NamaRoom"]').val();
+            var tarifTotal = document.getElementById("Tarif").innerText;
+
+            if (!NoIdentitas || !NamaBooking || !Email || !Gender || !hp || !checkIn || !checkInTime || !checkOut || !checkOutTime || !jumlahTamu || !roomId || !NamaRoom || !tarifTotal) {
+                Swal.fire(
+                    'Gagal!',
+                    'Data Belum Lengkap. Silakan Lengkapi Data Diri Anda.',
+                    'error'
+                );
+                return;
+            }
+
             Swal.fire({
                 title: 'Konfirmasi',
                 text: "Apakah Anda yakin ingin melakukan booking?",
@@ -320,16 +317,19 @@
             var token = $('meta[name="csrf-token"]').attr('content');
             var data = {
                 _token: token,
-                NoIdentitas: $('input[name="NoIdentitas"]').val(),
-                NamaBooking: $('input[name="NamaBooking"]').val(),
-                Email: $('input[name="Email"]').val(),
-                Gender: $('input[name="Gender"]:checked').val(),
-                hp: $('input[name="hp"]').val(),
-                checkIn: $('input[name="checkIn"]').val(),
-                checkOut: $('input[name="checkOut"]').val(),
-                jumlahTamu: $('input[name="jumlahTamu"]').val(),
-                roomId: $('input[name="roomId"]').val(),
-                tarifTotal: document.getElementById("Tarif").innerText,
+                NoIdentitas: NoIdentitas,
+                NamaBooking: NamaBooking,
+                Email: Email,
+                Gender: Gender,
+                hp: hp,
+                checkIn: checkIn,
+                checkInTime: checkInTime,
+                checkOut: checkOut,
+                checkOutTime: checkOutTime,
+                jumlahTamu: jumlahTamu,
+                roomId: roomId,
+                NamaRoom: NamaRoom,
+                tarifTotal: tarifTotal,
             };
             $.ajax({
                 type: 'POST',
@@ -339,11 +339,11 @@
                             console.log(response);
                             Swal.fire(
                                 'Berhasil!',
-                                'Email dan Passwprd Anda Telah Dikirim, Periksa Email Anda Secara Berkala',
+                                'email dan Passwprd Anda Telah Dikirim, Periksa email Anda Secara Berkala',
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '{{ route('booking.payment') }}';
+                                    window.location.href = response.url;
                                 }
                             });
                         },
@@ -359,6 +359,7 @@
                 }
             });
         });
+
 
             $(document).on('click', '#booknow', function() {
                 var roomId = $(this).data('id');

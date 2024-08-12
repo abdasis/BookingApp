@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class LaporanController extends Controller
 {
     /**
@@ -16,42 +17,54 @@ class LaporanController extends Controller
     }
 
     public function filter(Request $request)
-    {
-        $startDate = $request->input('checkIn');
-        $endDate = $request->input('checkOut');
-        $dataLaporan = Booking::whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->get();
-        return response()->json($dataLaporan);
+{
+    $startDate = Carbon::parse($request->input('checkIn'))->startOfDay();
+        $endDate = Carbon::parse($request->input('checkOut'))->endOfDay();
+        $status = $request->input('status'); // Mengambil status dari request
+
+    $query = Booking::whereDate('created_at', '>=', $startDate)
+                    ->whereDate('created_at', '<=', $endDate);
+
+    if (!empty($status)) {
+        $query->where('status', $status);
     }
+
+    $dataLaporan = $query->get();
+    return response()->json($dataLaporan);
+}
+
 
     /**
      * Show the form for creating a new resource.
      */
-    public function cetakLaporan(Request $request)
+      public function cetakLaporan(Request $request)
     {
-        $startDate = $request->input('checkIn');
-        $endDate = $request->input('checkOut');
-        $dataLaporan = Booking::whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->with(['roomtypes', 'user'])
-            ->get();
+        $startDate = Carbon::parse($request->input('checkIn'))->startOfDay();
+        $endDate = Carbon::parse($request->input('checkOut'))->endOfDay();
+        $status = $request->input('status');
+        // dd($status);
+
+        $query = Booking::whereBetween('created_at', [$startDate, $endDate]);
+
+        if ($status) {
+            $query->where('Status', $status);
+        }
+
+        $dataLaporan = $query->with(['roomtypes', 'user'])->get();
 
         $data = [
-            'title' => 'Laporan Booking',
+            'title' => 'Laporan booking',
             'date' => date('m/d/Y'),
             'booking' => $dataLaporan
         ];
-        // dd($data);
+        $pdf = Pdf::loadView('laporan.cetakLaporan', compact('data'))
+            ->setPaper('a4', 'portrait');
 
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('laporan.cetakLaporan', $data);
-        return $pdf->download('Laporan Booking - ' . date('d-m-Y') . '.pdf');
+        return $pdf->download('laporan_booking.pdf');
     }
 
-    public function create()
-    {
-    }
+
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.

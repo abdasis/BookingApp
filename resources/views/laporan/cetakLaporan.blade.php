@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{ $title }}</title>
+    <title>{{ $data['title'] }}</title>
     <style>
         table {
             width: 100%;
@@ -26,10 +26,9 @@
         }
     </style>
 </head>
-
 <body>
-    <h1 style="text-align: center;">{{ $title }}</h1>
-    <p>Tanggal: {{ $date }}</p>
+    <h1 style="text-align: center;">{{ $data['title'] }}</h1>
+    <p>Tanggal: {{ $data['date'] }}</p>
     <table>
         <thead>
             <tr>
@@ -43,25 +42,25 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($booking as $item)
+            @foreach ($data['booking'] as $key=> $item)
                 <tr>
-                    <td>{{ $item['no'] }}</td>
+                    <td>{{ $key+1 }}</td>
                     <td>{{ $item['NamaBooking'] }}</td>
-                    <td>{{ $item['Email'] }}</td>
+                    <td>{{ $item['email'] }}</td>
                     <td>{{ $item['Gender'] == 'L' ? 'Pria' : 'Wanita' }}</td>
                     <td>{{ $item['checkIn'] }}</td>
                     <td>{{ $item['checkOut'] }}</td>
                     <td>
-                        @if ($item['Status'] == 0)
+                        @if ($item['Status'] == 1)
                             <span>Menunggu Pembayaran</span>
-                        @elseif ($item['Status'] == 1)
-                            <span>Dibayar</span>
                         @elseif ($item['Status'] == 2)
-                            <span>Menunggu Konfirmasi</span>
+                            <span>Dibayar</span>
                         @elseif ($item['Status'] == 3)
+                            <span>Belum Dikonfirmasi</span>
+                        @elseif ($item['Status'] == 4)
                             <span>Cancel Order</span>
                         @else
-                            <span>Selesai</span>
+                            <span>Selesai / Telah Checkout</span>
                         @endif
                     </td>
                 </tr>

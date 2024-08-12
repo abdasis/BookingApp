@@ -25,7 +25,8 @@ class FasilitasController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('Fasilitas.index');
+        $fasilitas = Fasilitas::all();
+        return view('facilities.index',compact('fasilitas'));
     }
 
     /**
@@ -52,7 +53,7 @@ class FasilitasController extends Controller
     {
         $fasilitas = Fasilitas::find($id);
         if (!$fasilitas) {
-            return response()->json(['message' => 'Fasilitas tidak ditemukan'], 404);
+            return response()->json(['message' => 'facilities tidak ditemukan'], 404);
         }
         return response()->json($fasilitas);
     }
@@ -78,7 +79,7 @@ class FasilitasController extends Controller
         $fasilitas->save();
 
 
-        return response()->json(['message' => 'Data Fasilitas berhasil diperbarui', 'room' => $fasilitas]);
+        return response()->json(['message' => 'Data facilities berhasil diperbarui', 'room' => $fasilitas]);
     }
 
     /**
