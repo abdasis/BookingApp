@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\AturPoin;
-use App\Models\Avatar;
-use App\Models\FotoProfil;
-use App\Models\Lencana;
-use App\Models\Poin;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

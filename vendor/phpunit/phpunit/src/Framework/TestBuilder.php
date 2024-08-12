@@ -22,6 +22,8 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestBuilder
@@ -37,32 +39,32 @@ final class TestBuilder
 
         $data = (new DataProvider)->providedData(
             $className,
-            $methodName
+            $methodName,
         );
 
         if ($data !== null) {
-            $test = $this->buildDataProviderTestSuite(
+            return $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
                 $data,
                 $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
                 $this->shouldGlobalStateBePreserved($className, $methodName),
                 $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
-                $this->backupSettings($className, $methodName)
+                $this->backupSettings($className, $methodName),
             );
-        } else {
-            $test = new $className($methodName);
         }
 
-        if ($test instanceof TestCase) {
-            $this->configureTestCase(
-                $test,
-                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
-                $this->shouldGlobalStateBePreserved($className, $methodName),
-                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
-                $this->backupSettings($className, $methodName)
-            );
-        }
+        $test = new $className($methodName);
+
+        assert($test instanceof TestCase);
+
+        $this->configureTestCase(
+            $test,
+            $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+            $this->shouldGlobalStateBePreserved($className, $methodName),
+            $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+            $this->backupSettings($className, $methodName),
+        );
 
         return $test;
     }
@@ -75,7 +77,7 @@ final class TestBuilder
     private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
-            $className . '::' . $methodName
+            $className . '::' . $methodName,
         );
 
         $groups = (new Groups)->groups($className, $methodName);
@@ -92,7 +94,7 @@ final class TestBuilder
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $runClassInSeparateProcess,
-                $backupSettings
+                $backupSettings,
             );
 
             $dataProviderTestSuite->addTest($_test, $groups);

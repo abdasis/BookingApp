@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -51,7 +49,9 @@ class LaporanController extends Controller
         return $pdf->download('Laporan Booking - ' . date('d-m-Y') . '.pdf');
     }
 
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.

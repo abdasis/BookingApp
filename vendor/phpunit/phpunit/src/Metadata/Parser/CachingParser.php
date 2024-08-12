@@ -12,6 +12,8 @@ namespace PHPUnit\Metadata\Parser;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class CachingParser implements Parser
@@ -70,7 +72,7 @@ final class CachingParser implements Parser
         }
 
         $this->classAndMethodCache[$key] = $this->forClass($className)->mergeWith(
-            $this->forMethod($className, $methodName)
+            $this->forMethod($className, $methodName),
         );
 
         return $this->classAndMethodCache[$key];

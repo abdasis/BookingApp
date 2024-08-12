@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use function array_unique;
+use function array_values;
 use function assert;
 use function count;
 use function interface_exists;
@@ -16,20 +18,28 @@ use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversDefaultClass;
 use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\IgnoreClassForCodeCoverage;
+use PHPUnit\Metadata\IgnoreFunctionForCodeCoverage;
+use PHPUnit\Metadata\IgnoreMethodForCodeCoverage;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\UsesFunction;
+use RecursiveIteratorIterator;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
+use SebastianBergmann\CodeUnit\Exception as CodeUnitException;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class CodeCoverage
@@ -56,8 +66,8 @@ final class CodeCoverage
                 throw new CodeCoverageException(
                     sprintf(
                         'More than one @coversDefaultClass annotation for class or interface "%s"',
-                        $className
-                    )
+                        $className,
+                    ),
                 );
             }
 
@@ -72,30 +82,14 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if (!$metadata->isCoversClass() && !$metadata->isCoversFunction() && !$metadata->isCovers()) {
+                continue;
+            }
+
+            assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction || $metadata instanceof Covers);
+
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith(
-                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper())
-                    );
-                } catch (InvalidCodeUnitException $e) {
-                    if ($metadata->isCoversClass()) {
-                        $type = 'Class';
-                    } else {
-                        $type = 'Function';
-                    }
-
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '%s "%s" is not a valid target for code coverage',
-                            $type,
-                            $metadata->asStringForCodeUnitMapper()
-                        ),
-                        $e->getCode(),
-                        $e
-                    );
-                }
+                $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
             } elseif ($metadata->isCovers()) {
                 assert($metadata instanceof Covers);
 
@@ -105,8 +99,8 @@ final class CodeCoverage
                     throw new InvalidCoversTargetException(
                         sprintf(
                             'Trying to @cover interface "%s".',
-                            $target
-                        )
+                            $target,
+                        ),
                     );
                 }
 
@@ -120,10 +114,10 @@ final class CodeCoverage
                     throw new InvalidCoversTargetException(
                         sprintf(
                             '"@covers %s" is invalid',
-                            $target
+                            $target,
                         ),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }
@@ -150,8 +144,8 @@ final class CodeCoverage
                 throw new CodeCoverageException(
                     sprintf(
                         'More than one @usesDefaultClass annotation for class or interface "%s"',
-                        $className
-                    )
+                        $className,
+                    ),
                 );
             }
 
@@ -166,30 +160,14 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            if (!$metadata->isUsesClass() && !$metadata->isUsesFunction() && !$metadata->isUses()) {
+                continue;
+            }
+
+            assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction || $metadata instanceof Uses);
+
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
-
-                try {
-                    $codeUnits = $codeUnits->mergeWith(
-                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper())
-                    );
-                } catch (InvalidCodeUnitException $e) {
-                    if ($metadata->isUsesClass()) {
-                        $type = 'Class';
-                    } else {
-                        $type = 'Function';
-                    }
-
-                    throw new InvalidCoversTargetException(
-                        sprintf(
-                            '%s "%s" is not a valid target for code coverage',
-                            $type,
-                            $metadata->asStringForCodeUnitMapper()
-                        ),
-                        $e->getCode(),
-                        $e
-                    );
-                }
+                $codeUnits = $codeUnits->mergeWith($this->mapToCodeUnits($metadata));
             } elseif ($metadata->isUses()) {
                 assert($metadata instanceof Uses);
 
@@ -205,13 +183,30 @@ final class CodeCoverage
                     throw new InvalidCoversTargetException(
                         sprintf(
                             '"@uses %s" is invalid',
-                            $target
+                            $target,
                         ),
                         $e->getCode(),
-                        $e
+                        $e,
                     );
                 }
             }
+        }
+
+        return $mapper->codeUnitsToSourceLines($codeUnits);
+    }
+
+    /**
+     * @psalm-return array<string,list<int>>
+     */
+    public function linesToBeIgnored(TestSuite $testSuite): array
+    {
+        $codeUnits = CodeUnitCollection::fromList();
+        $mapper    = new Mapper;
+
+        foreach ($this->testCaseClassesIn($testSuite) as $testCaseClassName) {
+            $codeUnits = $codeUnits->mergeWith(
+                $this->codeUnitsIgnoredBy($testCaseClassName),
+            );
         }
 
         return $mapper->codeUnitsToSourceLines($codeUnits);
@@ -241,5 +236,82 @@ final class CodeCoverage
         }
 
         return true;
+    }
+
+    /**
+     * @psalm-return list<class-string>
+     */
+    private function testCaseClassesIn(TestSuite $testSuite): array
+    {
+        $classNames = [];
+
+        foreach (new RecursiveIteratorIterator($testSuite) as $test) {
+            $classNames[] = $test::class;
+        }
+
+        return array_values(array_unique($classNames));
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function codeUnitsIgnoredBy(string $className): CodeUnitCollection
+    {
+        $codeUnits = CodeUnitCollection::fromList();
+        $mapper    = new Mapper;
+
+        foreach (Registry::parser()->forClass($className) as $metadata) {
+            if ($metadata instanceof IgnoreClassForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className()),
+                );
+            }
+
+            if ($metadata instanceof IgnoreMethodForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits($metadata->className() . '::' . $metadata->methodName()),
+                );
+            }
+
+            if ($metadata instanceof IgnoreFunctionForCodeCoverage) {
+                $codeUnits = $codeUnits->mergeWith(
+                    $mapper->stringToCodeUnits('::' . $metadata->functionName()),
+                );
+            }
+        }
+
+        return $codeUnits;
+    }
+
+    /**
+     * @throws InvalidCoversTargetException
+     */
+    private function mapToCodeUnits(CoversClass|CoversFunction|UsesClass|UsesFunction $metadata): CodeUnitCollection
+    {
+        $mapper = new Mapper;
+
+        try {
+            return $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper());
+        } catch (CodeUnitException $e) {
+            if ($metadata->isCoversClass() || $metadata->isUsesClass()) {
+                if (interface_exists($metadata->className())) {
+                    $type = 'Interface';
+                } else {
+                    $type = 'Class';
+                }
+            } else {
+                $type = 'Function';
+            }
+
+            throw new InvalidCoversTargetException(
+                sprintf(
+                    '%s "%s" is not a valid target for code coverage',
+                    $type,
+                    $metadata->asStringForCodeUnitMapper(),
+                ),
+                $e->getCode(),
+                $e,
+            );
+        }
     }
 }

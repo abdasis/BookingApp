@@ -26,11 +26,11 @@ use function php_ini_loaded_file;
 use function php_ini_scanned_files;
 use function phpversion;
 use function sprintf;
-use function strpos;
+use function strrpos;
 
 final class Runtime
 {
-    private static string $binary;
+    private static string $rawBinary;
     private static bool $initialized = false;
 
     /**
@@ -73,7 +73,17 @@ final class Runtime
             return false;
         }
 
-        if (strpos(ini_get('opcache.jit'), '0') === 0) {
+        if (ini_get('opcache.jit_buffer_size') === '0') {
+            return false;
+        }
+
+        $jit = ini_get('opcache.jit');
+
+        if (($jit === 'disable') || ($jit === 'off')) {
+            return false;
+        }
+
+        if (strrpos($jit, '0') === 3) {
             return false;
         }
 
@@ -81,19 +91,19 @@ final class Runtime
     }
 
     /**
-     * Returns the path to the binary of the current runtime.
+     * Returns the raw path to the binary of the current runtime.
      */
-    public function getBinary(): string
+    public function getRawBinary(): string
     {
         if (self::$initialized) {
-            return self::$binary;
+            return self::$rawBinary;
         }
 
         if (PHP_BINARY !== '') {
-            self::$binary      = escapeshellarg(PHP_BINARY);
+            self::$rawBinary   = PHP_BINARY;
             self::$initialized = true;
 
-            return self::$binary;
+            return self::$rawBinary;
         }
 
         // @codeCoverageIgnoreStart
@@ -105,19 +115,26 @@ final class Runtime
 
         foreach ($possibleBinaryLocations as $binary) {
             if (is_readable($binary)) {
-                self::$binary      = escapeshellarg($binary);
+                self::$rawBinary   = $binary;
                 self::$initialized = true;
 
-                return self::$binary;
+                return self::$rawBinary;
             }
         }
 
-        // @codeCoverageIgnoreStart
-        self::$binary      = 'php';
+        self::$rawBinary   = 'php';
         self::$initialized = true;
-        // @codeCoverageIgnoreEnd
 
-        return self::$binary;
+        return self::$rawBinary;
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Returns the escaped path to the binary of the current runtime.
+     */
+    public function getBinary(): string
+    {
+        return escapeshellarg($this->getRawBinary());
     }
 
     public function getNameWithVersion(): string
@@ -131,7 +148,7 @@ final class Runtime
             return sprintf(
                 '%s with PCOV %s',
                 $this->getNameWithVersion(),
-                phpversion('pcov')
+                phpversion('pcov'),
             );
         }
 
@@ -139,7 +156,7 @@ final class Runtime
             return sprintf(
                 '%s with Xdebug %s',
                 $this->getNameWithVersion(),
-                phpversion('xdebug')
+                phpversion('xdebug'),
             );
         }
 
@@ -234,8 +251,8 @@ final class Runtime
                 $files,
                 array_map(
                     'trim',
-                    explode(",\n", $scanned)
-                )
+                    explode(",\n", $scanned),
+                ),
             );
         }
 

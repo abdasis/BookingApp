@@ -10,14 +10,11 @@ use App\Models\Roomtype;
 use App\Models\User;
 use App\Models\Whatsapp;
 use Carbon\Carbon;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
-
-use function PHPUnit\Framework\isEmpty;
 
 class BookingController extends Controller
 {
@@ -30,7 +27,7 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $type = Roomtype::all();
-        Return view('Booking.index', compact('type'));
+        return view('Booking.index', compact('type'));
     }
 
     public function listBooking(Request $request)
@@ -58,9 +55,9 @@ class BookingController extends Controller
                         $StatusBooking = '<span class="badge bg-info text-white">Menunggu Pembayaran</span>';
                     } elseif ($row->Status == 1) {
                         $StatusBooking = '<span class="badge bg-success text-white">Dibayar</span>';
-                    } else if ($row->Status == 2) {
+                    } elseif ($row->Status == 2) {
                         $StatusBooking = '<span class="badge bg-warning text-white">Belum Dikonfirmasi</span>';
-                    } else if ($row->Status == 5) {
+                    } elseif ($row->Status == 5) {
                         $StatusBooking = '<span class="badge bg-success text-white">Selesai</span>';
                     } else {
                         $StatusBooking = '<span class="badge bg-danger text-white">Cancel Order</span>';
@@ -215,6 +212,7 @@ class BookingController extends Controller
             'password' => now()->format('dmY'),
             'booking' => $data2
         ];
+
         Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
 
         return response()->json($data);
@@ -227,7 +225,6 @@ class BookingController extends Controller
     {
         $data = Booking::with('roomtypes')->where('userId', auth()->id())->latest()->first();
         $history = Booking::with('roomtypes')->where('userId', auth()->user()->id)->where('Status', '1')->get();
-        // dd($data);
         return view('client.payment', compact('data', 'history'));
     }
 
@@ -242,29 +239,22 @@ class BookingController extends Controller
                     'id' => $booking->id,
                     'imageUrl' => $imageUrl,
                 ]);
-                dd($imageUrl);
-            } else {
-                return response()->json([
-                    'id' => $booking->id,
-                    'message' => 'Belum ada bukti pembayaran yang diunggah.',
-                ]);
             }
+
+            return response()->json([
+                'id' => $booking->id,
+                'message' => 'Belum ada bukti pembayaran yang diunggah.',
+            ]);
         }
 
         return response()->json(['error' => 'Booking tidak ditemukan'], 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Booking $booking)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $booking = Booking::find($id);

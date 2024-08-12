@@ -19,6 +19,8 @@ use ReflectionMethod;
  * Reflection information, and therefore DocBlock information, is static within
  * a single PHP process. It is therefore okay to use a Singleton registry here.
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Registry
@@ -40,10 +42,6 @@ final class Registry
         return self::$instance ?? self::$instance = new self;
     }
 
-    private function __construct()
-    {
-    }
-
     /**
      * @psalm-param class-string $class
      *
@@ -63,7 +61,7 @@ final class Registry
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd
@@ -90,7 +88,7 @@ final class Registry
             throw new ReflectionException(
                 $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
         // @codeCoverageIgnoreEnd

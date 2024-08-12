@@ -8,35 +8,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
-    use HasFactory,SoftDeletes;
-protected $table = 'bookings';
+    use HasFactory;
+    use SoftDeletes;
+    protected $table = 'bookings';
 
-protected $fillable = [
-    'roomId',
-    'userId',
-    'NamaBooking',
-    'Email',
-    'JenisIdentitas',
-    'NoIdentitas',
-    'Gender',
-    'hp',
-    'checkIn',
-    'checkOut',
-    'jumlahTamu',
-    'Total',
-    'Status',
-    'isOnline',
-];
+    protected $fillable = [
+        'roomId',
+        'userId',
+        'NamaBooking',
+        'Email',
+        'JenisIdentitas',
+        'NoIdentitas',
+        'Gender',
+        'hp',
+        'checkIn',
+        'checkOut',
+        'jumlahTamu',
+        'Total',
+        'Status',
+        'isOnline',
+    ];
 
-protected $dates = [
-    'checkIn',
-    'checkOut',
-    'deleted_at'
-];
+    protected $dates = [
+        'checkIn',
+        'checkOut',
+        'deleted_at'
+    ];
 
-protected $casts = [
-    'Gender' => 'string'
-];
+    protected $casts = [
+        'Gender' => 'string'
+    ];
     public function roomtypes()
     {
         return $this->hasOne(room::class, 'id', 'roomId');

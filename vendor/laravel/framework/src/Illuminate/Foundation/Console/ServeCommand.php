@@ -57,6 +57,10 @@ class ServeCommand extends Command
      */
     public static $passthroughVariables = [
         'APP_ENV',
+        'HERD_PHP_81_INI_SCAN_DIR',
+        'HERD_PHP_82_INI_SCAN_DIR',
+        'HERD_PHP_83_INI_SCAN_DIR',
+        'IGNITION_LOCAL_SITES_PATH',
         'LARAVEL_SAIL',
         'PATH',
         'PHP_CLI_SERVER_WORKERS',
@@ -139,6 +143,14 @@ class ServeCommand extends Command
             return in_array($key, static::$passthroughVariables) ? [$key => $value] : [$key => false];
         })->all());
 
+        $this->trap(fn () => [SIGTERM, SIGINT, SIGHUP, SIGUSR1, SIGUSR2, SIGQUIT], function ($signal) use ($process) {
+            if ($process->isRunning()) {
+                $process->stop(10, $signal);
+            }
+
+            exit;
+        });
+
         $process->start($this->handleProcessOutput());
 
         return $process;
@@ -200,6 +212,13 @@ class ServeCommand extends Command
      */
     protected function getHostAndPort()
     {
+        if (preg_match('/(\[.*\]):?([0-9]+)?/', $this->input->getOption('host'), $matches) !== false) {
+            return [
+                $matches[1] ?? $this->input->getOption('host'),
+                $matches[2] ?? null,
+            ];
+        }
+
         $hostParts = explode(':', $this->input->getOption('host'));
 
         return [
@@ -251,9 +270,12 @@ class ServeCommand extends Command
                 $this->requestsPool[$requestPort][1] = trim(explode('[200]: GET', $line)[1]);
             } elseif (str($line)->contains(' Closing')) {
                 $requestPort = $this->getRequestPortFromLine($line);
-                $request = $this->requestsPool[$requestPort];
 
-                [$startDate, $file] = $request;
+                if (empty($this->requestsPool[$requestPort])) {
+                    return;
+                }
+
+                [$startDate, $file] = $this->requestsPool[$requestPort];
 
                 $formattedStartedAt = $startDate->format('Y-m-d H:i:s');
 
@@ -273,11 +295,16 @@ class ServeCommand extends Command
 
                 $this->output->write(' '.str_repeat('<fg=gray>.</>', $dots));
                 $this->output->writeln(" <fg=gray>~ {$runTime}s</>");
-            } elseif (str($line)->contains(['Closed without sending a request'])) {
+            } elseif (str($line)->contains(['Closed without sending a request', 'Failed to poll event'])) {
                 // ...
             } elseif (! empty($line)) {
-                $warning = explode('] ', $line);
-                $this->components->warn(count($warning) > 1 ? $warning[1] : $warning[0]);
+                $position = strpos($line, '] ');
+
+                if ($position !== false) {
+                    $line = substr($line, $position + 1);
+                }
+
+                $this->components->warn($line);
             }
         });
     }
@@ -293,6 +320,8 @@ class ServeCommand extends Command
         $regex = env('PHP_CLI_SERVER_WORKERS', 1) > 1
             ? '/^\[\d+]\s\[([a-zA-Z0-9: ]+)\]/'
             : '/^\[([^\]]+)\]/';
+
+        $line = str_replace('  ', ' ', $line);
 
         preg_match($regex, $line, $matches);
 

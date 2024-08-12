@@ -23,6 +23,8 @@ use RecursiveFilterIterator;
 use RecursiveIterator;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class NameFilterIterator extends RecursiveFilterIterator
@@ -32,6 +34,9 @@ final class NameFilterIterator extends RecursiveFilterIterator
     private ?int $filterMax = null;
 
     /**
+     * @psalm-param RecursiveIterator<int, Test> $iterator
+     * @psalm-param non-empty-string $filter
+     *
      * @throws Exception
      */
     public function __construct(RecursiveIterator $iterator, string $filter)
@@ -80,7 +85,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
                 if (isset($matches[3]) && $matches[2] < $matches[3]) {
                     $filter = sprintf(
                         '%s.*with data set #(\d+)$',
-                        $matches[1]
+                        $matches[1],
                     );
 
                     $this->filterMin = (int) $matches[2];
@@ -89,7 +94,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
                     $filter = sprintf(
                         '%s.*with data set #%s$',
                         $matches[1],
-                        $matches[2]
+                        $matches[2],
                     );
                 }
             } // Handles:
@@ -99,7 +104,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
                 $filter = sprintf(
                     '%s.*with data set "%s"$',
                     $matches[1],
-                    $matches[2]
+                    $matches[2],
                 );
             }
 
@@ -110,8 +115,8 @@ final class NameFilterIterator extends RecursiveFilterIterator
                 str_replace(
                     '/',
                     '\\/',
-                    $filter
-                )
+                    $filter,
+                ),
             );
         }
 
