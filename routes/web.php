@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('users', UserController::class);
 	Route::resource('products', ProductController::class);
 	Route::get('vouchers/all', [VoucherController::class, 'all'])->name('vouchers.all');
+	Route::get('vouchers/{code}', [VoucherController::class, 'getVoucher'])->name('vouchers.getVocher');
 	Route::resource('voucher', VoucherController::class);
 });
 Route::prefix('master-room')->group(function () {
@@ -81,7 +82,7 @@ Route::prefix('fasilitas')->group(function () {
 	Route::delete('destroy/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
 	Route::put('update/{id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
 });
-Route::GET('client/booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
+Route::get('client/booking/{id}', [BookingController::class, 'BookingOnline'])->name('booking.online');
 
 Route::group(['middleware' => ['auth']], function () {
 	Route::prefix('client')->group(function () {

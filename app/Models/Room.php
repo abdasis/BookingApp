@@ -31,7 +31,7 @@ class Room extends Model
 
     public function fotoroom()
     {
-        return $this->hasMany(roomDetail::class, 'idRoom', 'id');
+        return $this->hasMany(RoomDetail::class, 'idRoom', 'id');
     }
 
     public function bookings()

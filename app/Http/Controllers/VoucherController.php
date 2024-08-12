@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VoucherRequest;
+use App\Http\Resources\VoucherResource;
 use App\Interfaces\VoucherRepositoryInterface;
 use App\Models\Voucher;
 use Exception;
@@ -10,6 +11,11 @@ use Yajra\DataTables\DataTables;
 
 class VoucherController extends Controller
 {
+	public function getVoucher(string $code)
+	{
+		return Voucher::where('code', $code)->first();
+	}
+
 	public function index()
 	{
 		return view('vouchers.index');

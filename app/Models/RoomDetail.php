@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class roomDetail extends Model
+class RoomDetail extends Model
 {
-    use HasFactory,SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'room_details';
     protected $fillable = [

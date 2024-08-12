@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Fasilitas extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $table = 'fasilitas';
-    protected $fillable = [
-        'id',
-        'nama'
-    ];
+	use SoftDeletes;
+
+	protected $table = 'fasilitas';
+	protected $fillable = [
+		'id',
+		'nama'
+	];
 
 }
