@@ -15,19 +15,19 @@
       <div class="card shadow-sm border-light-subtle rounded-3">
 		  <div class="card-body">
 			  <table id="vouchers-table" class="table table-striped table-hover">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Kode Voucher</th>
-					<th>Deskripsi</th>
-					<th>Jumlah</th>
-					<th>Status</th>
-					<th>Tanggal Mulai</th>
-					<th>Tanggal Kadaluarsa</th>
-					<th>Aksi</th>
-				</tr>
-			</thead>
-		</table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Kode Voucher</th>
+						<th>Deskripsi</th>
+						<th>Jumlah</th>
+						<th>Status</th>
+						<th>Tanggal Mulai</th>
+						<th>Tanggal Kadaluarsa</th>
+						<th>Aksi</th>
+					</tr>
+				</thead>
+			</table>
 		  </div>
 	  </div>
 	</x-page-body>

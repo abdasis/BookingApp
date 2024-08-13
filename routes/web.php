@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\WahanaController;
 use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('vouchers/all', [VoucherController::class, 'all'])->name('vouchers.all');
 	Route::get('vouchers/{code}', [VoucherController::class, 'getVoucher'])->name('vouchers.getVocher');
 	Route::resource('voucher', VoucherController::class);
+	Route::get('wahana/all', [WahanaController::class, 'all'])->name('wahana.all');
+	Route::resource('wahana', WahanaController::class);
 });
 Route::prefix('master-room')->group(function () {
 	Route::GET('/', [RoomController::class, 'index'])->name('room.index');

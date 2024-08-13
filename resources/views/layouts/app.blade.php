@@ -423,6 +423,9 @@
                                         <a class="dropdown-item" href="{{ route('voucher.index') }}" rel="noopener">
                                             Voucher
                                         </a>
+                                         <a class="dropdown-item" href="{{ route('wahana.index') }}" rel="noopener">
+                                            Wahana
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('room.roomtype') }}" rel="noopener">
                                             Master Room Type
                                         </a>

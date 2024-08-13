@@ -45,7 +45,7 @@
                 </a>
             </div>
             </center>
-            <div class="card card-md">
+            <div class="card card-md shadow border-light-subtle rounded-3">
                 <div class="card-body">
                     <h2 class="h2 text-center mb-4">Login ke Akun Anda</h2>
                     <form method="POST" action="{{ route('login') }}" autocomplete="on" novalidate>
@@ -103,7 +103,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="hr-text">or</div>
+                <div class="hr-text border-light">or</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
