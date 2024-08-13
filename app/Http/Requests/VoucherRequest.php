@@ -10,7 +10,7 @@ class VoucherRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'code' => ['required', Rule::unique('vouchers', 'code')->ignore($this->voucher->id)],
+			'code' => ['required', Rule::unique('vouchers', 'code')->ignore($this->voucher->id ?? null)],
 			'description' => ['nullable'],
 			'amount' => ['required', 'numeric'],
 			'status' => ['required'],

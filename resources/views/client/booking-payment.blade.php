@@ -82,7 +82,7 @@
                                 <dt class="col-4">Total Hari:</dt>
                                <dd class="col-8">: {{ $lamahari }} Hari</dd>
                                 <dt class="col-4">Total Pembayaran:</dt>
-                               <dd class="col-8 fw-bold" style="font-size: 16px;">: {{ "Rp. " . number_format($totalbayar, 0, ',', '.'); }}</dd>
+                               <dd class="col-8 fw-bold" style="font-size: 16px;">: {{ "Rp. " . rupiah($totalbayar) }}</dd>
                            </dl>
 <div class="accordion mb-2" id="accordion-example">
                                <div class="accordion-item">
