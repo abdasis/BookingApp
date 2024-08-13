@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .disabled-card {
-    opacity: 0.5;
-    pointer-events: none;
-    background-color: #f5f5f5;
-}
+    <style>
+        .disabled-card {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f5f5f5;
+        }
 
-.text-danger {
-    color: #dc3545;
-}
+        .text-danger {
+            color: #dc3545;
+        }
 
-.fw-bold {
-    font-weight: bold;
-}
-</style>
+        .fw-bold {
+            font-weight: bold;
+        }
+    </style>
     <div class="page-wrapper mb-3">
         <div class="page-header d-print-none">
             <div class="container-xl">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <!-- Page body -->
-        <div class="page-body" >
+        <div class="page-body">
             <div class="container-xl">
                 <div class="card text-primary-fg mb-4" style="background-color: #1F573A;">
                     <div class="card-stamp">
@@ -54,13 +54,11 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="card-body" >
+                    <div class="card-body">
                         <h3 class="card-title">Pilih Room Kamar Yang Tersedia</h3>
                         <p>Booking Kamar Sekarang Juga</p>
                         <div class="form-selectgroup">
                             <div id="filters">
-
-                                </label>
                                 <label class="bg-dark">
                                     <input type="date" name="checkIn" id="checkIn" class="form-control">
                                 </label>

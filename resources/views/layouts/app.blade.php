@@ -12,7 +12,7 @@
     <link href="{{ asset('') }}assets/css/tabler-vendors.min.css?1692870487" rel="stylesheet" />
     <link href="{{ asset('') }}assets/css/demo.min.css?1692870487" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -71,10 +71,10 @@
                 </button>
                 <h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
-                            class="navbar-brand-image">
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000"
+                            alt="Tabler" class="navbar-brand-image">
                     </a>
-<span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                    <span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
                 </h5>
 
                 <div class="navbar-nav flex-row order-md-last">
@@ -110,7 +110,7 @@
                         <!--<div class="nav-item dropdown d-none d-md-flex me-3">-->
                         <!--    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"-->
                         <!--        aria-label="Show notifications">-->
-                                <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                        <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
                         <!--        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"-->
                         <!--            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"-->
                         <!--            stroke-linecap="round" stroke-linejoin="round">-->
@@ -164,7 +164,7 @@
                         <!--                        </div>-->
                         <!--                        <div class="col-auto">-->
                         <!--                            <a href="#" class="list-group-item-actions show">-->
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                         <!--                                <svg xmlns="http://www.w3.org/2000/svg"-->
                         <!--                                    class="icon text-yellow" width="24" height="24"-->
                         <!--                                    viewBox="0 0 24 24" stroke-width="2"-->
@@ -189,7 +189,7 @@
                         <!--                        </div>-->
                         <!--                        <div class="col-auto">-->
                         <!--                            <a href="#" class="list-group-item-actions">-->
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                         <!--                                <svg xmlns="http://www.w3.org/2000/svg"-->
                         <!--                                    class="icon text-muted" width="24" height="24"-->
                         <!--                                    viewBox="0 0 24 24" stroke-width="2"-->
@@ -216,7 +216,7 @@
                         <!--                        </div>-->
                         <!--                        <div class="col-auto">-->
                         <!--                            <a href="#" class="list-group-item-actions">-->
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                         <!--                                <svg xmlns="http://www.w3.org/2000/svg"-->
                         <!--                                    class="icon text-muted" width="24" height="24"-->
                         <!--                                    viewBox="0 0 24 24" stroke-width="2"-->
@@ -423,7 +423,7 @@
                                         <a class="dropdown-item" href="{{ route('voucher.index') }}" rel="noopener">
                                             Voucher
                                         </a>
-                                         <a class="dropdown-item" href="{{ route('wahana.index') }}" rel="noopener">
+                                        <a class="dropdown-item" href="{{ route('wahana.index') }}" rel="noopener">
                                             Wahana
                                         </a>
                                         <a class="dropdown-item" href="{{ route('room.roomtype') }}" rel="noopener">

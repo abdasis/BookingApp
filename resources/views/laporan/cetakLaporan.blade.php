@@ -26,6 +26,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1 style="text-align: center;">{{ $data['title'] }}</h1>
     <p>Tanggal: {{ $data['date'] }}</p>
@@ -42,9 +43,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($data['booking'] as $key=> $item)
+            @foreach ($data['booking'] as $key => $item)
                 <tr>
-                    <td>{{ $key+1 }}</td>
+                    <td>{{ $key + 1 }}</td>
                     <td>{{ $item['NamaBooking'] }}</td>
                     <td>{{ $item['email'] }}</td>
                     <td>{{ $item['Gender'] == 'L' ? 'Pria' : 'Wanita' }}</td>

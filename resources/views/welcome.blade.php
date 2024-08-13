@@ -23,13 +23,13 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <!-- Page pre-title -->
-<h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href=".">
-                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000" alt="Tabler"
-                            class="navbar-brand-image">
-                    </a>
-    <span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
-                </h5>
+                        <h5 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                            <a href=".">
+                                <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="1000" height="1000"
+                                    alt="Tabler" class="navbar-brand-image">
+                            </a>
+                            <span style="color: #1F573A; font-size: 18px">Basecamp Military Lifestyle</span>
+                        </h5>
                         <p>Jalan Puncak Gadog No. 22 KM 75, Cipayung Data, Kecamatan Megamendung, Kab. Bogor</p>
                     </div>
                     <!-- Page title actions -->
@@ -70,12 +70,10 @@
                                     <input type="date" name="checkOut" id="checkOut" class="form-control">
                                 </label>
 
-
                             </div>
                         </div>
                         <br><br>
                         <div class="form-selectgroup">
-
 
                             <button id="apply-filters" class="btn btn-primary mb-3">Apply Filters</button>
                         </div>
@@ -86,7 +84,6 @@
                     <!-- List kamar akan ditampilkan di sini -->
                 </div>
             </div>
-
 
         </div>
         <script>
@@ -165,7 +162,8 @@
                                                                 <p>${room.deskripsi}</p>
                                                             </div>
                                                             <div class="mt-3 badges">
-                                                                ${room.fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white mb-1">${fasilitas1}</span>`).join(' ')}
+                                                                ${room.fasilitas.map(fasilitas1 => `<span class="badge badge-outline border fw-normal badge-pill bg-info text-white mb-1">${fasilitas1}</span>`)
+                                                                      .join(' ')}
                                                             </div>
                                                             ${room.status.includes('Tidak Tersedia') ? `<div class="mt-3 text-danger fw-bold">Room ini telah dipesan dari ${room.bookingCheckIn} hingga ${room.bookingCheckOut}</div>` : ''}
                                                             <div class="mt-1 text-end align-middle">

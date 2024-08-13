@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Konfirmasi Booking Anda</title>
     <style>
@@ -9,6 +10,7 @@
             color: #333;
             line-height: 1.6;
         }
+
         .container {
             width: 80%;
             margin: auto;
@@ -18,42 +20,52 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             background: #4CAF50;
             color: #fff;
             padding: 10px 0;
             text-align: center;
         }
+
         .header h2 {
             margin: 0;
         }
+
         .content {
             margin: 20px 0;
         }
+
         .table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
         }
-        .table th, .table td {
+
+        .table th,
+        .table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         .table th {
             background: #4CAF50;
             color: #fff;
         }
+
         .footer {
             text-align: center;
             padding: 20px 0;
             border-top: 1px solid #ddd;
         }
+
         .footer p {
             margin: 0;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -61,7 +73,8 @@
         </div>
         <div class="content">
             <p>Hai, {{ $booking['NamaBooking'] ?? 'Tamu' }}!</p>
-            <p>Terima kasih telah mempercayakan kami sebagai tempat menginap Anda. Berikut adalah detail booking Anda:</p>
+            <p>Terima kasih telah mempercayakan kami sebagai tempat menginap Anda. Berikut adalah detail booking Anda:
+            </p>
 
             <h3>Detail Booking</h3>
             <table class="table">
@@ -99,7 +112,8 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ $booking['Status'] == "1" ? "Menunggu Pembayaran" : ($booking['Status'] == "2" ? "Dibayar" : ($booking['Status'] == "3" ? "Menunggu Konfirmasi" : "Order Dibatalkan")) }}</td>
+                    <td>{{ $booking['Status'] == '1' ? 'Menunggu Pembayaran' : ($booking['Status'] == '2' ? 'Dibayar' : ($booking['Status'] == '3' ? 'Menunggu Konfirmasi' : 'Order Dibatalkan')) }}
+                    </td>
                 </tr>
             </table>
 
@@ -109,7 +123,8 @@
             <p><strong>Password:</strong> {{ $password }}</p>
             <p>Pastikan untuk mengubah password Anda setelah login pertama untuk keamanan akun Anda.</p>
 
-            <p>Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami</p>
+            <p>Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami
+            </p>
         </div>
         <div class="footer">
             <p>Salam Hangat,</p>
@@ -117,4 +132,5 @@
         </div>
     </div>
 </body>
+
 </html>

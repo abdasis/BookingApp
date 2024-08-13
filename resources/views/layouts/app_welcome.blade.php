@@ -12,7 +12,8 @@
     <link href="{{ asset('') }}assets/css/tabler-vendors.min.css?1692870487" rel="stylesheet" />
     <link href="{{ asset('') }}assets/css/demo.min.css?1692870487" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/iconfont/tabler-icons.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -85,8 +86,8 @@
                     <div class="form-selectgroup-boxes row mb-3">
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
-                                <input type="radio" name="report-type" value="1"
-                                    class="form-selectgroup-input" checked>
+                                <input type="radio" name="report-type" value="1" class="form-selectgroup-input"
+                                    checked>
                                 <span class="form-selectgroup-label d-flex align-items-center p-3">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -101,8 +102,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
-                                <input type="radio" name="report-type" value="1"
-                                    class="form-selectgroup-input">
+                                <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
                                 <span class="form-selectgroup-label d-flex align-items-center p-3">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>

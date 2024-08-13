@@ -38,12 +38,12 @@
     <div class="page page-center">
         <div class="container container-tight py-4">
             <center>
-            <div class="text-center mb-4">
-                <a href="." class="">
-                    <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="30%" height="30%"
-                        alt="Tabler">
-                </a>
-            </div>
+                <div class="text-center mb-4">
+                    <a href="." class="">
+                        <img src="{{ asset('assets/img/icon/basecamp.png') }}" width="30%" height="30%"
+                            alt="Tabler">
+                    </a>
+                </div>
             </center>
             <div class="card card-md shadow border-light-subtle rounded-3">
                 <div class="card-body">
@@ -107,8 +107,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <a href="#"
-                                class="btn w-100">
+                            <a href="#" class="btn w-100">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="#00ff1e" stroke-width="2"

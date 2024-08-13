@@ -342,12 +342,12 @@
 
             jQuery(document).ready(function() {
                 dataTable()
-                 $('#filterStatus,#filterJenis').change(function() {
-                var table1 = $('#table1').DataTable();
-                table1.draw();
+                $('#filterStatus,#filterJenis').change(function() {
+                    var table1 = $('#table1').DataTable();
+                    table1.draw();
+                });
             });
-            });
-           
+
         });
     </script>
 @endsection
