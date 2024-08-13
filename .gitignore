@@ -1,1 +1,11 @@
 /vendor/
+node_modules/
+public/storage
+storage/*.key
+.env
+.phpstorm.meta.php
+.idea/
+homestead.json
+homestead.yaml
+npm-debug.log
+yarn-error.log
