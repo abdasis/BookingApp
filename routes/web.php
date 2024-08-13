@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\WahanaBookingController;
 use App\Http\Controllers\WahanaController;
 use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('booking-wahana/{id}', [WahanaController::class, 'booking'])->name('wahana.book');
 	Route::post('booking-wahana', [WahanaController::class, 'storeBooking'])->name('wahana.store-booking');
 	Route::resource('wahana', WahanaController::class);
+	Route::resource('wahana-booking', WahanaBookingController::class);
 });
 Route::prefix('master-room')->group(function () {
 	Route::GET('/', [RoomController::class, 'index'])->name('room.index');

@@ -25,7 +25,7 @@
     <x-page-body>
         <div class="card shadow-sm rounded-3 border-light-subtle">
             <div class="card-body">
-                <form action="{{route('wahana.store-booking')}}" method="POST">
+                <form action="{{route('wahana-booking.store')}}" method="POST">
                     @csrf
                     <div class="row justify-content-between gap-3">
                         <div class="col-md-6">
@@ -33,15 +33,15 @@
                                 Contact Detail
                             </h2>
                             <input type="hidden" name="wahana_id" value="{{$wahana->id}}" />
-                            <div class="form-group d-flex w-full gap-2 ">
-                                <div class="d-grid w-50">
+                            <div class="form-group row ">
+                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Email</label>
                                     <input type="text" class="form-control" name="email" required
                                         placeholder="Masukan Email" value="{{ old('email') }}">
                                 </div>
-                                <div class="d-grid w-50">
+                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Nomor Telepon</label>
-                                    <input type="text" class="form-control" name="telepon" required
+                                    <input type="text" id="telepon" class="form-control" name="telepon" required
                                         placeholder="Masukan Telepon" value="{{ old('telepon') }}">
                                 </div>
                             </div>
@@ -51,13 +51,13 @@
                             <h2 class="title mt-5 mb-2">
                                 Biodata Pengunjung
                             </h2>
-                            <div class="form-group d-flex w-full gap-2 ">
-                                <div class="d-grid w-50">
+                            <div class="form-group row">
+                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Nama Lengkap</label>
                                     <input type="text" class="form-control" name="nama" required
                                         placeholder="Masukan Nama Lengkap" value="{{ old('nama') }}">
                                 </div>
-                                <div class="d-grid w-50">
+                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Nomor Identitas (SIM/KTP)</label>
                                     <input type="text" class="form-control" name="nomor_identitas" required
                                         placeholder="Masukan Nomor Identitas" value="{{ old('nomor_identitas') }}">
@@ -67,7 +67,7 @@
                                 <label class="form-label">Jenis Kelamin</label>
                                 <div class="form-selectgroup">
                                     <label class="form-selectgroup-item">
-                                        <input type="radio" name="Gender" value="L" class="form-selectgroup-input"
+                                        <input type="radio" name="gender" value="L" class="form-selectgroup-input"
                                             checked="">
                                         <span
                                             class="form-selectgroup-label"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -83,7 +83,7 @@
                                             </svg> Pria</span>
                                     </label>
                                     <label class="form-selectgroup-item">
-                                        <input type="radio" name="Gender" value="P" class="form-selectgroup-input">
+                                        <input type="radio" name="gender" value="P" class="form-selectgroup-input">
                                         <span class="form-selectgroup-label">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -101,8 +101,14 @@
                             <h2 class="title mt-5 mb-2">
                                 Diskon
                             </h2>
-                            <div class="form-group d-flex w-full gap-2 ">
-                                <div class="d-grid w-50">
+                            <div class="form-group row ">
+                                 <div class="col-sm-12 col-md-6">
+                                    <label for="">Tanggal Booking</label>
+                                    <input type="date" class="form-control {{$errors->has('tanggal_booking') ? 'is-invalid' : ''}}" name="tanggal_booking"
+                                           placeholder="Kode Voucher" value="{{ old('tanggal_booking') }}">
+                                     <x-error-message error="tanggal_booking"/>
+                                </div>
+                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Kode Voucher</label>
                                     <input type="text" class="form-control" name="diskon" required
                                         placeholder="Kode Voucher" value="{{ old('diskon') }}">

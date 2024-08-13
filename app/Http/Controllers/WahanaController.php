@@ -130,43 +130,7 @@ class WahanaController extends Controller
 	{
 
 
-		//cek user
-		$check_user = User::where('email', $request->input('email'))->first();
-		if (!$check_user) {
-			$generate_password = now()->format('dmY');
-			$user['name'] = $request->input('nama');
-			$user['email'] = $request->input('email');
-			$user['password'] = Hash::make($generate_password);
-			$user['role'] = 'Pengujung';
-			$user = User::create($user);
-			$user->assignRole('2');
-		} else {
-			$user = User::where('email', $request->input('email'))->first();
-			$user->password = Hash::make(now()->format('dmY'));
-			$user->save();
-		}
 
-		$visitor_id = User::where('email', $request->Email)->first()->id;
-
-		$booking = $request->all();
-		$booking['userId'] = $visitor_id;
-		$booking['Total'] = $tarifTotal;
-		$booking['Status'] = '2';
-		$booking['isOnline'] = '1';
-		$data = Booking::create($booking);
-
-		// update status room
-		$query = Room::find($request->roomId);
-		$data1['status'] = '1';  // 0 = Available, 1=Booked
-		$query->update($data1);
-
-		$dataEmail = [
-			'user' => $input,
-			'password' => now()->format('dmY'),
-			'booking' => $data2
-		];
-
-		Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
 
 	}
 }

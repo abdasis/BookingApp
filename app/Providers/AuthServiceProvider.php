@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\WahanaBooking;
+use App\Policies\WahanaBookingPolicy;
 use App\Policies\WahanaPolicy;
 use App\Wahana;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
 	    // 'App\Models\Model' => 'App\Policies\ModelPolicy',
 	    Wahana::class => WahanaPolicy::class,
+	    WahanaBooking::class => WahanaBookingPolicy::class,
     ];
 
     /**

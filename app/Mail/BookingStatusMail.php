@@ -35,7 +35,7 @@ class BookingStatusMail extends Mailable
     public function build()
     {
         return $this->subject('Status booking Anda')
-                    ->view('Email.bookingStatus')
+                    ->view('email.bookingStatus')
                     ->with([
                         'user' => $this->user,
                         'password' => $this->password,
