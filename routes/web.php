@@ -40,7 +40,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('vouchers/all', [VoucherController::class, 'all'])->name('vouchers.all');
 	Route::get('vouchers/{code}', [VoucherController::class, 'getVoucher'])->name('vouchers.getVocher');
 	Route::resource('voucher', VoucherController::class);
-	Route::get('wahana/all', [WahanaController::class, 'all'])->name('wahana.all');
+	Route::get('daftar-wahana', [WahanaController::class, 'daftarWahana'])->name('wahana.daftarWahana');
+	Route::get('semua-wahana', [WahanaController::class, 'all'])->name('wahana.all');
+	Route::get('booking-wahana/{id}', [WahanaController::class, 'booking'])->name('wahana.book');
+	Route::post('booking-wahana', [WahanaController::class, 'storeBooking'])->name('wahana.store-booking');
 	Route::resource('wahana', WahanaController::class);
 });
 Route::prefix('master-room')->group(function () {
