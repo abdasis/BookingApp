@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingPaymentController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LaporanController;
@@ -46,7 +47,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('booking-wahana/{id}', [WahanaController::class, 'booking'])->name('wahana.book');
 	Route::post('booking-wahana', [WahanaController::class, 'storeBooking'])->name('wahana.store-booking');
 	Route::resource('wahana', WahanaController::class);
+	Route::get('list-wahana-booking', [WahanaBookingController::class, 'bookingWahana'])
+		->name('wahana-booking.list-wahana-booking');
+	Route::get('confirm-booking/{id}', [WahanaBookingController::class, 'confirm'])->name('wahana-booking.confirm');
+	Route::post('confirm-booking', [WahanaBookingController::class, 'storeConfirm'])->name('wahana-booking.store-confirm');
 	Route::resource('wahana-booking', WahanaBookingController::class);
+	Route::resource('booking-payment', BookingPaymentController::class);
 });
 Route::prefix('master-room')->group(function () {
 	Route::GET('/', [RoomController::class, 'index'])->name('room.index');

@@ -39,14 +39,6 @@
                                     <td>{{ \Carbon\Carbon::parse($booking->tanggal_booking)->format('d, F Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-muted">Harga</td>
-                                    <td>{{ rupiah($booking->total) }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Diskon</td>
-                                    <td>{{ $booking->jumlah_discount > 0 ? rupiah($booking->jumlah_discount) : '-' }}</td>
-                                </tr>
-                                <tr>
                                     <td class="text-muted">Status</td>
                                     <td>
                                         @if ($booking->status === 'pending')
@@ -55,10 +47,22 @@
                                             </div>
                                         @else
                                             <div class="badge bg-teal-lt border-teal">
-                                                {{ $booking->status }}
+                                                Sudah Dibayar
                                             </div>
                                         @endif
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Harga</td>
+                                    <td>{{ rupiah($booking->total) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Diskon</td>
+                                    <td>{{ $booking->jumlah_discount > 0 ? rupiah($booking->jumlah_discount) : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>{{ rupiah($booking->total - $booking->jumlah_discount) }}</th>
                                 </tr>
                         </table>
                         <div class="accordion border-light-subtle shadow-sm mb-2" id="accordion-payment">
@@ -87,32 +91,33 @@
                         </div>
 
                     </div>
-                          <div class="card-body border-light">
-                               <form id="formbayar" enctype="multipart/form-data" method="POST">
-                               <input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}">
-                               <input type="hidden" name="idbooking" id="idbooking" value="{{ $booking->id }}">
-                               <div class="form-group">
-                                   <label for="">Bukti Transfer</label>
-                                   <input type="file" name="file" id="file" class="form-control mb-2">
-                               </div>
-                               <div class="d-grid gap-2 mt-3">
-                                   <button type="button" id="submitPayment" class="btn btn-teal">Submit Payment</button>
-                                   <a href="https://wa.me/{{ $booking->telepon }}?text=Halo%20konfirmasi%20pemesanan%20kamar%20Kode%20booking%20{{ $booking->id }}"
-                                                                     target="blank" class="btn btn-light border-light-subtle">
-                                   <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    <div class="card-body border-light">
+                        <form id="formbayar" action="{{ route('booking-payment.store') }}" enctype="multipart/form-data"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="booking_id" id="booking_id" value="{{ $booking->id }}">
+                            <div class="form-group">
+                                <label for="">Bukti Transfer</label>
+                                <input type="file" name="bukti" id="file" class="form-control mb-2">
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" id="submitPayment" class="btn btn-teal">Submit Payment</button>
+                                <a href="https://wa.me/{{ $booking->telepon }}?text=Halo%20konfirmasi%20pemesanan%20kamar%20Kode%20booking%20{{ $booking->id }}"
+                                    target="blank" class="btn btn-light border-light-subtle">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="#00ff1e" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp">
-                                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                       <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
-                                       <path
-                                          d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
-                                   </svg> Hubungi Kami
-                               </a>
-                               </div>
-                           </form>
-                          </div>
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+                                        <path
+                                            d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
+                                    </svg> Hubungi Kami
+                                </a>
+                            </div>
+                        </form>
+                    </div>
 
                 </div>
             </div>
