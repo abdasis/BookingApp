@@ -33,6 +33,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/booking', function (){
+	return view('booking.option');
+})->name('home');
 Route::GET('booking-payment/{id}', [BookingController::class, 'BookingPayment'])->name('booking.book-payment');
 Route::post('update/{id}', [BookingController::class, 'update'])->name('booking.update');
 Route::group(['middleware' => ['auth']], function () {
