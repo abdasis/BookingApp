@@ -72,11 +72,10 @@ class WahanaBookingController extends Controller
 			//			];
 			//
 			//			Mail::to($request->Email)->send(new BookingStatusMail($dataEmail));
-			app(BookingRepsitoryInterface::class)->create($booking);
+			$booking = app(BookingRepsitoryInterface::class)->create($booking);
 
-			return redirect()->route('wahana.index')->with('success', 'Booking success');
+			return redirect()->route('wahana-booking.show', $booking->id)->with('success', 'Booking success');
 		} catch (Exception $exception) {
-			dd($exception);
 			return redirect()->back()->with('error', $exception->getMessage());
 		}
 	}
@@ -91,6 +90,9 @@ class WahanaBookingController extends Controller
 
 	public function show(WahanaBooking $wahanaBooking)
 	{
+		return view('booking.show', [
+			'booking' => $wahanaBooking
+		]);
 	}
 
 	public function edit(WahanaBooking $wahanaBooking)
