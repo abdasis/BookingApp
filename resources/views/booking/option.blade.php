@@ -26,7 +26,7 @@
                      <a href="{{ route('booking.checkout') }}" class="btn btn-light border-light-subtle btn-lg">
                         <img src="{{asset('assets/img/logo/logo.png')}}" alt="">
                         <span class="text-primary">
-                           Booking Hotel
+                           Booking Camp
                         </span>
                      </a>
                      <a href="{{ route('wahana.daftarWahana') }}" class="btn btn-light border-light-subtle btn-lg">
