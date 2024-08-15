@@ -25,9 +25,9 @@
                   </p>
                   <div class="hr-text">Main Menu</div>
                   <div class="d-grid gap-2">
-                     <a href="{{ route('daftar-room') }}" class="btn btn-light border-light-subtle btn-lg">
+                     <a href="{{ route('daftar-room') }}" class="btn btn-azure text-light btn-lg">
                         {{--<img src="{{asset('assets/img/logo/logo.png')}}" alt="">--}}
-                        <span class="text-primary">
+                        <span class="text-light">
                            Booking Camp
                         </span>
                      </a>

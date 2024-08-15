@@ -61,8 +61,8 @@
                                 </div>
                                 <div class="col">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ route('wahana.book', $wahana->id) }}" class="btn btn-primary">Book
-                                            Now</a>
+                                        <a href="{{ route('wahana.book', $wahana->id) }}" class="btn
+                                        btn-primary">Beli Tiket</a>
                                     </div>
                                 </div>
                             </div>
