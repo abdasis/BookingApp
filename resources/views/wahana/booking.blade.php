@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <label for="">Kode Voucher</label>
-                                    <input type="text" class="form-control" name="diskon" required
+                                    <input type="text" class="form-control" name="diskon"
                                         placeholder="Kode Voucher" value="{{ old('diskon') }}">
                                 </div>
                             </div>

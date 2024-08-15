@@ -320,11 +320,11 @@ class BookingController extends Controller
 		$checkout = Carbon::parse($data->checkOut);
 		$lamahari = $checkin->diffInDays($checkout);
 		$date = $checkin;
-		if ($date->isWeekend()) {
-			$totalbayar = $data->Total;
-		} else {
-			$totalbayar = $data->Total;
-		}
+	   if ($date->isWeekend()) {
+		  $totalbayar = (float) $data?->roomtypes->tarifWe;
+	   } else {
+		  $totalbayar = (float) $data?->roomtypes->tarifWd;
+	   }
 		$totalbayar = $totalbayar * $lamahari;
 		$wa = whatsapp::latest()->first();
 		return view('client.booking-payment', compact('data', 'wa', 'lamahari', 'totalbayar'));
