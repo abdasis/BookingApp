@@ -41,9 +41,9 @@
                     <div class="card hover-shadow-sm shadow-sm border-light-subtle rounded-sm">
                         <div class="card-body">
                             <div class="row justify-content-between">
-                                <div class="image-wrapper col-3" style="">
-                                    <img src="{{ asset('assets/img/wahana/' . json_decode($wahana->galeries)[0]) }}"
-                                        alt="wahana" class="w-100 rounded-2 border-2 border-light-subtle">
+                                <div class="image-wrapper col-3" style="max-height: 200px">
+                                    <img style="max-height: 200px" src="{{ asset('assets/img/wahana/' . json_decode($wahana->galeries)[0]) }}"
+                                        alt="wahana" class="w-100 rounded-2 border-2 object-fit-fill border-light-subtle">
                                 </div>
                                 <div class="meta-data col px-3">
                                     <h3 class="mb-0">{{ $wahana->nama }}</h3>

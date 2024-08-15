@@ -3,7 +3,9 @@
 @section('content')
    <div
       class="overflow-hidden min-vh-100"
-      style="background-image: url('/assets/img/wahana/17235659551.jpg'); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0"
+      style="background-image: url('/assets/img/background-kapal-selam.jpg'); background-size: cover; width: 100vw;
+      height: 100vh; position:
+      absolute; top: 0; left: 0"
    >
    <div class="row justify-content-center align-items-center h-100">
       <div class="col-md-3">
@@ -23,14 +25,14 @@
                   </p>
                   <div class="hr-text">Main Menu</div>
                   <div class="d-grid gap-2">
-                     <a href="{{ route('booking.checkout') }}" class="btn btn-light border-light-subtle btn-lg">
-                        <img src="{{asset('assets/img/logo/logo.png')}}" alt="">
+                     <a href="{{ route('daftar-room') }}" class="btn btn-light border-light-subtle btn-lg">
+                        {{--<img src="{{asset('assets/img/logo/logo.png')}}" alt="">--}}
                         <span class="text-primary">
                            Booking Camp
                         </span>
                      </a>
                      <a href="{{ route('wahana.daftarWahana') }}" class="btn btn-light border-light-subtle btn-lg">
-                        <img src="{{asset('assets/img/logo/logo.png')}}" alt="">
+                        {{--<img src="{{asset('assets/img/logo/logo.png')}}" alt="">--}}
                         <span class="text-primary">
                            Booking Wahana
                         </span>

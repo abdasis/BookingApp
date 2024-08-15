@@ -30,7 +30,7 @@ class BookingSukses extends Mailable
     public function build()
     {
         return $this->subject('booking Berhasil')
-                    ->view('Email.BookingSukses')
+                    ->view('email.BookingSukses')
                     ->with([
                         'booking' => $this->booking,
                     ]);

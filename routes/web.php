@@ -26,14 +26,15 @@ use Illuminate\Support\Facades\Route;
  * |
  */
 
-Route::get('/', function () {
+Route::get('/daftar-room', function () {
 	return view('welcome');
-});
+})->name('daftar-room');
+Route::get('daftar-wahana', [WahanaController::class, 'daftarWahana'])->name('wahana.daftarWahana');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/booking', function (){
+Route::get('/', function (){
 	return view('booking.option');
 })->name('home');
 Route::GET('booking-payment/{id}', [BookingController::class, 'BookingPayment'])->name('booking.book-payment');
@@ -45,7 +46,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('vouchers/all', [VoucherController::class, 'all'])->name('vouchers.all');
 	Route::get('vouchers/{code}', [VoucherController::class, 'getVoucher'])->name('vouchers.getVocher');
 	Route::resource('voucher', VoucherController::class);
-	Route::get('daftar-wahana', [WahanaController::class, 'daftarWahana'])->name('wahana.daftarWahana');
 	Route::get('semua-wahana', [WahanaController::class, 'all'])->name('wahana.all');
 	Route::get('booking-wahana/{id}', [WahanaController::class, 'booking'])->name('wahana.book');
 	Route::post('booking-wahana', [WahanaController::class, 'storeBooking'])->name('wahana.store-booking');

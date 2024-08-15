@@ -32,7 +32,7 @@ class WahanaController extends Controller
 					$fileNames[] = $fileName;
 				}
 				$request->merge([
-					'galeries' => json_encode($fileNames)
+					'galeries' => $fileNames
 				]);
 			}
 
@@ -74,7 +74,7 @@ class WahanaController extends Controller
 					$fileNames[] = $fileName;
 				}
 				$request->merge([
-					'galeries' => json_encode($fileNames)
+					'galeries' => $fileNames
 				]);
 			}
 
@@ -83,7 +83,7 @@ class WahanaController extends Controller
 				'deskripsi' => $request->input('deskripsi'),
 				'harga_weekday' => $request->input('harga_weekday'),
 				'harga_weekend' => $request->input('harga_weekend'),
-				'galeries' => $request->input('galeries'),
+				'galeries' => json_encode($request->input('galeries')),
 			]);
 			return redirect()->route('wahana.index')->with('success', 'Data Berhasil Diperbarui');
 		} catch (Exception $exception) {

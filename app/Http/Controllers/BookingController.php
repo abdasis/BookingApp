@@ -348,12 +348,12 @@ class BookingController extends Controller
 			$user = User::create($input);
 			$user->assignRole('2');
 		} else {
-			$input = User::where('email', $Email)->first();
-			$input->password = Hash::make(now()->format('dmY'));
-			$input->save();
+			$user = User::where('email', $Email)->first();
+			$user->password = Hash::make(now()->format('dmY'));
+			$user->save();
 		}
 
-		$booking->userId = $cek->id;
+		$booking->userId = $user->id;
 		$booking->Status = '2';
 		$booking->save();
 
