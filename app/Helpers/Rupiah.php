@@ -1,9 +1,7 @@
 <?php
-
-
 function rupiah(float $nilai = 0)
 {
-	if ($nilai !== '') {
+	if ($nilai) {
 		$nilai = round($nilai ?? 0, 0, PHP_ROUND_HALF_UP);
 		$formated = number_format($nilai, 0, ',', '.');
 		if ($nilai >= 0) {

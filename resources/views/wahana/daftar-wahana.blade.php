@@ -42,7 +42,8 @@
                         <div class="card-body">
                             <div class="row justify-content-between">
                                 <div class="image-wrapper col-3" style="max-height: 200px">
-                                    <img style="max-height: 200px" src="{{ asset('assets/img/wahana/' . json_decode($wahana->galeries)[0]) }}"
+                                    <img style="max-height: 200px"
+                                        src="{{ asset('assets/img/wahana/' . json_decode($wahana->galeries)[0]) }}"
                                         alt="wahana" class="w-100 rounded-2 border-2 object-fit-fill border-light-subtle">
                                 </div>
                                 <div class="meta-data col px-3">
@@ -61,7 +62,8 @@
                                 </div>
                                 <div class="col">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ route('wahana.book', $wahana->id) }}" class="btn
+                                        <a href="{{ route('wahana.book', $wahana->id) }}"
+                                            class="btn
                                         btn-primary">Beli Tiket</a>
                                     </div>
                                 </div>

@@ -1,157 +1,115 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Konfirmasi Booking Anda</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Email</title>
     <style>
+
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
+            line-height: 1.2; /* tambahkan ini untuk membuat font lebih rapat */
         }
-
         .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            background: #fff;
-            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px; /* tambahkan ini untuk membuat konten lebih rapat */
         }
-
         .header {
-            background: #4CAF50;
-            color: #fff;
-            padding: 10px 0;
+            background-color: #008080; /* Primary Teal Color */
+            color: white;
+            padding: 20px;
             text-align: center;
         }
-
-        .header h2 {
-            margin: 0;
+        .header h2{
+            color: white;
         }
-
         .content {
-            margin: 20px 0;
+            padding: 0; /* hapus padding untuk membuat konten lebih rapat */
         }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        h2, h3 {
+            color: #008080;
         }
-
-        .table th,
-        .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        p {
+            margin-bottom: 10px; /* tambahkan ini untuk membuat paragraf lebih rapat */
         }
-
-        .table th {
-            background: #4CAF50;
-            color: #fff;
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px; /* tambahkan ini untuk membuat grid lebih rapat */
         }
-
+        .grid div {
+            padding: 2px;
+            border-bottom: 0;
+        }
         .footer {
+            background-color: #f4f4f4;
             text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid #ddd;
+            padding: 10px;
         }
-
-        .footer p {
-            margin: 0;
+        @media (max-width: 600px) {
+           /* .grid {
+                grid-template-columns: 1fr;
+            }*/
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="header">
             <h2>Terima kasih telah melakukan booking di Basecamp Military Lifestyle</h2>
         </div>
         <div class="content">
-            <p>Hai, {{ $booking['NamaBooking'] ?? 'Tamu' }}!</p>
-            <p>Terima kasih telah mempercayakan kami sebagai tempat menginap Anda. Berikut adalah detail booking Anda:
-            </p>
-
-            <h3>Detail Booking</h3>
+            <p>Hai, {{ $user['name'] ?? 'Tamu' }}!</p>
             @if($booking['wahana_id'] != null)
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Nama</th>
-                            <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>{{ $user['email'] }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nomor Telepon</th>
-                            <td>{{ $booking['telepon'] ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Wahana</th>
-                            <td>{{$wahana->nama}}</td>
-                        </tr>
-                        <tr>
-                            <th>Tarif</th>
-                            <td>{{$booking['total']}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+              <p>Terima kasih telah mempercayakan kami sebagai tempat bermain wahana air. Berikut adalah detail booking Kamu:</p>
             @else
-                <table class="table">
-                    <tr>
-                        <th>Nama</th>
-                        <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ $user['email'] }}</td>
-                    </tr>
-                    <tr>
-                        <th>Nomor Telepon</th>
-                        <td>{{ $booking['hp'] ?? 'Tidak Diketahui' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Nama Kamar</th>
-                        <td>{{ $booking['NamaRoom'] ?? 'Tidak Diketahui' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Jumlah Kamar</th>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <th>Tanggal Check-in</th>
-                        <td>{{ $booking['checkIn'] ?? 'Tidak Diketahui' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Tanggal Check-out</th>
-                        <td>{{ $booking['checkOut'] ?? 'Tidak Diketahui' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Total Tarif</th>
-                        <td>Rp. {{ number_format($booking['Total'], 0, ',', '.') ?? '0' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>{{ $booking['Status'] == '1' ? 'Menunggu Pembayaran' : ($booking['Status'] == '2' ? 'Dibayar' : ($booking['Status'] == '3' ? 'Menunggu Konfirmasi' : 'Order Dibatalkan')) }}
-                        </td>
-                    </tr>
-                </table>
+              <p>Terima kasih telah mempercayakan kami sebagai tempat menginap Kamu. Berikut adalah detail booking Kamu:</p>
             @endif
 
-            <h3>Informasi Akun</h3>
-            <p>Anda dapat mengakses sistem kami menggunakan detail berikut:</p>
+            <h3>Detail Booking</h3>
+           @if ($booking['wahana_id'] != null)
+              <div class="grid">
+                <div>Nama:</div><div>{{ $user['name'] ?? 'Tamu' }}</div>
+                <div>Email:</div><div>{{ $user['email'] }}</div>
+                <div>Nomor Telepon:</div><div>{{ $booking['telepon'] ?? 'Tidak Diketahui' }}</div>
+                <div>Wahana:</div><div>{{ $wahana->nama }}</div>
+                <div>Harga Tiket:</div><div>{{ rupiah($booking['total']) }}</div>
+                <div>Diskon:</div><div>{{ rupiah($booking['jumlah_discount']) }}</div>
+                <div>Total:</div><div>{{ rupiah($booking['grand_total']) }}</div>
+            </div>
+           @else
+              <div class="grid">
+                <div>Nama:</div><div>{{ $booking['NamaBooking'] ?? 'Tamu' }}</div>
+                <div>Email:</div><div>{{ $user['email'] }}</div>
+                <div>Nomor Telepon:</div><div>{{ $booking['hp'] ?? 'Tidak Diketahui' }}</div>
+                <div>Nama Kamar:</div><div>{{ $booking['NamaRoom'] ?? 'Tidak Diketahui' }}</div>
+                <div>Jumlah Kamar:</div><div>1</div>
+                <div>Tanggal Check-in:</div><div>{{ $booking['checkIn'] ?? 'Tidak Diketahui' }}</div>
+                <div>Tanggal Check-out:</div><div>{{ $booking['checkOut'] ?? 'Tidak Diketahui' }}</div>
+                <div>Status:</div><div>{{ $booking['Status'] == '1' ? 'Menunggu Pembayaran' : ($booking['Status'] == '2' ? 'Dibayar' : ($booking['Status'] == '3' ? 'Menunggu Konfirmasi' : 'Order Dibatalkan')) }}</div>
+                <div>Harga:</div><div>Rp. {{ rupiah($booking['total'] ?? 0) }}</div>
+                <div>Diskon:</div><div>Rp. {{  rupiah($booking['discount'] ?? 0) }}</div>
+                <div>Grand Total:</div><div>Rp. {{  rupiah($booking['grand_total'] ?? 0) }}</div>
+            </div>
+           @endif
+
+           <h3>Informasi Akun</h3>
+            <p>Kamu dapat mengakses sistem kami menggunakan detail berikut:</p>
             <p><strong>Username:</strong> {{ $user['email'] }}</p>
             <p><strong>Password:</strong> {{ $password }}</p>
-            <p>Pastikan untuk mengubah password Anda setelah login pertama untuk keamanan akun Anda.</p>
+            <p>Pastikan untuk mengubah password Kamu setelah login pertama untuk keamanan akun Kamu.</p>
 
-            <p>Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami
-            </p>
+            <p>Jika Kamu memiliki pertanyaan lebih lanjut atau membutuhkan bantuan, jangan ragu untuk menghubungi kami.</p>
         </div>
         <div class="footer">
             <p>Salam Hangat,</p>
@@ -159,5 +117,4 @@
         </div>
     </div>
 </body>
-
 </html>
