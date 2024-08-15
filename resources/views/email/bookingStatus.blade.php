@@ -77,45 +77,72 @@
             </p>
 
             <h3>Detail Booking</h3>
-            <table class="table">
-                <tr>
-                    <th>Nama</th>
-                    <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>{{ $user['email'] }}</td>
-                </tr>
-                <tr>
-                    <th>Nomor Telepon</th>
-                    <td>{{ $booking['hp'] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>Nama Kamar</th>
-                    <td>{{ $booking['NamaRoom'] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>Jumlah Kamar</th>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <th>Tanggal Check-in</th>
-                    <td>{{ $booking['checkIn'] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>Tanggal Check-out</th>
-                    <td>{{ $booking['checkOut'] ?? 'Tidak Diketahui' }}</td>
-                </tr>
-                <tr>
-                    <th>Total Tarif</th>
-                    <td>Rp. {{ number_format($booking['Total'], 0, ',', '.') ?? '0' }}</td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>{{ $booking['Status'] == '1' ? 'Menunggu Pembayaran' : ($booking['Status'] == '2' ? 'Dibayar' : ($booking['Status'] == '3' ? 'Menunggu Konfirmasi' : 'Order Dibatalkan')) }}
-                    </td>
-                </tr>
-            </table>
+            @if($booking['wahana_id'] != null)
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Nama</th>
+                            <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ $user['email'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nomor Telepon</th>
+                            <td>{{ $booking['telepon'] ?? 'Tidak Diketahui' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Wahana</th>
+                            <td>{{$wahana->nama}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tarif</th>
+                            <td>{{$booking['total']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            @else
+                <table class="table">
+                    <tr>
+                        <th>Nama</th>
+                        <td>{{ $booking['NamaBooking'] ?? 'Tamu' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ $user['email'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nomor Telepon</th>
+                        <td>{{ $booking['hp'] ?? 'Tidak Diketahui' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nama Kamar</th>
+                        <td>{{ $booking['NamaRoom'] ?? 'Tidak Diketahui' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Jumlah Kamar</th>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal Check-in</th>
+                        <td>{{ $booking['checkIn'] ?? 'Tidak Diketahui' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal Check-out</th>
+                        <td>{{ $booking['checkOut'] ?? 'Tidak Diketahui' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Tarif</th>
+                        <td>Rp. {{ number_format($booking['Total'], 0, ',', '.') ?? '0' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{ $booking['Status'] == '1' ? 'Menunggu Pembayaran' : ($booking['Status'] == '2' ? 'Dibayar' : ($booking['Status'] == '3' ? 'Menunggu Konfirmasi' : 'Order Dibatalkan')) }}
+                        </td>
+                    </tr>
+                </table>
+            @endif
 
             <h3>Informasi Akun</h3>
             <p>Anda dapat mengakses sistem kami menggunakan detail berikut:</p>

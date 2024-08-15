@@ -297,7 +297,7 @@
                 e.preventDefault();
                 var NoIdentitas = $("input[name=\"NoIdentitas\"]").val();
                 var NamaBooking = $("input[name=\"NamaBooking\"]").val();
-                var Email = $("input[name=\"email\"]").val();
+                var Email = $("input[name=\"Email\"]").val();
                 var Gender = $("input[name=\"Gender\"]:checked").val();
                 var hp = $("input[name=\"hp\"]").val();
                 var checkIn = $("input[name=\"checkIn\"]").val();
@@ -399,6 +399,7 @@
                 tarif_number = totalBayar;
 
                 $("#Tarif").text("Rp. " + totalBayar.toLocaleString("id-ID"));
+                $("#grand-total").text("Rp. " + totalBayar.toLocaleString("id-ID"));
             });
 
             $("#voucher").change(() => {

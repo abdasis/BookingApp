@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Wahana;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -14,6 +15,7 @@ class BookingStatusMail extends Mailable
     public $user;
     public $password;
     public $booking;
+	public $wahana;
 
     /**
      * Create a new message instance.
@@ -25,6 +27,7 @@ class BookingStatusMail extends Mailable
         $this->user = $dataEmail['user'];
         $this->password = $dataEmail['password'];
         $this->booking = $dataEmail['booking'];
+		$this->wahana = Wahana::where('id', $dataEmail['booking']['wahana_id'])->first();
     }
 
     /**
